@@ -1,0 +1,53 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:ControlLibrary.Converters">
+    <ResourceDictionary.MergedDictionaries>
+        <!--Load Brush Resources-->
+        <ResourceDictionary Source="Brushes/DefaultColorTheme.xaml"/>
+        <ResourceDictionary Source="Brushes/Icons.xaml"/>
+
+        <!--Paths-->
+        <ResourceDictionary Source="Paths/Paths.xaml"/>
+
+        <!--Base Controls Style-->
+        <ResourceDictionary Source="BaseControlStyles/CheckBoxStyle.xaml"/>
+        <ResourceDictionary Source="BaseControlStyles/ComboBoxStyle.xaml"/>
+        <ResourceDictionary Source="BaseControlStyles/ListViewStyle.xaml"/>
+        <ResourceDictionary Source="BaseControlStyles/RadioButtonStyle.xaml"/>
+        <ResourceDictionary Source="BaseControlStyles/ScrollBarStyle.xaml"/>
+        <ResourceDictionary Source="BaseControlStyles/ScrollViewerStyle.xaml"/>
+        <ResourceDictionary Source="BaseControlStyles/TabControlStyle.xaml"/>
+        <ResourceDictionary Source="BaseControlStyles/TabItemStyle.xaml"/>
+        <ResourceDictionary Source="BaseControlStyles/TextBoxStyle.xaml"/>
+        <ResourceDictionary Source="BaseControlStyles/ToggleButtonStyle.xaml"/>
+        <ResourceDictionary Source="BaseControlStyles/TextBlockStyle.xaml"/>
+        <ResourceDictionary Source="BaseControlStyles/FilterToggleButtonStyle.xaml"/>
+        <ResourceDictionary Source="BaseControlStyles/GridHeaderCellControlStyle.xaml"/>
+        <ResourceDictionary Source="BaseControlStyles/DatePickerStyle.xaml"/>
+
+        <!--Custom Controls Styles-->
+
+
+        <!--Named Styles-->
+
+
+
+        <!--Other Resource Dictionaries-->
+
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
+
+        <!--Converters-->
+        <ResourceDictionary>
+            <converters:FilterShipsConverter x:Key="FilterShipsConverter"/>
+            <converters:BoolToVisibilityConvertre x:Key="BoolToVisibilityConvertre"/>
+        </ResourceDictionary>
+
+
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>
