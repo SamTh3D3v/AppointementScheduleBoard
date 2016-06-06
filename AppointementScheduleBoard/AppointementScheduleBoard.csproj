@@ -111,9 +111,13 @@
       <DependentUpon>JobCardItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HourJobCard.cs" />
+    <Compile Include="ViewModel\AffectationViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ScheduleBoardViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\AffectationView.xaml.cs">
+      <DependentUpon>AffectationView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ScheduleBoardView.xaml.cs">
       <DependentUpon>ScheduleBoardView.xaml</DependentUpon>
     </Compile>
@@ -121,6 +125,10 @@
       <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
     <Page Include="UserControls\JobCardItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AffectationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -9,8 +9,9 @@ namespace DataLayer.DataService
     public class SampleDataService: DataService
     {       
         public override List<Stall> GetStallsCollection()
-        {            
-            var refDateTime = DateTime.Now.Date.AddHours(6);
+        {
+            
+            var refDateTime = DateTime.Today.Add(GetServerSettings().StartHour); ;
             //to be reimplemented to return the real data from the EBS
             return new List<Stall>()
             {
@@ -348,7 +349,7 @@ namespace DataLayer.DataService
             //This Data needs to be get from the EBS
             return new ServerSettings()
             {
-                StartHour = new TimeSpan(6,0,0),
+                StartHour = new TimeSpan(1,0,0),
                 EndHour = new TimeSpan(18,0,0)
             };
         }
@@ -373,11 +374,6 @@ namespace DataLayer.DataService
                 IsTechnicientsNamesVisible = true,
                 IsTimeHeaderVisible = true
             };
-        }
-
-        public SampleDataService():base()
-        {
-            
-        }
+        }       
     }
 }

@@ -12,6 +12,7 @@ namespace AppointementScheduleBoard
     {
         #region Views keys
         public static String ScheduleBoardViewKey = "ScheduleBoardView";
+        public static String AffectationViewKey = "AffectationView";
 
         #endregion
     }
