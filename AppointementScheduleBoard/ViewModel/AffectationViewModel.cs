@@ -11,6 +11,7 @@ namespace AppointementScheduleBoard.ViewModel
 {
     public class AffectationViewModel:NavigableViewModelBase
     {
+
         #region Fields
 
         #endregion
