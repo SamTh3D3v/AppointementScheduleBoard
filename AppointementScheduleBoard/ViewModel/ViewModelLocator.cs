@@ -28,6 +28,7 @@ namespace AppointementScheduleBoard.ViewModel
             ////}
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<ScheduleBoardViewModel>();
+            SimpleIoc.Default.Register<AffectationViewModel>();
             SetupMainNavigationService();
             SetupDataService();
         }
@@ -37,6 +38,7 @@ namespace AppointementScheduleBoard.ViewModel
 
             // VMs
             MainNavigationService.Configure(App.ScheduleBoardViewKey, new Uri("../View/ScheduleBoardView.xaml", UriKind.Relative));
+            MainNavigationService.Configure(App.AffectationViewKey, new Uri("../View/AffectationView.xaml", UriKind.Relative));
             SimpleIoc.Default.Register<IFrameNavigationService>(() => MainNavigationService);
         }
 
@@ -62,6 +64,17 @@ namespace AppointementScheduleBoard.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<ScheduleBoardViewModel>();
+            }
+        }
+      
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
+            "CA1822:MarkMembersAsStatic",
+            Justification = "This non-static member is needed for data binding purposes.")]
+        public AffectationViewModel AffectationViewModel
+        {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<AffectationViewModel>();
             }
         }
 
