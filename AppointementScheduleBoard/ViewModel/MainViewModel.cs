@@ -169,6 +169,19 @@ namespace AppointementScheduleBoard.ViewModel
                     }));
             }
         }
+        private RelayCommand _openAssignViewCommand;
+        public RelayCommand OpenAssignViewCommand
+        {
+            get
+            {
+                return _openAssignViewCommand
+                    ?? (_openAssignViewCommand = new RelayCommand(
+                    () =>
+                    {
+                        MainFrameNavigationService.NavigateTo(App.AffectationViewKey);
+                    }));
+            }
+        }
         #endregion
         #region Ctors and methods
         public MainViewModel(IFrameNavigationService mainFrameNavigationService,IDataService mainDataService) : base(mainFrameNavigationService, mainDataService)
