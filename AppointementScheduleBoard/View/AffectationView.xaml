@@ -140,8 +140,81 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-
         </Grid>
-        <Grid Grid.></Grid>
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Background="WhiteSmoke" Grid.Row="0">
+                <Button Width="40" Height="40" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
+                Command="{Binding AddJobCardToStallCommand}"
+                ToolTip="Add a new JobCard to selected stall">
+                    <Rectangle Width="15" Height="15"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill">
+                                <VisualBrush.Visual>
+                                    <Path Stretch="Fill" Fill="{DynamicResource BlackBrush}" Data="{StaticResource AddPath}"/>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </Button>
+            </Grid>
+            <ListView Grid.Row="1"  ItemsSource="{Binding SelectedStall.JobTasksCollection,IsAsync=True}" SelectedItem="{Binding SelectedJobTask,Mode=TwoWay}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate >
+                        <Grid Margin="2" Background="LightBlue">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Job type" Grid.Row="0" Grid.Column="0"/>
+                            <Label Content="Reception time" Grid.Row="1" Grid.Column="0"/>
+                            <Label Content="PDT" Grid.Row="2" Grid.Column="0"/>
+                            <Label Content="Is Client Waiting" Grid.Row="3" Grid.Column="0"/>
+                            <Label Content="Status" Grid.Row="4" Grid.Column="0"/>
+
+                            <Label Content="{Binding JobType}" Grid.Row="0" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
+                            <Label Content="{Binding ReceptionTime}" Grid.Row="1" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
+                            <Label Content="{Binding PDT}" Grid.Row="2" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
+                            <Label Content="{Binding IsClientWaiting}" Grid.Row="3" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
+                            <Label Content="{Binding Status}" Grid.Row="4" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
+                            
+
+                            <Button Width="50" Height="50" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
+                Command="{Binding EditSelectedStallCommand}"
+                ToolTip="Edit stall">
+                                <Rectangle Width="20" Height="20"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill">
+                                            <VisualBrush.Visual>
+                                                <Path Stretch="Fill" Fill="{DynamicResource BlackBrush}" Data="{StaticResource RemovePath}"/>
+                                            </VisualBrush.Visual>
+                                        </VisualBrush>
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
     </Grid>
 </Page>

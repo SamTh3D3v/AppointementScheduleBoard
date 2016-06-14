@@ -22,7 +22,7 @@ namespace DataLayer.DataService
         /// <returns></returns>
         LocalSettings GetLocalSettings();
         /// <summary>
-        /// Add a new empty (no jobCards assign to it) stall
+        /// Add a new empty stall(no jobCards assign to it) stall
         /// </summary>
         /// <param name="stall">the stall object that need to be added</param>
         void AddStall(Stall stall);
@@ -55,6 +55,13 @@ namespace DataLayer.DataService
         /// <param name="stallId">the guid that identify the stall</param>
         /// <returns></returns>
         List<JobTask> GetStallAssignedJobTasks(Guid stallId);
+
+        /// <summary>
+        /// get all the jobcards those are planned in a spesific date
+        /// </summary>
+        /// <param name="date">dd/mm/yy that we need its jobcards </param>
+        /// <returns>the list of the JobCards those are planned in this date</returns>
+        List<JobTask> GetJobTasks(DateTime date);
 
 
     }

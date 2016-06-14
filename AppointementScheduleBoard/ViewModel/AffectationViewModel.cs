@@ -17,6 +17,7 @@ namespace AppointementScheduleBoard.ViewModel
         #region Fields
         private ObservableCollection<Stall> _myProperty;
         private Stall _selectedStall;
+        private JobTask _selectedJobTask ;       
         #endregion
         #region Properties
         public ObservableCollection<Stall> StallsList
@@ -52,6 +53,24 @@ namespace AppointementScheduleBoard.ViewModel
                 }
 
                 _selectedStall = value;
+                RaisePropertyChanged();
+            }
+        }
+        public JobTask SelectedJobTask
+        {
+            get
+            {
+                return _selectedJobTask;
+            }
+
+            set
+            {
+                if (_selectedJobTask == value)
+                {
+                    return;
+                }
+
+                _selectedJobTask = value;
                 RaisePropertyChanged();
             }
         }
@@ -102,6 +121,19 @@ namespace AppointementScheduleBoard.ViewModel
             {
                 return _saveNewStallCommand
                     ?? (_saveNewStallCommand = new RelayCommand(
+                    () =>
+                    {
+
+                    }));
+            }
+        }
+        private RelayCommand _addJobCardToStallCommand;
+        public RelayCommand AddJobCardToStallCommand
+        {
+            get
+            {
+                return _addJobCardToStallCommand
+                    ?? (_addJobCardToStallCommand = new RelayCommand(
                     () =>
                     {
 
