@@ -69,6 +69,45 @@ namespace AppointementScheduleBoard.ViewModel
                     }));
             }
         }
+        private RelayCommand _addNewStallCommand;
+        public RelayCommand AddNewStallCommand
+        {
+            get
+            {
+                return _addNewStallCommand
+                    ?? (_addNewStallCommand = new RelayCommand(
+                    () =>   
+                    {
+
+                    }));
+            }
+        }
+        private RelayCommand _cancelNewStallCommand;
+        public RelayCommand CancelNewStallCommand
+        {
+            get
+            {
+                return _cancelNewStallCommand
+                    ?? (_cancelNewStallCommand = new RelayCommand(
+                    () =>
+                    {
+
+                    }));
+            }
+        }
+        private RelayCommand _saveNewStallCommand;
+        public RelayCommand SaveNewStallCommand
+        {
+            get
+            {
+                return _saveNewStallCommand
+                    ?? (_saveNewStallCommand = new RelayCommand(
+                    () =>
+                    {
+
+                    }));
+            }
+        }
         private RelayCommand _goBackCommand;
         public RelayCommand GoBackCommand
         {

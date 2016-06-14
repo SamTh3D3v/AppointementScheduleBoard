@@ -42,11 +42,12 @@
         <Grid Grid.Row="1" Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid Background="LightGray">
-                <Button Width="30" Height="30" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
-                Command="{Binding GoBackCommand}"
+                <Button Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
+                Command="{Binding AddNewStallCommand}"
                 ToolTip="Add a new Stall">
                     <Rectangle Width="25" Height="25"
                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
@@ -60,7 +61,32 @@
                     </Rectangle>
                 </Button>
             </Grid>
-            <ListView Grid.Row="1" ItemsSource="{Binding StallsList}" SelectedItem="{Binding SelectedStall,Mode=TwoWay}">
+            <Border Grid.Row="1" Background="WhiteSmoke" Padding="10">
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="New Stall" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"/>
+                    <Label Grid.Column="0" Grid.Row="1" Content="Name "/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Margin="5"/>
+                    <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="Cancel" Command="{Binding CancelNewStallCommand}" Margin="5"/>
+                        <Button Grid.Column="1" Content="Save" Command="{Binding SaveNewStallCommand}" Margin="5"/>
+                    </Grid>
+
+                </Grid>
+            </Border>
+            <ListView Grid.Row="2" ItemsSource="{Binding StallsList}" SelectedItem="{Binding SelectedStall,Mode=TwoWay}">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -113,8 +139,9 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            
+
 
         </Grid>
+        <Grid Grid.></Grid>
     </Grid>
 </Page>
