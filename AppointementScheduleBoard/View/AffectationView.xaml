@@ -4,11 +4,217 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:AppointementScheduleBoard.View"
+      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+      xmlns:command="http://www.galasoft.ch/mvvmlight"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
-      Title="AffectationView">
+      Title="AffectationView" DataContext="{Binding AffectationViewModel,Source={StaticResource Locator}}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <command:EventToCommand Command="{Binding Mode=OneWay, Path=AffectationViewLoadedCommand}"
+                            PassEventArgsToCommand="False" CommandParameter="{Binding  ElementName=MainWin}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
     <Grid>
-        <TextBlock Text="Affectation View" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-    </Grid> 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Button Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
+                Command="{Binding GoBackCommand}"
+                ToolTip="Assign jobcards to stalls">
+            <Rectangle Width="25" Height="25"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                <Rectangle.OpacityMask>
+                    <VisualBrush Stretch="Fill">
+                        <VisualBrush.Visual>
+                            <Path Stretch="Fill" Fill="{DynamicResource BlackBrush}" Data="{StaticResource BackPath}"/>
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </Rectangle.OpacityMask>
+            </Rectangle>
+        </Button>
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Background="LightGray">
+                <Button Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
+                Command="{Binding AddNewStallCommand}"
+                ToolTip="Add a new Stall">
+                    <Rectangle Width="25" Height="25"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill">
+                                <VisualBrush.Visual>
+                                    <Path Stretch="Fill" Fill="{DynamicResource BlackBrush}" Data="{StaticResource AddPath}"/>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </Button>
+            </Grid>
+            <Border Grid.Row="1" Background="WhiteSmoke" Padding="10">
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="New Stall" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"/>
+                    <Label Grid.Column="0" Grid.Row="1" Content="Name "/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Margin="5"/>
+                    <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="Cancel" Command="{Binding CancelNewStallCommand}" Margin="5"/>
+                        <Button Grid.Column="1" Content="Save" Command="{Binding SaveNewStallCommand}" Margin="5"/>
+                    </Grid>
+
+                </Grid>
+            </Border>
+            <ListView Grid.Row="2" ItemsSource="{Binding StallsList}" SelectedItem="{Binding SelectedStall,Mode=TwoWay}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate >
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="StallName" Grid.Row="0" Grid.Column="0"/>
+                            <TextBlock Text="12 Jobcards" Grid.Row="1" Grid.Column="0"/>
+                            <Button Width="30" Height="30" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
+                Command="{Binding RemoveSelectedStallCommand}"
+                ToolTip="Remove stall">
+                                <Rectangle Width="10" Height="10"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill">
+                                            <VisualBrush.Visual>
+                                                <Path Stretch="Fill" Fill="{DynamicResource BlackBrush}" Data="{StaticResource RemovePath}"/>
+                                            </VisualBrush.Visual>
+                                        </VisualBrush>
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </Button>
+
+                            <Button Width="30" Height="30" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
+                Command="{Binding EditSelectedStallCommand}"
+                ToolTip="Edit stall">
+                                <Rectangle Width="10" Height="10"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill">
+                                            <VisualBrush.Visual>
+                                                <Path Stretch="Fill" Fill="{DynamicResource BlackBrush}" Data="{StaticResource EditPath}"/>
+                                            </VisualBrush.Visual>
+                                        </VisualBrush>
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Background="WhiteSmoke" Grid.Row="0">
+                <Button Width="40" Height="40" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
+                Command="{Binding AddJobCardToStallCommand}"
+                ToolTip="Add a new JobCard to selected stall">
+                    <Rectangle Width="15" Height="15"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill">
+                                <VisualBrush.Visual>
+                                    <Path Stretch="Fill" Fill="{DynamicResource BlackBrush}" Data="{StaticResource AddPath}"/>
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </Button>
+            </Grid>
+            <ListView Grid.Row="1"  ItemsSource="{Binding SelectedStall.JobTasksCollection,IsAsync=True}" SelectedItem="{Binding SelectedJobTask,Mode=TwoWay}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate >
+                        <Grid Margin="2" Background="LightBlue">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Job type" Grid.Row="0" Grid.Column="0"/>
+                            <Label Content="Reception time" Grid.Row="1" Grid.Column="0"/>
+                            <Label Content="PDT" Grid.Row="2" Grid.Column="0"/>
+                            <Label Content="Is Client Waiting" Grid.Row="3" Grid.Column="0"/>
+                            <Label Content="Status" Grid.Row="4" Grid.Column="0"/>
+
+                            <Label Content="{Binding JobType}" Grid.Row="0" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
+                            <Label Content="{Binding ReceptionTime}" Grid.Row="1" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
+                            <Label Content="{Binding PDT}" Grid.Row="2" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
+                            <Label Content="{Binding IsClientWaiting}" Grid.Row="3" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
+                            <Label Content="{Binding Status}" Grid.Row="4" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
+                            
+
+                            <Button Width="50" Height="50" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
+                Command="{Binding EditSelectedStallCommand}"
+                ToolTip="Edit stall">
+                                <Rectangle Width="20" Height="20"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                    <Rectangle.OpacityMask>
+                                        <VisualBrush Stretch="Fill">
+                                            <VisualBrush.Visual>
+                                                <Path Stretch="Fill" Fill="{DynamicResource BlackBrush}" Data="{StaticResource RemovePath}"/>
+                                            </VisualBrush.Visual>
+                                        </VisualBrush>
+                                    </Rectangle.OpacityMask>
+                                </Rectangle>
+                            </Button>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
 </Page>

@@ -133,5 +133,15 @@ namespace DataLayer.DataService
             //todo @Morad
             throw new NotImplementedException();
         }
+         /// <summary>
+        /// get all the jobcards those are planned in a spesific date
+        /// </summary>
+        /// <param name="date">dd/mm/yy that we need its jobcards </param>
+        /// <returns>the list of the JobCards those are planned in this date</returns>
+        public List<JobTask> GetJobTasks(DateTime date)
+        {
+            //todo @Morad
+            throw new NotImplementedException();
+        }
     }
 }

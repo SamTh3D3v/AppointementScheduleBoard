@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AppointementScheduleBoard.Helpers;
 using DataLayer.DataService;
+using DataLayer.Model;
 using GalaSoft.MvvmLight.Command;
 
 namespace AppointementScheduleBoard.ViewModel
@@ -13,22 +15,141 @@ namespace AppointementScheduleBoard.ViewModel
     {
 
         #region Fields
-
+        private ObservableCollection<Stall> _myProperty;
+        private Stall _selectedStall;
+        private JobTask _selectedJobTask ;       
         #endregion
         #region Properties
-
-        #endregion
-        #region Commands
-        private RelayCommand _openAssignViewCommand;
-        public RelayCommand OpenAssignViewCommand
+        public ObservableCollection<Stall> StallsList
         {
             get
             {
-                return _openAssignViewCommand
-                    ?? (_openAssignViewCommand = new RelayCommand(
+                return _myProperty;
+            }
+
+            set
+            {
+                if (_myProperty == value)
+                {
+                    return;
+                }
+
+                _myProperty = value;
+                RaisePropertyChanged();
+            }
+        }
+        public Stall SelectedStall
+        {
+            get
+            {
+                return _selectedStall;
+            }
+
+            set
+            {
+                if (_selectedStall == value)
+                {
+                    return;
+                }
+
+                _selectedStall = value;
+                RaisePropertyChanged();
+            }
+        }
+        public JobTask SelectedJobTask
+        {
+            get
+            {
+                return _selectedJobTask;
+            }
+
+            set
+            {
+                if (_selectedJobTask == value)
+                {
+                    return;
+                }
+
+                _selectedJobTask = value;
+                RaisePropertyChanged();
+            }
+        }
+        #endregion
+        #region Commands
+        private RelayCommand _affectationViewLoadedCommand;
+        public RelayCommand AffectationViewLoadedCommand
+        {
+            get
+            {
+                return _affectationViewLoadedCommand
+                    ?? (_affectationViewLoadedCommand = new RelayCommand(async () =>
+                    {
+                        StallsList=new ObservableCollection<Stall>(await Task.Run(()=>MainDataService.GetStallsCollection()));
+                    }));
+            }
+        }
+        private RelayCommand _addNewStallCommand;
+        public RelayCommand AddNewStallCommand
+        {
+            get
+            {
+                return _addNewStallCommand
+                    ?? (_addNewStallCommand = new RelayCommand(
+                    () =>   
+                    {
+
+                    }));
+            }
+        }
+        private RelayCommand _cancelNewStallCommand;
+        public RelayCommand CancelNewStallCommand
+        {
+            get
+            {
+                return _cancelNewStallCommand
+                    ?? (_cancelNewStallCommand = new RelayCommand(
                     () =>
                     {
-                        MainFrameNavigationService.NavigateTo(App.AffectationViewKey);
+
+                    }));
+            }
+        }
+        private RelayCommand _saveNewStallCommand;
+        public RelayCommand SaveNewStallCommand
+        {
+            get
+            {
+                return _saveNewStallCommand
+                    ?? (_saveNewStallCommand = new RelayCommand(
+                    () =>
+                    {
+
+                    }));
+            }
+        }
+        private RelayCommand _addJobCardToStallCommand;
+        public RelayCommand AddJobCardToStallCommand
+        {
+            get
+            {
+                return _addJobCardToStallCommand
+                    ?? (_addJobCardToStallCommand = new RelayCommand(
+                    () =>
+                    {
+
+                    }));
+            }
+        }
+        private RelayCommand _goBackCommand;
+        public RelayCommand GoBackCommand
+        {
+            get
+            {
+                return _goBackCommand
+                    ?? (_goBackCommand = new RelayCommand(
+                    () =>
+                    {
+                        MainFrameNavigationService.NavigateTo(App.ScheduleBoardViewKey);
                     }));
             }
         }
