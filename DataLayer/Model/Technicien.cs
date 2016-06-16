@@ -13,7 +13,7 @@ namespace DataLayer.Model
     {
         #region Fields
         private string _name;
-        private Guid _id;
+        private Int32 _id;
         #endregion
         #region Properties
 
@@ -28,7 +28,7 @@ namespace DataLayer.Model
             }
         }
 
-        public Guid Id
+        public Int32 Id
         {
             get { return _id; }
             set

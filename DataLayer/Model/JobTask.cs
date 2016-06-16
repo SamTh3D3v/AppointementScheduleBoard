@@ -22,8 +22,6 @@ namespace DataLayer.Model
         private Guid _id;
         private DateTime? _actualStartTime;
         private DateTime? _plannedStartTime;
-        private ObservableCollection<Technicien> _techniciens;
-
         #endregion
         #region Properties
 
@@ -90,16 +88,6 @@ namespace DataLayer.Model
                 OnPropertyChanged();
             }
         }
-        public ObservableCollection<Technicien> Techniciens
-        {
-            get { return _techniciens; }
-            set
-            {
-                if (Equals(value, _techniciens)) return;
-                _techniciens = value;
-                OnPropertyChanged();
-            }
-        }        
         public DateTime? PlannedStartTime
         {
             get

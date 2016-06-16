@@ -13,11 +13,46 @@ namespace DataLayer.Model
     public class Stall : INotifyPropertyChanged
     {
         #region Fields        
-        private Guid _id;
+        private int _id;
+        private string _branchId;
         private string _stallName;
+        private string _stallDescription;
+        private string _isActive;
         private ObservableCollection<ITimeLineJobTask> _jobTasksCollection;
+        private ObservableCollection<Technicien> _techniciens;
         #endregion
         #region Properties
+
+        public int Id
+        {
+            get { return _id; }
+            set
+            {
+                if (value.Equals(_id)) return;
+                _id = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string BranchId
+        {
+            get
+            {
+                return _branchId;
+            }
+
+            set
+            {
+                if (_branchId == value)
+                {
+                    return;
+                }
+
+                _branchId = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string StallName
         {
             get
@@ -37,13 +72,40 @@ namespace DataLayer.Model
             }
         }
 
-        public Guid Id
+        public string StallDescription
         {
-            get { return _id; }
+            get
+            {
+                return _stallDescription;
+            }
+
             set
             {
-                if (value.Equals(_id)) return;
-                _id = value;
+                if (_stallDescription == value)
+                {
+                    return;
+                }
+
+                _stallDescription = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string IsActive
+        {
+            get
+            {
+                return _isActive;
+            }
+
+            set
+            {
+                if (_isActive == value)
+                {
+                    return;
+                }
+
+                _isActive = value;
                 OnPropertyChanged();
             }
         }
@@ -58,7 +120,16 @@ namespace DataLayer.Model
                 OnPropertyChanged();
             }
         }
-
+        public ObservableCollection<Technicien> Techniciens
+        {
+            get { return _techniciens; }
+            set
+            {
+                if (Equals(value, _techniciens)) return;
+                _techniciens = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion
         #region PropertyChanged Implementation
         public event PropertyChangedEventHandler PropertyChanged;
