@@ -27,7 +27,7 @@
         </Grid.ColumnDefinitions>
         <Button Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
                 Command="{Binding GoBackCommand}"
-                ToolTip="Assign jobcards to stalls">
+                ToolTip="Go Back">
             <Rectangle Width="25" Height="25"
                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                 <Rectangle.OpacityMask>
@@ -67,15 +67,29 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Content="New Stall" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"/>
-                    <Label Grid.Column="0" Grid.Row="1" Content="Name "/>
-                    <TextBox Grid.Row="1" Grid.Column="1" Margin="5"/>
-                    <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Margin="5">
+                    
+                    <Label Grid.Column="0" Grid.Row="1" Content="Branch ID "/>
+                    <ComboBox Grid.Row="1" Grid.Column="1" Margin="5" SelectedItem="{Binding SelectedStall.BranchId,Mode=TwoWay}" ItemsSource="{Binding BranchIdsCollection}" />
+
+                    <Label Grid.Column="0" Grid.Row="2" Content="Name "/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding SelectedStall.StallName,Mode=TwoWay}"/>
+
+                    <Label Grid.Column="0" Grid.Row="3" Content="Description "/>
+                    <TextBox Grid.Row="3" Grid.Column="1" Margin="5" Text="{Binding SelectedStall.StallDescription,Mode=TwoWay}"/>
+
+                    <Label Grid.Column="0" Grid.Row="4" Content="Is Active "/>
+                    <CheckBox Grid.Row="4" Grid.Column="1" Margin="5" IsChecked="{Binding SelectedStall.IsActive,Mode=TwoWay}"/>
+
+                    <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Margin="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
@@ -100,13 +114,19 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="StallName" Grid.Row="0" Grid.Column="0"/>
-                            <TextBlock Text="12 Jobcards" Grid.Row="1" Grid.Column="0"/>
-                            <Button Width="30" Height="30" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
+                            <TextBlock Text="{Binding BranchId}" Grid.Row="0" Grid.Column="0"/>
+                            <TextBlock Text="{Binding StallName}" Grid.Row="0" Grid.Column="1" Margin="10 0 0 0"/>
+                            <TextBlock Text="JobCards " Grid.Row="1" Grid.Column="0" />
+
+                            <TextBlock Text="{Binding JobTasksCollection.Count}" Grid.Row="1" Grid.Column="1" Margin="10 0 0 0"/>
+                            <CheckBox Content="Is Active " IsChecked="{Binding IsActive}" VerticalAlignment="Center" Grid.Row="0" Grid.Column="2" Margin="10 0 0 0"></CheckBox>
+                            <Button Width="30" Height="30" Grid.Row="0" Grid.RowSpan="2" Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
                 Command="{Binding RemoveSelectedStallCommand}"
                 ToolTip="Remove stall">
                                 <Rectangle Width="10" Height="10"
@@ -121,7 +141,7 @@
                                 </Rectangle>
                             </Button>
 
-                            <Button Width="30" Height="30" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
+                            <Button Width="30" Height="30" Grid.Row="0" Grid.RowSpan="2" Grid.Column="4" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
                 Command="{Binding EditSelectedStallCommand}"
                 ToolTip="Edit stall">
                                 <Rectangle Width="10" Height="10"
@@ -149,7 +169,7 @@
             <Grid Background="WhiteSmoke" Grid.Row="0">
                 <Button Width="40" Height="40" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
                 Command="{Binding AddJobCardToStallCommand}"
-                ToolTip="Add a new JobCard to selected stall">
+                ToolTip="Affect new technicien to selected stall">
                     <Rectangle Width="15" Height="15"
                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                         <Rectangle.OpacityMask>
@@ -162,7 +182,7 @@
                     </Rectangle>
                 </Button>
             </Grid>
-            <ListView Grid.Row="1"  ItemsSource="{Binding SelectedStall.JobTasksCollection,IsAsync=True}" SelectedItem="{Binding SelectedJobTask,Mode=TwoWay}">
+            <ListView Grid.Row="1"  ItemsSource="{Binding SelectedStall.Techniciens,IsAsync=True}" SelectedItem="{Binding SelectedJobTask,Mode=TwoWay}">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -174,32 +194,23 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
+                                
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <Label Content="Job type" Grid.Row="0" Grid.Column="0"/>
-                            <Label Content="Reception time" Grid.Row="1" Grid.Column="0"/>
-                            <Label Content="PDT" Grid.Row="2" Grid.Column="0"/>
-                            <Label Content="Is Client Waiting" Grid.Row="3" Grid.Column="0"/>
-                            <Label Content="Status" Grid.Row="4" Grid.Column="0"/>
+                            <Label Content="Technicien Id " Grid.Row="0" Grid.Column="0"/>
+                            <Label Content="Name" Grid.Row="1" Grid.Column="0"/>
 
-                            <Label Content="{Binding JobType}" Grid.Row="0" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
-                            <Label Content="{Binding ReceptionTime}" Grid.Row="1" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
-                            <Label Content="{Binding PDT}" Grid.Row="2" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
-                            <Label Content="{Binding IsClientWaiting}" Grid.Row="3" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
-                            <Label Content="{Binding Status}" Grid.Row="4" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
-                            
+                            <Label Content="{Binding Name}" Grid.Row="0" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
+                            <Label Content="{Binding Id}" Grid.Row="1" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
+                             
 
                             <Button Width="50" Height="50" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
                 Command="{Binding EditSelectedStallCommand}"
-                ToolTip="Edit stall">
+                ToolTip="Remove technicien">
                                 <Rectangle Width="20" Height="20"
                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                                     <Rectangle.OpacityMask>

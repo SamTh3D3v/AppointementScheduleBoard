@@ -17,9 +17,28 @@ namespace AppointementScheduleBoard.ViewModel
         #region Fields
         private ObservableCollection<Stall> _myProperty;
         private Stall _selectedStall;
-        private JobTask _selectedJobTask ;       
+        private JobTask _selectedJobTask ;      
+        private ObservableCollection<string> _branchIdsCollection  ;
         #endregion
         #region Properties
+        public ObservableCollection<string> BranchIdsCollection
+        {
+            get
+            {
+                return _branchIdsCollection;
+            }
+
+            set
+            {
+                if (_branchIdsCollection == value)
+                {
+                    return;
+                }
+
+                _branchIdsCollection = value;
+                RaisePropertyChanged();
+            }
+        }
         public ObservableCollection<Stall> StallsList
         {
             get
@@ -85,6 +104,7 @@ namespace AppointementScheduleBoard.ViewModel
                     ?? (_affectationViewLoadedCommand = new RelayCommand(async () =>
                     {
                         StallsList=new ObservableCollection<Stall>(await Task.Run(()=>MainDataService.GetStallsCollection()));
+                        BranchIdsCollection = new ObservableCollection<string>(await Task.Run(()=>SampleDataService.GetBranchIdsCollection()));
                     }));
             }
         }

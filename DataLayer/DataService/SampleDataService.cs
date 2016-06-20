@@ -18,6 +18,7 @@ namespace DataLayer.DataService
                 new Stall()
                 {
                     Id = 1,
+                    BranchId = "Branch ID 1",
                     StallName = "Stall 1",
                     JobTasksCollection =new ObservableCollection<ITimeLineJobTask>()
                     {
@@ -70,6 +71,7 @@ namespace DataLayer.DataService
                 new Stall()
                 {
                     Id = 2,
+                    BranchId = "Branch ID 2",
                     StallName = "Stall 2",
                     JobTasksCollection =new ObservableCollection<ITimeLineJobTask>()
                     {
@@ -111,6 +113,7 @@ namespace DataLayer.DataService
                 new Stall()
                 {
                     Id = 3,
+                    BranchId = "Branch ID 3",
                     StallName = "Stall 3",
                     JobTasksCollection =new ObservableCollection<ITimeLineJobTask>()
                     {
@@ -165,6 +168,7 @@ namespace DataLayer.DataService
                 new Stall()
                 {
                     Id = 4,
+                    BranchId = "Branch ID 1",
                     StallName = "Stall 4",
                     JobTasksCollection =new ObservableCollection<ITimeLineJobTask>()
                     {
@@ -204,6 +208,7 @@ namespace DataLayer.DataService
                 new Stall()
                 {
                     Id = 5,
+                    BranchId = "Branch ID 1",
                     StallName = "Stall 5",
                     JobTasksCollection =new ObservableCollection<ITimeLineJobTask>()
                     {
@@ -254,6 +259,7 @@ namespace DataLayer.DataService
                 {
                     Id = 6,
                     StallName = "Stall 6",
+                    BranchId = "Branch ID 2",
                     JobTasksCollection =new ObservableCollection<ITimeLineJobTask>()
                     {
                         new JobTask()
@@ -328,6 +334,19 @@ namespace DataLayer.DataService
                 IsTechnicientsNamesVisible = true,
                 IsTimeHeaderVisible = true
             };
-        }       
+        }
+
+        public static List<string> GetBranchIdsCollection()
+        {
+            return new List<string>()
+            {
+                "Branch ID 1",
+                "Branch ID 2",
+                "Branch ID 3",
+                "Branch ID 4",
+            };
+
+       
+        }
     }
 }
