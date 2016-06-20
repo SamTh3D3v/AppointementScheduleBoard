@@ -17,7 +17,7 @@ namespace DataLayer.DataService
             {
                 new Stall()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = 1,
                     StallName = "Stall 1",
                     JobTasksCollection =new ObservableCollection<ITimeLineJobTask>()
                     {
@@ -31,15 +31,8 @@ namespace DataLayer.DataService
                             PDT = DateTime.Now,
                             ReceptionTime = DateTime.Now,
                             Status = StatusEnum.Booked,
-                            TimelineViewExpanded = true,
-                            Techniciens = new ObservableCollection<Technicien>()
-                            {
-                                new Technicien()
-                                {
-                                    Id=Guid.NewGuid(),
-                                    Name = "Technicien 1"
-                                }
-                            }
+                            TimelineViewExpanded = true
+                            
                         },new JobTask()
                         {
                             Id = Guid.NewGuid(),
@@ -50,14 +43,7 @@ namespace DataLayer.DataService
                             PDT = DateTime.Now,
                             ReceptionTime = DateTime.Now,
                             Status = StatusEnum.InProgress,
-                            Techniciens = new ObservableCollection<Technicien>()
-                            {
-                                new Technicien()
-                                {
-                                    Id=Guid.NewGuid(),
-                                    Name = "Technicien 2"
-                                }
-                            }
+                            
                         },new JobTask()
                         {
                             Id = Guid.NewGuid(),
@@ -68,20 +54,22 @@ namespace DataLayer.DataService
                             PDT = DateTime.Now,
                             ReceptionTime = DateTime.Now,
                             Status = StatusEnum.Received,
-                            Techniciens = new ObservableCollection<Technicien>()
+                           
+                        }
+                    }
+                    ,
+                    Techniciens = new ObservableCollection<Technicien>()
                             {
                                 new Technicien()
                                 {
-                                    Id=Guid.NewGuid(),
-                                    Name = "Technicien 3"
+                                    Id=1,
+                                    Name = "Technicien 1"
                                 }
                             }
-                        }
-                    }
                 },
                 new Stall()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = 2,
                     StallName = "Stall 2",
                     JobTasksCollection =new ObservableCollection<ITimeLineJobTask>()
                     {
@@ -94,15 +82,8 @@ namespace DataLayer.DataService
                             JobType = JobTypesEnum.PMA05,
                             PDT = DateTime.Now,
                             ReceptionTime = DateTime.Now,
-                            Status = StatusEnum.Booked,
-                            Techniciens = new ObservableCollection<Technicien>()
-                            {
-                                new Technicien()
-                                {
-                                    Id=Guid.NewGuid(),
-                                    Name = "Technicien 1"
-                                }
-                            }
+                            Status = StatusEnum.Booked
+                           
                         },new JobTask()
                         {
                             Id = Guid.NewGuid(),
@@ -112,22 +93,25 @@ namespace DataLayer.DataService
                             JobType = JobTypesEnum.PMA10,
                             PDT = DateTime.Now,
                             ReceptionTime = DateTime.Now,
-                            Status = StatusEnum.InProgress,
-                            Techniciens = new ObservableCollection<Technicien>()
+                            Status = StatusEnum.InProgress
+                           
+                        }
+                        
+                       
+                    },
+                     Techniciens = new ObservableCollection<Technicien>()
                             {
                                 new Technicien()
                                 {
-                                    Id=Guid.NewGuid(),
+                                    Id=2,
                                     Name = "Technicien 2"
                                 }
                             }
-                        }
-                    }
                 },
                 new Stall()
                 {
-                    Id = Guid.NewGuid(),
-                    StallName = "Stall 2",
+                    Id = 3,
+                    StallName = "Stall 3",
                     JobTasksCollection =new ObservableCollection<ITimeLineJobTask>()
                     {
                         new JobTask()
@@ -139,15 +123,8 @@ namespace DataLayer.DataService
                             JobType = JobTypesEnum.PMA05,
                             PDT = DateTime.Now,
                             ReceptionTime = DateTime.Now,
-                            Status = StatusEnum.Booked,
-                            Techniciens = new ObservableCollection<Technicien>()
-                            {
-                                new Technicien()
-                                {
-                                    Id=Guid.NewGuid(),
-                                    Name = "Technicien 1"
-                                }
-                            }
+                            Status = StatusEnum.Booked
+                            
                         },new JobTask()
                         {
                             Id = Guid.NewGuid(),
@@ -157,15 +134,7 @@ namespace DataLayer.DataService
                             JobType = JobTypesEnum.PMA10,
                             PDT = DateTime.Now,
                             ReceptionTime = DateTime.Now,
-                            Status = StatusEnum.InProgress,
-                            Techniciens = new ObservableCollection<Technicien>()
-                            {
-                                new Technicien()
-                                {
-                                    Id=Guid.NewGuid(),
-                                    Name = "Technicien 2"
-                                }
-                            }
+                            Status = StatusEnum.InProgress
                         },new JobTask()
                         {
                             Id = Guid.NewGuid(),
@@ -175,21 +144,27 @@ namespace DataLayer.DataService
                             JobType = JobTypesEnum.PMA20,
                             PDT = DateTime.Now,
                             ReceptionTime = DateTime.Now,
-                            Status = StatusEnum.Received,
-                            Techniciens = new ObservableCollection<Technicien>()
+                            Status = StatusEnum.Received                           
+                        }
+
+                    },
+                    Techniciens = new ObservableCollection<Technicien>()
                             {
                                 new Technicien()
                                 {
-                                    Id=Guid.NewGuid(),
+                                    Id=3,
                                     Name = "Technicien 3"
+                                },
+                        new Technicien()
+                                {
+                                    Id=4,
+                                    Name = "Technicien 4"
                                 }
                             }
-                        }
-                    }
                 },
                 new Stall()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = 4,
                     StallName = "Stall 4",
                     JobTasksCollection =new ObservableCollection<ITimeLineJobTask>()
                     {
@@ -202,15 +177,8 @@ namespace DataLayer.DataService
                             JobType = JobTypesEnum.PMA05,
                             PDT = DateTime.Now,
                             ReceptionTime = DateTime.Now,
-                            Status = StatusEnum.Booked,
-                            Techniciens = new ObservableCollection<Technicien>()
-                            {
-                                new Technicien()
-                                {
-                                    Id=Guid.NewGuid(),
-                                    Name = "Technicien 1"
-                                }
-                            }
+                            Status = StatusEnum.Booked
+                            
                         },new JobTask()
                         {
                             Id = Guid.NewGuid(),
@@ -220,21 +188,22 @@ namespace DataLayer.DataService
                             JobType = JobTypesEnum.PMA10,
                             PDT = DateTime.Now,
                             ReceptionTime = DateTime.Now,
-                            Status = StatusEnum.InProgress,
-                            Techniciens = new ObservableCollection<Technicien>()
+                            Status = StatusEnum.InProgress
+                           
+                        }
+                    },
+                     Techniciens = new ObservableCollection<Technicien>()
                             {
                                 new Technicien()
                                 {
-                                    Id=Guid.NewGuid(),
-                                    Name = "Technicien 2"
+                                    Id=5,
+                                    Name = "Technicien 5"
                                 }
                             }
-                        }
-                    }
                 },
                 new Stall()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = 5,
                     StallName = "Stall 5",
                     JobTasksCollection =new ObservableCollection<ITimeLineJobTask>()
                     {
@@ -247,15 +216,8 @@ namespace DataLayer.DataService
                             JobType = JobTypesEnum.PMA05,
                             PDT = DateTime.Now,
                             ReceptionTime = DateTime.Now,
-                            Status = StatusEnum.Booked,
-                            Techniciens = new ObservableCollection<Technicien>()
-                            {
-                                new Technicien()
-                                {
-                                    Id=Guid.NewGuid(),
-                                    Name = "Technicien 1"
-                                }
-                            }
+                            Status = StatusEnum.Booked
+                            
                         },new JobTask()
                         {
                             Id = Guid.NewGuid(),
@@ -265,15 +227,7 @@ namespace DataLayer.DataService
                             JobType = JobTypesEnum.PMA10,
                             PDT = DateTime.Now,
                             ReceptionTime = DateTime.Now,
-                            Status = StatusEnum.InProgress,
-                            Techniciens = new ObservableCollection<Technicien>()
-                            {
-                                new Technicien()
-                                {
-                                    Id=Guid.NewGuid(),
-                                    Name = "Technicien 2"
-                                }
-                            }
+                            Status = StatusEnum.InProgress
                         },new JobTask()
                         {
                             Id = Guid.NewGuid(),
@@ -283,21 +237,22 @@ namespace DataLayer.DataService
                             JobType = JobTypesEnum.PMA20,
                             PDT = DateTime.Now,
                             ReceptionTime = DateTime.Now,
-                            Status = StatusEnum.Received,
-                            Techniciens = new ObservableCollection<Technicien>()
+                            Status = StatusEnum.Received
+                            
+                        }
+                    },
+                    Techniciens = new ObservableCollection<Technicien>()
                             {
                                 new Technicien()
                                 {
-                                    Id=Guid.NewGuid(),
-                                    Name = "Technicien 3"
+                                    Id=6,
+                                    Name = "Technicien 6"
                                 }
                             }
-                        }
-                    }
                 },
                 new Stall()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = 6,
                     StallName = "Stall 6",
                     JobTasksCollection =new ObservableCollection<ITimeLineJobTask>()
                     {
@@ -311,14 +266,7 @@ namespace DataLayer.DataService
                             PDT = DateTime.Now,
                             ReceptionTime = DateTime.Now,
                             Status = StatusEnum.Booked,
-                            Techniciens = new ObservableCollection<Technicien>()
-                            {
-                                new Technicien()
-                                {
-                                    Id=Guid.NewGuid(),
-                                    Name = "Technicien 1"
-                                }
-                            }
+                           
                         },new JobTask()
                         {
                             Id = Guid.NewGuid(),
@@ -328,17 +276,23 @@ namespace DataLayer.DataService
                             JobType = JobTypesEnum.PMA10,
                             PDT = DateTime.Now,
                             ReceptionTime = DateTime.Now,
-                            Status = StatusEnum.InProgress,
-                            Techniciens = new ObservableCollection<Technicien>()
+                            Status = StatusEnum.InProgress
+                           
+                        }
+                    },
+                    Techniciens = new ObservableCollection<Technicien>()
                             {
                                 new Technicien()
                                 {
-                                    Id=Guid.NewGuid(),
-                                    Name = "Technicien 2"
+                                    Id=8,
+                                    Name = "Technicien 8"
+                                },
+                                new Technicien()
+                                {
+                                    Id=9,
+                                    Name = "Technicien 9"
                                 }
                             }
-                        }
-                    }
                 }
 
             };
