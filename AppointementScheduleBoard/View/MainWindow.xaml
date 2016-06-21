@@ -13,7 +13,7 @@
         WindowState="Maximized"                                    
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"                      
-                      ShowTitleBar="{Binding ShowTitleBarProperty, Mode=TwoWay}" IgnoreTaskbarOnMaximize="{Binding IgnoreTaskbarOnMaximizeProperty, Mode=TwoWay}"
+        ShowTitleBar="{Binding ShowTitleBarProperty, Mode=TwoWay}" IgnoreTaskbarOnMaximize="{Binding IgnoreTaskbarOnMaximizeProperty, Mode=TwoWay}"
         EnableDWMDropShadow="True"
         ResizeMode="CanResizeWithGrip"
         WindowTransitionsEnabled="False"                      

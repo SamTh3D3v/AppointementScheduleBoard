@@ -173,6 +173,32 @@ namespace AppointementScheduleBoard.ViewModel
                     }));
             }
         }
+        private RelayCommand _technicansViewLoadedCommand;
+        public RelayCommand TechnicansViewLoadedCommand
+        {
+            get
+            {
+                return _technicansViewLoadedCommand
+                    ?? (_technicansViewLoadedCommand = new RelayCommand(
+                    () =>
+                    {
+
+                    }));
+            }
+        }
+        private RelayCommand _techniciansViewUnloadedCommand;
+        public RelayCommand TechniciansViewUnloadedCommand
+        {
+            get
+            {
+                return _techniciansViewUnloadedCommand
+                    ?? (_techniciansViewUnloadedCommand = new RelayCommand(
+                    () =>
+                    {
+
+                    }));
+            }
+        }
         #endregion
         #region Ctors and methods
         public AffectationViewModel(IFrameNavigationService mainFrameNavigationService, IDataService mainDataService) : base(mainFrameNavigationService, mainDataService)

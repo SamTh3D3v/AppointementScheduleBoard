@@ -1,0 +1,36 @@
+﻿<controls:MetroWindow x:Class="AppointementScheduleBoard.View.TechniciansListView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AppointementScheduleBoard.View"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:command="http://www.galasoft.ch/mvvmlight"
+        mc:Ignorable="d"
+        Title="TechniciansListView" Height="500" Width="300"
+        d:DesignHeight="300" d:DesignWidth="300"
+        WindowState="Normal"                                    
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"                      
+        ShowTitleBar="{Binding ShowTitleBarProperty, Mode=TwoWay}" IgnoreTaskbarOnMaximize="{Binding IgnoreTaskbarOnMaximizeProperty, Mode=TwoWay}"        
+        ResizeMode="CanResizeWithGrip"
+        WindowTransitionsEnabled="False"                      
+        BorderBrush="{DynamicResource AccentColorBr}"
+        BorderThickness="1" WindowTitleBrush="Black"
+        DataContext="{Binding AffectationViewModel, Source={StaticResource Locator}}" 
+       >
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <command:EventToCommand Command="{Binding Mode=OneWay, Path=TechnicansViewLoadedCommand}"
+                            PassEventArgsToCommand="False" CommandParameter="{Binding  ElementName=MainWin}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Unloaded">
+            <command:EventToCommand Command="{Binding Mode=OneWay, Path=TechniciansViewUnloadedCommand}"
+                            PassEventArgsToCommand="True" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+
+    </Grid>
+</controls:MetroWindow>

@@ -336,7 +336,7 @@ namespace DataLayer.DataService
             };
         }
 
-        public static List<string> GetBranchIdsCollection()
+        public static List<string> GetBranchIds()
         {
             return new List<string>()
             {
@@ -347,6 +347,11 @@ namespace DataLayer.DataService
             };
 
        
+        }
+
+        public static List<Technicien> GetAllTechnicians()
+        {
+            return null;
         }
     }
 }
