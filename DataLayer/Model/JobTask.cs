@@ -14,18 +14,18 @@ namespace DataLayer.Model
     public class JobTask:INotifyPropertyChanged, ITimeLineJobTask
     {
         #region Fields
-        private JobTypesEnum _jobType;
+        private string _jobType;
         private DateTime _receptionTime;
         private DateTime _pdt;
         private bool _isClientWaiting;
-        private StatusEnum _status;
-        private Guid _id;
+        private string _status;
+        private Int32 _id;
         private DateTime? _actualStartTime;
         private DateTime? _plannedStartTime;
         #endregion
         #region Properties
 
-        public Guid Id
+        public Int32 Id
         {
             get { return _id; }
             set
@@ -36,7 +36,7 @@ namespace DataLayer.Model
             }
         }
 
-        public JobTypesEnum JobType
+        public string JobType
         {
             get { return _jobType; }
             set
@@ -78,7 +78,7 @@ namespace DataLayer.Model
                 OnPropertyChanged();
             }
         }
-        public StatusEnum Status
+        public string Status
         {
             get { return _status; }
             set
