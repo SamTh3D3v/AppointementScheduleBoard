@@ -49,66 +49,66 @@ namespace DataLayer.DataService
 {
     public class DataService: IDataService
     {
-        public List<Branch> GetAllBranchs()
+        public virtual List<Branch> GetAllBranchs()
         {
             //todo mourad
             throw new NotImplementedException();
         }
 
-        public List<Technicien> GetAllTechnicians(int BRANCH_ID)
+        public virtual List<Technicien> GetAllTechnicians(int BRANCH_ID)
         {
             //todo mourad
             throw new NotImplementedException();
         }
 
-        public List<Stall> GetBranchStalls(int BRANCH_ID)
+        public virtual List<Stall> GetBranchStalls(int BRANCH_ID)
         {
             //todo mourad
             throw new NotImplementedException();
         }
 
-        public int AddStall(Stall stall)
+        public virtual int AddStall(Stall stall)
         {
             //todo mourad
             throw new NotImplementedException();
         }
 
-        public int UpdateStall(Stall stall)
+        public virtual int UpdateStall(Stall stall)
         {
             //todo mourad
             throw new NotImplementedException();
         }
 
-        public bool RemoveStall(int stallId)
+        public virtual bool RemoveStall(int stallId)
         {
             throw new NotImplementedException();
         }
 
-        public bool AssignMechanicToStall(int STALL_ID, int MECHANIC_ID)
-        {
-            //todo mourad
-            throw new NotImplementedException();
-        }
-
-        public bool ReleaseMechanicFromStall(int MECHANIC_ID)
+        public virtual bool AssignMechanicToStall(int STALL_ID, int MECHANIC_ID)
         {
             //todo mourad
             throw new NotImplementedException();
         }
 
-        public bool IsMechanicInStall(int MECHANIC_ID)
+        public virtual bool ReleaseMechanicFromStall(int MECHANIC_ID)
         {
             //todo mourad
             throw new NotImplementedException();
         }
 
-        public ServerSettings GetServerSettings()
+        public virtual bool IsMechanicInStall(int MECHANIC_ID)
         {
             //todo mourad
             throw new NotImplementedException();
         }
 
-        public LocalSettings GetLocalSettings()
+        public virtual ServerSettings GetServerSettings()
+        {
+            //todo mourad
+            throw new NotImplementedException();
+        }
+
+        public virtual LocalSettings GetLocalSettings()
         {
             //todo Oussama
             throw new NotImplementedException();
