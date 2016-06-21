@@ -104,7 +104,7 @@ namespace AppointementScheduleBoard.ViewModel
                     ?? (_affectationViewLoadedCommand = new RelayCommand(async () =>
                     {
                         StallsList=new ObservableCollection<Stall>(await Task.Run(()=>MainDataService.GetStallsCollection()));
-                        BranchIdsCollection = new ObservableCollection<string>(await Task.Run(()=>SampleDataService.GetBranchIdsCollection()));
+                        BranchIdsCollection = new ObservableCollection<string>(await Task.Run(()=>SampleDataService.GetBranchIds()));
                     }));
             }
         }
