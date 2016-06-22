@@ -7,6 +7,7 @@ using Oracle.DataAccess;
 using Oracle.DataAccess.Client;
 using DataLayer.Model;
 using System.Configuration;
+using DataLayer.Exceptions;
 
 namespace DataLayer.DataService
 {
@@ -230,7 +231,7 @@ namespace DataLayer.DataService
         {
             if (IsMechanicInStall(MECHANIC_ID))
             {
-                return false;
+                throw new BusinessException("Already assigned !");
             }
             else
             {
@@ -252,7 +253,7 @@ namespace DataLayer.DataService
         {
             if (!IsMechanicInStall(MECHANIC_ID))
             {
-                return false;
+                throw new BusinessException("Not assigned !");
             }
             else
             {

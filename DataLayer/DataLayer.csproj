@@ -48,6 +48,7 @@
     <Compile Include="DataService\DataService.cs" />
     <Compile Include="DataService\IDataService.cs" />
     <Compile Include="DataService\XxtaDataService.cs" />
+    <Compile Include="Exceptions\BusinessException.cs" />
     <Compile Include="Model\Branch.cs" />
     <Compile Include="Model\ITimeLineJobTask.cs" />
     <Compile Include="Model\JobTask.cs" />
