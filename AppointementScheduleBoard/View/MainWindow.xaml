@@ -87,6 +87,6 @@
         </controls:FlyoutsControl>
     </controls:MetroWindow.Flyouts>
     <Grid>
-        <Frame x:Name="MainFrame" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" NavigationUIVisibility="Hidden" helpers:DisableNavigation.Disable="True"/>
+        <Frame x:Name="MainFrame"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" NavigationUIVisibility="Hidden" helpers:DisableNavigation.Disable="True"/>
     </Grid>
 </controls:MetroWindow>

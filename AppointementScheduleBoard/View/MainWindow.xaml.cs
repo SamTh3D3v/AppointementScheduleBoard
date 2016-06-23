@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls;
 
 namespace AppointementScheduleBoard.View
@@ -8,7 +9,7 @@ namespace AppointementScheduleBoard.View
     {
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();                   
         }        
     }
 }

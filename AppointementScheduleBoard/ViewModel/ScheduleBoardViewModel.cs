@@ -9,6 +9,7 @@ using DataLayer;
 using DataLayer.DataService;
 using DataLayer.Model;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace AppointementScheduleBoard.ViewModel
 {
@@ -113,6 +114,16 @@ namespace AppointementScheduleBoard.ViewModel
         #region Ctors and methods
         public ScheduleBoardViewModel(IFrameNavigationService mainFrameNavigationService, IDataService mainDataService) : base(mainFrameNavigationService, mainDataService)
         {
+            Messenger.Default.Register<NotificationMessage>(this, async m =>
+            {
+                switch (m.Notification)
+                {
+                    case "ReloadBoard":
+                        await ReloadBoard();
+                        break;
+
+                }
+            });
         }
 
         private async Task UpdateHoursCollection()
@@ -136,6 +147,13 @@ namespace AppointementScheduleBoard.ViewModel
             HoursCollection=new ObservableCollection<ITimeLineJobTask>(list);
 
 
+        }
+
+        private async Task ReloadBoard()
+        {
+            StallsCollection = new ObservableCollection<Stall>(await Task.Run(() => MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter)));
+            StartDateTime = DateTime.Today.Add(MainDataService.GetServerSettings().StartHour);
+            await UpdateHoursCollection();
         }
         #endregion       
     }

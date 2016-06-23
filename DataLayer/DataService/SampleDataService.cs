@@ -51,15 +51,15 @@ namespace DataLayer.DataService
                  Name = "Branch ID 1"
                 } , new Branch()
                 {
-                  Id  = 1,
+                  Id  = 2,
                  Name = "Branch ID 2"
                 } , new Branch()
                 {
-                  Id  = 1,
+                  Id  = 3,
                  Name = "Branch ID 3"
                 } , new Branch()
                 {
-                  Id  = 1,
+                  Id  = 4,
                  Name = "Branch ID 4"
                 }                 
             };

@@ -6,6 +6,7 @@ using DataLayer.DataService;
 using DataLayer.Model;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls;
 
 namespace AppointementScheduleBoard.ViewModel
@@ -164,6 +165,20 @@ namespace AppointementScheduleBoard.ViewModel
                         IgnoreTaskbarOnMaximizeProperty=false;
                         await LoadSettings();
                         MainFrameNavigationService.NavigateTo(App.ScheduleBoardViewKey,SelectedBranch.Id);
+                    }));
+            }
+        }
+        private RelayCommand _selectedBranchChangedCommand;
+        public RelayCommand SelectedBranchChangedCommand
+        {
+            get
+            {
+                return _selectedBranchChangedCommand
+                    ?? (_selectedBranchChangedCommand = new RelayCommand(
+                    () =>
+                    {                        
+                        MainFrameNavigationService.NavigateTo(App.ScheduleBoardViewKey, SelectedBranch.Id);
+                        Messenger.Default.Send<NotificationMessage>(new NotificationMessage("ReloadBoard"));
                     }));
             }
         }

@@ -70,7 +70,7 @@ namespace AppointementScheduleBoard.Helpers
                 var frame = GetDescendantFromName(Application.Current.MainWindow, _frameName) as Frame;
 
                 if (frame != null)
-                {
+                {                                      
                     frame.Source = _pagesByKey[pageKey];
                 }
                 Parameter = parameter;
