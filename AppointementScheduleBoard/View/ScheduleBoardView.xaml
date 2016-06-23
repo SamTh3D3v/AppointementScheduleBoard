@@ -80,6 +80,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        
         <ScrollViewer  HorizontalAlignment="Stretch"
                                       HorizontalScrollBarVisibility="Disabled"
                                       VerticalScrollBarVisibility="Auto"
@@ -106,9 +107,22 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <Border Grid.Column="0" Width="100" MinHeight="80" Grid.Row="0" Grid.RowSpan="2" BorderBrush="{StaticResource DarkerG}" BorderThickness="1">
-                                    <TextBlock Text="{Binding StallName}" VerticalAlignment="Center"
+                                    <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBlock Text="{Binding StallName}" VerticalAlignment="Top"
                                                Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsStallNamesVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}"
                                                HorizontalAlignment="Center" FontFamily="segoe ui" FontWeight="Bold" Foreground="White"/>
+                                            <ItemsControl ItemsSource="{Binding Techniciens}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding Name}" Foreground="LightGreen" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                                
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                   
                                 </Border>
                                 <Border Grid.Column="1" Width="75" Height="80" Grid.Row="0" BorderBrush="{StaticResource DarkerG}" 
                                         Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsPlanActualHeaderVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}"
@@ -164,7 +178,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <timeLineControl:TimeLineControl Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsTimeHeaderVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}"
+                        <timeLineControl:TimeLineControl IsEnabled="False"  Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsTimeHeaderVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}"
                             Grid.Row="0" Margin="0" x:Name="TimeLineHeader"
                         Height="17" 
                                                          Manager="{Binding}"                                                 
@@ -260,7 +274,7 @@
             </Grid>
 
         </ScrollViewer>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Visibility="Collapsed">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -272,5 +286,6 @@
                          />
             <controls:NumericUpDown Minimum="1" Maximum="1000" Grid.Column="1" Value="{Binding TimeLineUnitSize,Mode=TwoWay}"/>
         </Grid>
+        <controls:ProgressRing Grid.Row="0" IsLarge="True" Width="100" Height="100" Grid.RowSpan="2" Foreground="{DynamicResource AccentColorBrush}" VerticalAlignment="Center" HorizontalAlignment="Center" IsActive="{Binding IsPrograssRingActive}"/>
     </Grid>
 </Page>

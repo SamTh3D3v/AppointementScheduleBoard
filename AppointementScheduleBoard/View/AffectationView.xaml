@@ -168,7 +168,7 @@
             </Grid.RowDefinitions>
             <Grid Background="WhiteSmoke" Grid.Row="0">
                 <Button Width="40" Height="40" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
-                Command="{Binding AddJobCardToStallCommand}"
+                Command="{Binding AffectTechnicianToStallCommand}"
                 ToolTip="Affect new technicien to selected stall">
                     <Rectangle Width="15" Height="15"
                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">

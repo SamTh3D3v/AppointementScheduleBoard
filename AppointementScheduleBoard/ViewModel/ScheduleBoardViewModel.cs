@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using AppointementScheduleBoard.Helpers;
 using DataLayer;
@@ -15,13 +16,32 @@ namespace AppointementScheduleBoard.ViewModel
 {
     public class ScheduleBoardViewModel: NavigableViewModelBase
     {
-        #region Fields        
+        #region Fields  
+        private bool _isPrograssRingActive;
         private ObservableCollection<Stall> _sallsCollection;
         private double _timeLineUnitSize = 1000;
         private ObservableCollection<ITimeLineJobTask> _hoursCollection;       
-        private DateTime _startDateTime;                
+        private DateTime _startDateTime;
         #endregion
         #region Properties 
+        public bool IsPrograssRingActive
+        {
+            get
+            {
+                return _isPrograssRingActive;
+            }
+
+            set
+            {
+                if (_isPrograssRingActive == value)
+                {
+                    return;
+                }
+
+                _isPrograssRingActive = value;
+                RaisePropertyChanged();
+            }
+        }
         public double TimeLineUnitSize
         {
             get
@@ -103,10 +123,8 @@ namespace AppointementScheduleBoard.ViewModel
             {
                 return _scheduleBoardLoadedCommand
                     ?? (_scheduleBoardLoadedCommand = new RelayCommand(async () =>
-                    {
-                        StallsCollection=new ObservableCollection<Stall>(await Task.Run(()=>MainDataService.GetBranchStalls((int) MainFrameNavigationService.Parameter)));
-                        StartDateTime =  DateTime.Today.Add(MainDataService.GetServerSettings().StartHour);
-                        await UpdateHoursCollection();
+                    {                        
+                        await ReloadBoard();                        
                     }));
             }
         }
@@ -127,11 +145,11 @@ namespace AppointementScheduleBoard.ViewModel
         }
 
         private async Task UpdateHoursCollection()
-        {            
+        {                         
             var list=new List<ITimeLineJobTask>();
             var startDateTime = StartDateTime;
             await Task.Run(() =>
-            {                
+            {                                
                 var endDateTime = DateTime.Now.Date.AddHours(6).AddHours(12);
                 while (startDateTime < endDateTime)
                 {
@@ -151,9 +169,13 @@ namespace AppointementScheduleBoard.ViewModel
 
         private async Task ReloadBoard()
         {
+            IsPrograssRingActive = true;
+            //for test purpuses             
+            await Task.Run(()=>Thread.Sleep(3000));
             StallsCollection = new ObservableCollection<Stall>(await Task.Run(() => MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter)));
             StartDateTime = DateTime.Today.Add(MainDataService.GetServerSettings().StartHour);
             await UpdateHoursCollection();
+            IsPrograssRingActive = false;
         }
         #endregion       
     }

@@ -5,20 +5,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AppointementScheduleBoard.Helpers;
+using AppointementScheduleBoard.View;
 using DataLayer.DataService;
 using DataLayer.Model;
 using GalaSoft.MvvmLight.Command;
 
 namespace AppointementScheduleBoard.ViewModel
 {
-    public class AffectationViewModel:NavigableViewModelBase
+    public class AffectationViewModel : NavigableViewModelBase
     {
 
         #region Fields
+
+        
         private ObservableCollection<Stall> _myProperty;
         private Stall _selectedStall;
-        private JobTask _selectedJobTask ;      
-        private ObservableCollection<Branch> _branchIdsCollection  ;
+        private JobTask _selectedJobTask;
+        private ObservableCollection<Branch> _branchIdsCollection;
+        private ObservableCollection<Technicien> _techniciansCollection;
+
         #endregion
         #region Properties
         public ObservableCollection<Branch> BranchIdsCollection
@@ -93,6 +98,24 @@ namespace AppointementScheduleBoard.ViewModel
                 RaisePropertyChanged();
             }
         }
+        public ObservableCollection<Technicien> TechniciansCollection
+        {
+            get
+            {
+                return _techniciansCollection;
+            }
+
+            set
+            {
+                if (_techniciansCollection == value)
+                {
+                    return;
+                }
+
+                _techniciansCollection = value;
+                RaisePropertyChanged();
+            }
+        }
         #endregion
         #region Commands
         private RelayCommand _affectationViewLoadedCommand;
@@ -103,8 +126,8 @@ namespace AppointementScheduleBoard.ViewModel
                 return _affectationViewLoadedCommand
                     ?? (_affectationViewLoadedCommand = new RelayCommand(async () =>
                     {
-                        StallsList=new ObservableCollection<Stall>(await Task.Run(()=>MainDataService.GetBranchStalls(1)));
-                        BranchIdsCollection = new ObservableCollection<Branch>(await Task.Run(()=>MainDataService.GetAllBranchs()));
+                        StallsList = new ObservableCollection<Stall>(await Task.Run(() => MainDataService.GetBranchStalls(1)));
+                        BranchIdsCollection = new ObservableCollection<Branch>(await Task.Run(() => MainDataService.GetAllBranchs()));
                     }));
             }
         }
@@ -115,7 +138,7 @@ namespace AppointementScheduleBoard.ViewModel
             {
                 return _addNewStallCommand
                     ?? (_addNewStallCommand = new RelayCommand(
-                    () =>   
+                    () =>
                     {
 
                     }));
@@ -147,15 +170,16 @@ namespace AppointementScheduleBoard.ViewModel
                     }));
             }
         }
-        private RelayCommand _addJobCardToStallCommand;
-        public RelayCommand AddJobCardToStallCommand
+        private RelayCommand _affectTechnicianToStallCommand;
+        public RelayCommand AffectTechnicianToStallCommand
         {
             get
             {
-                return _addJobCardToStallCommand
-                    ?? (_addJobCardToStallCommand = new RelayCommand(
-                    () =>
+                return _affectTechnicianToStallCommand
+                    ?? (_affectTechnicianToStallCommand = new RelayCommand(async () =>
                     {
+                        var techniciansView = new TechniciansListView();
+                        await techniciansView.ShowDialogAsync();
 
                     }));
             }
@@ -179,10 +203,9 @@ namespace AppointementScheduleBoard.ViewModel
             get
             {
                 return _technicansViewLoadedCommand
-                    ?? (_technicansViewLoadedCommand = new RelayCommand(
-                    () =>
+                    ?? (_technicansViewLoadedCommand = new RelayCommand(async () =>
                     {
-
+                        await LoadTechnicians();
                     }));
             }
         }
@@ -203,6 +226,17 @@ namespace AppointementScheduleBoard.ViewModel
         #region Ctors and methods
         public AffectationViewModel(IFrameNavigationService mainFrameNavigationService, IDataService mainDataService) : base(mainFrameNavigationService, mainDataService)
         {
+        }
+
+        private async Task LoadTechnicians()
+        {
+            await Task.Run(() =>
+            {
+                TechniciansCollection =
+                    new ObservableCollection<Technicien>(
+                        MainDataService.GetAllTechnicians((int) MainFrameNavigationService.Parameter));
+            });
+
         }
         #endregion
 

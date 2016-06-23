@@ -233,7 +233,8 @@ namespace AppointementScheduleBoard.ViewModel
                     ?? (_openAssignViewCommand = new RelayCommand(
                     () =>
                     {
-                        MainFrameNavigationService.NavigateTo(App.AffectationViewKey);
+                        IsSettingsFlayoutOpen = false;
+                        MainFrameNavigationService.NavigateTo(App.AffectationViewKey, SelectedBranch.Id);
                     }));
             }
         }

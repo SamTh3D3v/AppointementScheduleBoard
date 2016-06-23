@@ -11,7 +11,7 @@ namespace AppointementScheduleBoard.ViewModel
     public class ViewModelLocator
     {
         public static FrameNavigationService MainNavigationService;
-        public static SampleDataService MainSampleDataService;
+        public static IDataService MainSampleDataService;
         public ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);

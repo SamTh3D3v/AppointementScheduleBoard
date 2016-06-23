@@ -9,15 +9,16 @@
         xmlns:command="http://www.galasoft.ch/mvvmlight"
         mc:Ignorable="d"
         Title="TechniciansListView" Height="500" Width="300"
-        d:DesignHeight="300" d:DesignWidth="300"
+        d:DesignHeight="500" d:DesignWidth="300"
         WindowState="Normal"                                    
         WindowStartupLocation="CenterScreen"
-        WindowStyle="None"                      
-        ShowTitleBar="{Binding ShowTitleBarProperty, Mode=TwoWay}" IgnoreTaskbarOnMaximize="{Binding IgnoreTaskbarOnMaximizeProperty, Mode=TwoWay}"        
+        WindowStyle="ToolWindow"                                      
         ResizeMode="CanResizeWithGrip"
-        WindowTransitionsEnabled="False"                      
+        WindowTransitionsEnabled="False"   
+                      ShowTitleBar="True"
+                      EnableDWMDropShadow="True"
         BorderBrush="{DynamicResource AccentColorBr}"
-        BorderThickness="1" WindowTitleBrush="Black"
+        BorderThickness="2" WindowTitleBrush="Black"
         DataContext="{Binding AffectationViewModel, Source={StaticResource Locator}}" 
        >
     <i:Interaction.Triggers>
@@ -30,8 +31,43 @@
                             PassEventArgsToCommand="True" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-    <Grid>
-        
-
+    <Grid Background="WhiteSmoke">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="0" Margin="1"/>
+            <Path Data="{StaticResource SearchPath}" Stretch="Uniform" Width="25" Height="25" Margin="2"  Fill="Black" Grid.Column="1"></Path>
+        </Grid>
+        <Grid Grid.Row="1" Margin="1">
+            <ListView ItemsSource="{Binding TechniciansCollection}" >
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Background="WhiteSmoke" Margin="1">
+                            <TextBlock Text="{Binding Name}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+        <Grid Grid.Row="2" Margin="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Content="Cancel" Grid.Column="0" Margin="1"/>
+            <Button Content="Save" Grid.Column="1" Margin="1"/>
+        </Grid>
     </Grid>
 </controls:MetroWindow>
