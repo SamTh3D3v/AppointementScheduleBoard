@@ -1,3 +1,5 @@
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using AppointementScheduleBoard.Helpers;
 using DataLayer.DataService;
@@ -12,13 +14,52 @@ namespace AppointementScheduleBoard.ViewModel
     public class MainViewModel : NavigableViewModelBase
     {
         #region Fields
+        private Branch _selectedBranch;
+        private ObservableCollection<Branch> _branchCollection;
         private bool _isSettingsFlayoutOpen;
         private bool _showTitleBarProperty;
         private bool _ignoreTaskbarOnMaximizeProperty;
         private LocalSettings _localSettings;
         private ServerSettings _serverSettings;
         #endregion
-        #region Properties              
+        #region Properties  
+        public Branch SelectedBranch
+        {
+            get
+            {
+                return _selectedBranch;
+            }
+
+            set
+            {
+                if (_selectedBranch == value)
+                {
+                    return;
+                }
+
+                _selectedBranch = value;
+                RaisePropertyChanged();
+            }
+        }
+        
+        public ObservableCollection<Branch> BranchCollection
+        {
+            get
+            {
+                return _branchCollection;
+            }
+
+            set
+            {
+                if (_branchCollection == value)
+                {
+                    return;
+                }
+
+                _branchCollection = value;
+                RaisePropertyChanged();
+            }
+        }            
         public LocalSettings LocalSettings
         {
             get
@@ -118,12 +159,11 @@ namespace AppointementScheduleBoard.ViewModel
             {
                 return _mainWindowLoadedCommand
                     ?? (_mainWindowLoadedCommand = new RelayCommand(async () =>
-                    {
-                        
-                        MainFrameNavigationService.NavigateTo(App.ScheduleBoardViewKey);
+                    {                                                
                         ShowTitleBarProperty = true;
                         IgnoreTaskbarOnMaximizeProperty=false;
                         await LoadSettings();
+                        MainFrameNavigationService.NavigateTo(App.ScheduleBoardViewKey,SelectedBranch.Id);
                     }));
             }
         }
@@ -192,10 +232,12 @@ namespace AppointementScheduleBoard.ViewModel
         {
             await Task.Run(() =>
             {
+                BranchCollection = new ObservableCollection<Branch>(MainDataService.GetAllBranchs());
                 LocalSettings = MainDataService.GetLocalSettings();
                 ServerSettings = MainDataService.GetServerSettings();
             });
-       
+            SelectedBranch = BranchCollection?.First();
+
         }
         #endregion
     }

@@ -20,8 +20,24 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <GroupBox Header="Work hours" Grid.Row="0">
+                            <GroupBox Header="Selected Branch" Grid.Row="0">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Branch " Grid.Column="0" Grid.Row="0"/>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding BranchCollection}" SelectedItem="{Binding SelectedBranch,Mode=TwoWay}" DisplayMemberPath="Name"  ></ComboBox>
+
+                                </Grid>
+                            </GroupBox>
+
+                            <GroupBox Header="Work hours" Grid.Row="1">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
@@ -45,7 +61,7 @@
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Header="Viewed stalls" Grid.Row="1">
+                            <GroupBox Header="Viewed stalls" Grid.Row="2">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
@@ -89,7 +105,7 @@
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Header="Ship informations" Grid.Row="2">
+                            <GroupBox Header="Ship informations" Grid.Row="3">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
@@ -107,7 +123,7 @@
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Header="TimeLine informations" Grid.Row="3">
+                            <GroupBox Header="TimeLine informations" Grid.Row="4">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>

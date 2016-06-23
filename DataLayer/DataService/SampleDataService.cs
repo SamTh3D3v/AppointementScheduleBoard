@@ -406,7 +406,7 @@ namespace DataLayer.DataService
 
                     break;
                 default:
-                    return null;
+                    return new List<Stall>();
                     break;
 
             }

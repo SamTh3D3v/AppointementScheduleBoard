@@ -103,7 +103,7 @@ namespace AppointementScheduleBoard.ViewModel
                 return _scheduleBoardLoadedCommand
                     ?? (_scheduleBoardLoadedCommand = new RelayCommand(async () =>
                     {
-                        StallsCollection=new ObservableCollection<Stall>(await Task.Run(()=>MainDataService.GetBranchStalls(1)));
+                        StallsCollection=new ObservableCollection<Stall>(await Task.Run(()=>MainDataService.GetBranchStalls((int) MainFrameNavigationService.Parameter)));
                         StartDateTime =  DateTime.Today.Add(MainDataService.GetServerSettings().StartHour);
                         await UpdateHoursCollection();
                     }));
