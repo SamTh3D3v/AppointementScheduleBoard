@@ -18,10 +18,10 @@ namespace AppointementScheduleBoard.ViewModel
         private ObservableCollection<Stall> _myProperty;
         private Stall _selectedStall;
         private JobTask _selectedJobTask ;      
-        private ObservableCollection<string> _branchIdsCollection  ;
+        private ObservableCollection<Branch> _branchIdsCollection  ;
         #endregion
         #region Properties
-        public ObservableCollection<string> BranchIdsCollection
+        public ObservableCollection<Branch> BranchIdsCollection
         {
             get
             {
@@ -103,8 +103,8 @@ namespace AppointementScheduleBoard.ViewModel
                 return _affectationViewLoadedCommand
                     ?? (_affectationViewLoadedCommand = new RelayCommand(async () =>
                     {
-                        StallsList=new ObservableCollection<Stall>(await Task.Run(()=>MainDataService.GetStallsCollection()));
-                        BranchIdsCollection = new ObservableCollection<string>(await Task.Run(()=>SampleDataService.GetBranchIds()));
+                        StallsList=new ObservableCollection<Stall>(await Task.Run(()=>MainDataService.GetBranchStalls(1)));
+                        BranchIdsCollection = new ObservableCollection<Branch>(await Task.Run(()=>MainDataService.GetAllBranchs()));
                     }));
             }
         }
