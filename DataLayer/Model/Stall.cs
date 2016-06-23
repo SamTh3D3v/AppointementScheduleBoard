@@ -14,7 +14,7 @@ namespace DataLayer.Model
     {
         #region Fields        
         private int _id;
-        private string _branchId;
+        private int _branchId;
         private string _stallName;
         private string _stallDescription;
         private string _isActive;
@@ -34,7 +34,7 @@ namespace DataLayer.Model
             }
         }
 
-        public string BranchId
+        public int BranchId
         {
             get
             {
