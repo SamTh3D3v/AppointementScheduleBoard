@@ -66,8 +66,8 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Content="Cancel" Grid.Column="0" Margin="1"/>
-            <Button Content="Save" Grid.Column="1" Margin="1"/>
+            <Button Content="Cancel" Command="{Binding CancelTechniciansListViewAffectationComand}" Grid.Column="0" Margin="1"/>
+            <Button Content="Save" Command="{Binding SaveTechnicianListViewAffectationCommand}" Grid.Column="1" Margin="1"/>
         </Grid>
     </Grid>
 </controls:MetroWindow>

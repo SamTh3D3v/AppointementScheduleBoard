@@ -16,6 +16,7 @@ namespace AppointementScheduleBoard.Helpers
         public DateTime PDT { get; set; }
         public bool IsClientWaiting { get; set; }
         public string Status { get; set; }
+        public int StatusId { get; set; }
         public DateTime? PlannedStartTime { get; set; }
         public bool TimelineViewExpanded { get; set; }
     }

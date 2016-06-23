@@ -22,6 +22,8 @@ namespace DataLayer.Model
         private Int32 _id;
         private DateTime? _actualStartTime;
         private DateTime? _plannedStartTime;
+        private int _statusId;
+
         #endregion
         #region Properties
 
@@ -88,6 +90,18 @@ namespace DataLayer.Model
                 OnPropertyChanged();
             }
         }
+
+        public int StatusId
+        {
+            get { return _statusId; }
+            set
+            {
+                if (value == _statusId) return;
+                _statusId = value;
+                OnPropertyChanged();                 
+            }
+        }
+
         public DateTime? PlannedStartTime
         {
             get

@@ -23,12 +23,12 @@ namespace ControlLibrary.Converters
                 case TimeLineFilter.Planned:
                     var plannedTasks= 
               ((ObservableCollection<ITimeLineJobTask >)values[0]).Where(
-                  j => j.Status == "Booked" || j.Status == "Received").ToList();
+                  j => j.StatusId == 145 || j.StatusId == 152).ToList();
                     return new ObservableCollection<ITimeLineJobTask>(plannedTasks);
                 case TimeLineFilter.Actual:
                     var actualTasks =
               ((ObservableCollection<ITimeLineJobTask>)values[0]).Where(
-                  j => j.Status !="Booked" && j.Status != "Received").ToList();
+                  j => j.StatusId !=145 && j.StatusId != 152).ToList();
                     return new ObservableCollection<ITimeLineJobTask>(actualTasks);
                 default:
                     return values[0];

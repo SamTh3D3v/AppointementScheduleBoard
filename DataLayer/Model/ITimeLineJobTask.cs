@@ -15,6 +15,7 @@ namespace DataLayer.Model
         DateTime PDT { get; set; }
         bool IsClientWaiting { get; set; }
         string Status { get; set; }
+        int StatusId { get; set; }
         DateTime? PlannedStartTime { get; set; }
         DateTime? ActualStartTime { get; set; }
         DateTime? StartTime { get; set; }

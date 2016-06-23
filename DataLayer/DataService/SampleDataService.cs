@@ -124,6 +124,7 @@ namespace DataLayer.DataService
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
                                     Status = "Booked",
+                                    StatusId = 145,
                                     TimelineViewExpanded = true
 
                                 },
@@ -137,6 +138,7 @@ namespace DataLayer.DataService
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
                                     Status = "InProgress",
+                                    StatusId = 147,
 
                                 },
                                 new JobTask()
@@ -149,6 +151,7 @@ namespace DataLayer.DataService
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
                                     Status = "Received",
+                                    StatusId = 152
 
                                 }
                             }
@@ -178,7 +181,8 @@ namespace DataLayer.DataService
                                     JobType = "PMA05",
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
-                                    Status = "Booked"
+                                    Status = "Booked",
+                                    StatusId = 145,
 
                                 },
                                 new JobTask()
@@ -190,7 +194,8 @@ namespace DataLayer.DataService
                                     JobType = "PMA10",
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
-                                    Status = "InProgress"
+                                    Status = "InProgress",
+                                    StatusId = 147,
 
                                 }
 
@@ -221,7 +226,8 @@ namespace DataLayer.DataService
                                     JobType = "PMA05",
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
-                                    Status = "Booked"
+                                    Status = "Booked",
+                                    StatusId = 145,
 
                                 },
                                 new JobTask()
@@ -233,7 +239,8 @@ namespace DataLayer.DataService
                                     JobType = "PMA10",
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
-                                    Status = "InProgress"
+                                    Status = "InProgress",
+                                    StatusId = 147,
                                 },
                                 new JobTask()
                                 {
@@ -244,7 +251,8 @@ namespace DataLayer.DataService
                                     JobType = "PMA20",
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
-                                    Status = "Received"
+                                    Status = "Received",
+                                    StatusId = 152
                                 }
 
                             },
@@ -278,7 +286,8 @@ namespace DataLayer.DataService
                                     JobType = "PMA05",
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
-                                    Status = "Booked"
+                                    Status = "Booked",
+                                    StatusId = 145
 
                                 },
                                 new JobTask()
@@ -290,7 +299,8 @@ namespace DataLayer.DataService
                                     JobType = "PMA10",
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
-                                    Status = "InProgress"
+                                    Status = "InProgress",
+                                    StatusId = 147,
 
                                 }
                             },
@@ -319,7 +329,8 @@ namespace DataLayer.DataService
                                     JobType = "PMA05",
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
-                                    Status = "Booked"
+                                    Status = "Booked",
+                                    StatusId = 145
 
                                 },
                                 new JobTask()
@@ -331,7 +342,8 @@ namespace DataLayer.DataService
                                     JobType = "PMA10",
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
-                                    Status = "InProgress"
+                                    Status = "InProgress",
+                                    StatusId = 147
                                 },
                                 new JobTask()
                                 {
@@ -342,7 +354,8 @@ namespace DataLayer.DataService
                                     JobType = "PMA20",
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
-                                    Status = "Received"
+                                    Status = "Received",
+                                    StatusId = 152
 
                                 }
                             },
@@ -372,6 +385,7 @@ namespace DataLayer.DataService
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
                                     Status = "Booked",
+                                    StatusId = 145
 
                                 },
                                 new JobTask()
@@ -383,7 +397,8 @@ namespace DataLayer.DataService
                                     JobType = "PMA10",
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
-                                    Status = "InProgress"
+                                    Status = "InProgress",
+                                    StatusId = 147
 
                                 }
                             },

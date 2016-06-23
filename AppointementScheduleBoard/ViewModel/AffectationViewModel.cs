@@ -193,7 +193,7 @@ namespace AppointementScheduleBoard.ViewModel
                     ?? (_goBackCommand = new RelayCommand(
                     () =>
                     {
-                        MainFrameNavigationService.NavigateTo(App.ScheduleBoardViewKey);
+                        MainFrameNavigationService.NavigateTo(App.ScheduleBoardViewKey, MainFrameNavigationService.Parameter);
                     }));
             }
         }
@@ -222,6 +222,34 @@ namespace AppointementScheduleBoard.ViewModel
                     }));
             }
         }
+        private RelayCommand _cancelTechniciansListViewAffectationComandCommand ;   
+        public RelayCommand CancelTechniciansListViewAffectationComand
+        {
+            get
+            {
+                return _cancelTechniciansListViewAffectationComandCommand
+                    ?? (_cancelTechniciansListViewAffectationComandCommand = new RelayCommand(
+                    () =>
+                    {
+                        
+                    }));
+            }
+        }
+        private RelayCommand _saveTechnicianListViewAffectationCommand ;
+        public RelayCommand SaveTechnicianListViewAffectationCommand
+        {
+            get
+            {
+                return _saveTechnicianListViewAffectationCommand
+                    ?? (_saveTechnicianListViewAffectationCommand = new RelayCommand(
+                    () =>
+                    {
+                        
+                    }));
+            }
+        }
+        
+
         #endregion
         #region Ctors and methods
         public AffectationViewModel(IFrameNavigationService mainFrameNavigationService, IDataService mainDataService) : base(mainFrameNavigationService, mainDataService)
