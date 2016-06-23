@@ -16,14 +16,14 @@ namespace AppointementScheduleBoard.ViewModel
     {
 
         #region Fields
-
-        
+        private TechniciansListView _techniciansListView ;
+        private ObservableCollection<Technicien> _techniciansList; 
         private ObservableCollection<Stall> _myProperty;
         private Stall _selectedStall;
         private JobTask _selectedJobTask;
         private ObservableCollection<Branch> _branchIdsCollection;
-        private ObservableCollection<Technicien> _techniciansCollection;
-
+        private ObservableCollection<Technicien> _techniciansFiltredCollection;       
+        private string _searchText ="" ;    
         #endregion
         #region Properties
         public ObservableCollection<Branch> BranchIdsCollection
@@ -98,26 +98,63 @@ namespace AppointementScheduleBoard.ViewModel
                 RaisePropertyChanged();
             }
         }
-        public ObservableCollection<Technicien> TechniciansCollection
+        public ObservableCollection<Technicien> TechniciansFiltredCollection
         {
             get
             {
-                return _techniciansCollection;
+                return _techniciansFiltredCollection;
             }
 
             set
             {
-                if (_techniciansCollection == value)
+                if (_techniciansFiltredCollection == value)
                 {
                     return;
                 }
 
-                _techniciansCollection = value;
+                _techniciansFiltredCollection = value;
+                RaisePropertyChanged();
+            }
+        }
+        public string SearchText
+        {
+            get
+            {
+                return _searchText;
+            }
+
+            set
+            {
+                if (_searchText == value)
+                {
+                    return;
+                }
+
+                _searchText = value;
                 RaisePropertyChanged();
             }
         }
         #endregion
         #region Commands
+        private RelayCommand _searchTechniciansCommand;
+        public RelayCommand SearchTechniciansCommand
+        {
+            get
+            {       
+                return _searchTechniciansCommand
+                    ?? (_searchTechniciansCommand = new RelayCommand(async () =>
+                    {
+                        await Task.Run(() =>
+                        {
+                            TechniciansFiltredCollection =
+                                new ObservableCollection<Technicien>(
+                                    _techniciansList.Where(t => t.Name.ToLower().Contains(SearchText.ToLower())));
+                        });
+
+                    }));
+            }
+        }
+        
         private RelayCommand _affectationViewLoadedCommand;
         public RelayCommand AffectationViewLoadedCommand
         {
@@ -178,8 +215,8 @@ namespace AppointementScheduleBoard.ViewModel
                 return _affectTechnicianToStallCommand
                     ?? (_affectTechnicianToStallCommand = new RelayCommand(async () =>
                     {
-                        var techniciansView = new TechniciansListView();
-                        await techniciansView.ShowDialogAsync();
+                        _techniciansListView = new TechniciansListView();
+                        await _techniciansListView.ShowDialogAsync();
 
                     }));
             }
@@ -231,7 +268,8 @@ namespace AppointementScheduleBoard.ViewModel
                     ?? (_cancelTechniciansListViewAffectationComandCommand = new RelayCommand(
                     () =>
                     {
-                        
+                        _techniciansListView.Close();
+                        SearchText = "";
                     }));
             }
         }
@@ -244,11 +282,25 @@ namespace AppointementScheduleBoard.ViewModel
                     ?? (_saveTechnicianListViewAffectationCommand = new RelayCommand(
                     () =>
                     {
-                        
+                        _techniciansListView.Close();
+                        SearchText = "";
                     }));
             }
         }
-        
+
+        private RelayCommand _refreshTechniciansListCommand;
+        public RelayCommand RefreshTechniciansListCommand
+        {
+            get
+            {
+                return _refreshTechniciansListCommand
+                    ?? (_refreshTechniciansListCommand = new RelayCommand(
+                    () =>
+                    {
+
+                    }));
+            }
+        }
 
         #endregion
         #region Ctors and methods
@@ -260,9 +312,10 @@ namespace AppointementScheduleBoard.ViewModel
         {
             await Task.Run(() =>
             {
-                TechniciansCollection =
+                _techniciansList =
                     new ObservableCollection<Technicien>(
                         MainDataService.GetAllTechnicians((int) MainFrameNavigationService.Parameter));
+                TechniciansFiltredCollection=new ObservableCollection<Technicien>(_techniciansList);
             });
 
         }

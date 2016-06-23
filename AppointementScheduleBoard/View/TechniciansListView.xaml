@@ -42,11 +42,31 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="0" Margin="1"/>
-            <Path Data="{StaticResource SearchPath}" Stretch="Uniform" Width="25" Height="25" Margin="2"  Fill="Black" Grid.Column="1"></Path>
+            <TextBox Grid.Column="0" Margin="1" Text="{Binding SearchText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="TextChanged">
+                        <command:EventToCommand Command="{Binding Mode=OneWay, Path=SearchTechniciansCommand}"
+                            PassEventArgsToCommand="False" CommandParameter="{Binding  ElementName=MainWin}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBox>
+            <Button Width="40" Height="40"  Margin="1" Style="{DynamicResource MetroCircleButtonStyle}" 
+                Command="{Binding RefreshTechniciansListCommand}"
+                ToolTip="Refresh" Grid.Column="1">
+                <Rectangle 
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill">
+                            <VisualBrush.Visual>
+                                <Path Stretch="Fill" Fill="Black" Data="{StaticResource RefreshPath}"/>
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
         </Grid>
         <Grid Grid.Row="1" Margin="1">
-            <ListView ItemsSource="{Binding TechniciansCollection}" >
+            <ListView ItemsSource="{Binding TechniciansFiltredCollection,Mode=TwoWay}" SelectionMode="Multiple">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
