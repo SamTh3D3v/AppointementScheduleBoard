@@ -9,14 +9,29 @@
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="AffectationView" DataContext="{Binding AffectationViewModel,Source={StaticResource Locator}}">
-    <i:Interaction.Triggers>
+    <!--<i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <command:EventToCommand Command="{Binding Mode=OneWay, Path=AffectationViewLoadedCommand}"
                             PassEventArgsToCommand="False" CommandParameter="{Binding  ElementName=MainWin}" />
         </i:EventTrigger>
-    </i:Interaction.Triggers>
+    </i:Interaction.Triggers>-->
+    <Page.Resources>
+        <Storyboard x:Key="OpenStallUiAnimation" >
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)"  Storyboard.TargetName="border">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="220"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="CloseStallUiAnimation">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="border">
+                <EasingDoubleKeyFrame KeyTime="0" Value="220"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Page.Resources>
+    <Grid x:Name="MainGrid">
+        
 
-    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -42,13 +57,18 @@
         <Grid Grid.Row="1" Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid Background="LightGray">
-                <Button Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
+                <Button Width="50" Height="50" VerticalAlignment="Top"  HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
                 Command="{Binding AddNewStallCommand}"
                 ToolTip="Add a new Stall">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Button.Click">
+                            <BeginStoryboard Storyboard="{StaticResource OpenStallUiAnimation}"/>
+                        </EventTrigger>
+                    </Button.Triggers>
                     <Rectangle Width="25" Height="25"
                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                         <Rectangle.OpacityMask>
@@ -61,7 +81,7 @@
                     </Rectangle>
                 </Button>
             </Grid>
-            <Border Grid.Row="1" Background="WhiteSmoke" Padding="10">
+            <Border x:Name="border"  Height="0" Grid.Row="1" Background="WhiteSmoke" Padding="10" >
                 <Grid >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -76,9 +96,9 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Content="New Stall" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"/>
-                    
+
                     <Label Grid.Column="0" Grid.Row="1" Content="Branch ID "/>
-                    <ComboBox Grid.Row="1" Grid.Column="1" Margin="5" SelectedItem="{Binding SelectedStall.BranchId,Mode=TwoWay}" ItemsSource="{Binding BranchIdsCollection}" />
+                    <ComboBox Grid.Row="1" Grid.Column="1" Margin="5" SelectedItem="{Binding SelectedStall.BranchId,Mode=TwoWay}" ItemsSource="{Binding BranchIdsCollection}" DisplayMemberPath="Name" />
 
                     <Label Grid.Column="0" Grid.Row="2" Content="Name "/>
                     <TextBox Grid.Row="2" Grid.Column="1" Margin="5" Text="{Binding SelectedStall.StallName,Mode=TwoWay}"/>
@@ -94,7 +114,13 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="0" Content="Cancel" Command="{Binding CancelNewStallCommand}" Margin="5"/>
+                        <Button Grid.Column="0" Content="Cancel" Command="{Binding CancelNewStallCommand}" Margin="5">
+                            <Button.Triggers>
+                                <EventTrigger RoutedEvent="Button.Click">
+                                    <BeginStoryboard Storyboard="{StaticResource CloseStallUiAnimation}"/>
+                                </EventTrigger>
+                            </Button.Triggers>
+                        </Button>
                         <Button Grid.Column="1" Content="Save" Command="{Binding SaveNewStallCommand}" Margin="5"/>
                     </Grid>
 
@@ -194,7 +220,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
-                                
+
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -206,7 +232,7 @@
 
                             <Label Content="{Binding Name}" Grid.Row="0" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
                             <Label Content="{Binding Id}" Grid.Row="1" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
-                             
+
 
                             <Button Width="50" Height="50" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
                 Command="{Binding EditSelectedStallCommand}"

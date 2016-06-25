@@ -23,6 +23,6 @@ namespace AppointementScheduleBoard.View
         public AffectationView()
         {
             InitializeComponent();
-        }
+        }       
     }
 }
