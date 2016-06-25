@@ -9,12 +9,12 @@
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="AffectationView" DataContext="{Binding AffectationViewModel,Source={StaticResource Locator}}">
-    <!--<i:Interaction.Triggers>
+    <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <command:EventToCommand Command="{Binding Mode=OneWay, Path=AffectationViewLoadedCommand}"
                             PassEventArgsToCommand="False" CommandParameter="{Binding  ElementName=MainWin}" />
         </i:EventTrigger>
-    </i:Interaction.Triggers>-->
+    </i:Interaction.Triggers>
     <Page.Resources>
         <Storyboard x:Key="OpenStallUiAnimation" >
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)"  Storyboard.TargetName="border">
@@ -29,9 +29,7 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </Page.Resources>
-    <Grid x:Name="MainGrid">
-        
-
+    <Grid x:Name="MainGrid" Background="WhiteSmoke">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -40,48 +38,53 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Button Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
+        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="Black">
+            <Button Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
                 Command="{Binding GoBackCommand}"
-                ToolTip="Go Back">
-            <Rectangle Width="25" Height="25"
+                ToolTip="Go Back" Foreground="White">
+                <Rectangle Width="25" Height="25"
                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                <Rectangle.OpacityMask>
-                    <VisualBrush Stretch="Fill">
-                        <VisualBrush.Visual>
-                            <Path Stretch="Fill" Fill="{DynamicResource BlackBrush}" Data="{StaticResource BackPath}"/>
-                        </VisualBrush.Visual>
-                    </VisualBrush>
-                </Rectangle.OpacityMask>
-            </Rectangle>
-        </Button>
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill">
+                            <VisualBrush.Visual>
+                                <Path Stretch="Fill" Fill="White" Data="{StaticResource BackPath}"/>
+                            </VisualBrush.Visual>
+                        </VisualBrush>
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+        </Border>
+        
         <Grid Grid.Row="1" Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Grid Background="LightGray">
-                <Button Width="50" Height="50" VerticalAlignment="Top"  HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
+            <Border Background="LightGray" BorderThickness="1" BorderBrush="DarkGray" CornerRadius="5 5 0 0">
+                <Grid >
+                    <Button Width="50" Height="50" VerticalAlignment="Top"  HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
                 Command="{Binding AddNewStallCommand}"
                 ToolTip="Add a new Stall">
-                    <Button.Triggers>
-                        <EventTrigger RoutedEvent="Button.Click">
-                            <BeginStoryboard Storyboard="{StaticResource OpenStallUiAnimation}"/>
-                        </EventTrigger>
-                    </Button.Triggers>
-                    <Rectangle Width="25" Height="25"
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard Storyboard="{StaticResource OpenStallUiAnimation}"/>
+                            </EventTrigger>
+                        </Button.Triggers>
+                        <Rectangle Width="25" Height="25"
                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                        <Rectangle.OpacityMask>
-                            <VisualBrush Stretch="Fill">
-                                <VisualBrush.Visual>
-                                    <Path Stretch="Fill" Fill="{DynamicResource BlackBrush}" Data="{StaticResource AddPath}"/>
-                                </VisualBrush.Visual>
-                            </VisualBrush>
-                        </Rectangle.OpacityMask>
-                    </Rectangle>
-                </Button>
-            </Grid>
-            <Border x:Name="border"  Height="0" Grid.Row="1" Background="WhiteSmoke" Padding="10" >
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill">
+                                    <VisualBrush.Visual>
+                                        <Path Stretch="Fill" Fill="{DynamicResource BlackBrush}" Data="{StaticResource AddPath}"/>
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </Button>
+                </Grid>
+            </Border>
+            <Border x:Name="border" BorderBrush="DarkGray" CornerRadius="0 0 5 5" BorderThickness="1"  Height="0" Grid.Row="1" Background="WhiteSmoke" Padding="10" >
                 <Grid >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -187,71 +190,89 @@
             </ListView>
 
         </Grid>
-        <Grid Grid.Column="1" Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid Background="WhiteSmoke" Grid.Row="0">
-                <Button Width="40" Height="40" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
+        <Border Grid.Column="1" Grid.Row="1" CornerRadius="5" Background="LightGray" Margin="10">
+            <Grid >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid Background="WhiteSmoke" Grid.Row="0" Margin="5 5 5 0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Background="Gray" Grid.Row="0" Grid.ColumnSpan="2" >
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Selected Stall: " Margin="5 1 1 1" Foreground="White" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock Text="{Binding SelectedStall.StallName}" Foreground="LightBlue" VerticalAlignment="Center"></TextBlock>
+                        </StackPanel>
+                    </Border>
+                    <Button Grid.Column="1" Width="40" Height="40" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
                 Command="{Binding AffectTechnicianToStallCommand}"
                 ToolTip="Affect new technicien to selected stall">
-                    <Rectangle Width="15" Height="15"
+                        <Rectangle Width="15" Height="15"
                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                        <Rectangle.OpacityMask>
-                            <VisualBrush Stretch="Fill">
-                                <VisualBrush.Visual>
-                                    <Path Stretch="Fill" Fill="{DynamicResource BlackBrush}" Data="{StaticResource AddPath}"/>
-                                </VisualBrush.Visual>
-                            </VisualBrush>
-                        </Rectangle.OpacityMask>
-                    </Rectangle>
-                </Button>
-            </Grid>
-            <ListView Grid.Row="1"  ItemsSource="{Binding SelectedStall.Techniciens,IsAsync=True}" SelectedItem="{Binding SelectedJobTask,Mode=TwoWay}">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.ItemTemplate>
-                    <DataTemplate >
-                        <Grid Margin="2" Background="LightBlue">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
+                            <Rectangle.OpacityMask>
+                                <VisualBrush Stretch="Fill">
+                                    <VisualBrush.Visual>
+                                        <Path Stretch="Fill" Fill="{DynamicResource BlackBrush}" Data="{StaticResource AddPath}"/>
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
+                            </Rectangle.OpacityMask>
+                        </Rectangle>
+                    </Button>
+                    <TextBlock Text="Technicians List" Margin="5 1 1 1" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                </Grid>
+                <ListView Grid.Row="1" Margin="5 0 5 0"  ItemsSource="{Binding SelectedStall.Techniciens,IsAsync=True}" SelectedItem="{Binding SelectedJobTask,Mode=TwoWay}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate >
+                            <Grid Margin="2" Background="LightBlue">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
 
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Content="Technicien Id " Grid.Row="0" Grid.Column="0"/>
-                            <Label Content="Name" Grid.Row="1" Grid.Column="0"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Technicien Id " Grid.Row="0" Grid.Column="0"/>
+                                <Label Content="Name" Grid.Row="1" Grid.Column="0"/>
 
-                            <Label Content="{Binding Name}" Grid.Row="0" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
-                            <Label Content="{Binding Id}" Grid.Row="1" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
+                                <Label Content="{Binding Name}" Grid.Row="0" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
+                                <Label Content="{Binding Id}" Grid.Row="1" Grid.Column="1" Foreground="Red" Margin="10 0 0 0"/>
 
 
-                            <Button Width="50" Height="50" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
+                                <Button Width="50" Height="50" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
                 Command="{Binding EditSelectedStallCommand}"
                 ToolTip="Remove technicien">
-                                <Rectangle Width="20" Height="20"
+                                    <Rectangle Width="20" Height="20"
                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                                    <Rectangle.OpacityMask>
-                                        <VisualBrush Stretch="Fill">
-                                            <VisualBrush.Visual>
-                                                <Path Stretch="Fill" Fill="{DynamicResource BlackBrush}" Data="{StaticResource RemovePath}"/>
-                                            </VisualBrush.Visual>
-                                        </VisualBrush>
-                                    </Rectangle.OpacityMask>
-                                </Rectangle>
-                            </Button>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </Grid>
+                                        <Rectangle.OpacityMask>
+                                            <VisualBrush Stretch="Fill">
+                                                <VisualBrush.Visual>
+                                                    <Path Stretch="Fill" Fill="{DynamicResource BlackBrush}" Data="{StaticResource RemovePath}"/>
+                                                </VisualBrush.Visual>
+                                            </VisualBrush>
+                                        </Rectangle.OpacityMask>
+                                    </Rectangle>
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Border>
+        
     </Grid>
 </Page>
