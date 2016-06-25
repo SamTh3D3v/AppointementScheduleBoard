@@ -211,9 +211,20 @@
                             <TextBlock Text="{Binding SelectedStall.StallName}" Foreground="LightBlue" VerticalAlignment="Center"></TextBlock>
                         </StackPanel>
                     </Border>
-                    <Button Grid.Column="1" Width="40" Height="40" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
+                    <Button Grid.Column="1" Width="40" Height="40" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5"  
                 Command="{Binding AffectTechnicianToStallCommand}"
                 ToolTip="Affect new technicien to selected stall">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource MetroCircleButtonStyle}">
+                                <Setter Property="IsEnabled" Value="True"/>
+                                <Style.Triggers>
+                                    
+                                    <DataTrigger Binding="{Binding SelectedStall}" Value="{x:Null}">
+                                        <Setter Property="IsEnabled" Value="False"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
                         <Rectangle Width="15" Height="15"
                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                             <Rectangle.OpacityMask>
