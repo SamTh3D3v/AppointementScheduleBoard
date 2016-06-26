@@ -23,7 +23,8 @@ namespace AppointementScheduleBoard.ViewModel
         private JobTask _selectedJobTask;
         private ObservableCollection<Branch> _branchIdsCollection;
         private ObservableCollection<Technicien> _techniciansFiltredCollection;       
-        private string _searchText ="" ;    
+        private string _searchText ="" ;
+            
         #endregion
         #region Properties
         public ObservableCollection<Branch> BranchIdsCollection
@@ -177,6 +178,8 @@ namespace AppointementScheduleBoard.ViewModel
                     ?? (_addNewStallCommand = new RelayCommand(
                     () =>
                     {
+                        //Create a new Stall
+                        SelectedStall=new Stall();
 
                     }));
             }
