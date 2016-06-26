@@ -12,6 +12,8 @@ namespace DataLayer.DataService
         // Get All Mechanics
         List<Technicien> GetAllTechnicians(int BRANCH_ID);
 
+        List<Technicien> GetNotAssignedTechnicians(int BRANCH_ID);
+
         // Get stalls by branch ID
         List<Stall> GetBranchStalls(int BRANCH_ID);
 
