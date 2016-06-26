@@ -71,7 +71,7 @@ namespace DataLayer.DataService
             return mechanics;
         }
 
-        List<Technicien> GetNotAssignedTechnicians(int BRANCH_ID)
+        public List<Technicien> GetNotAssignedTechnicians(int BRANCH_ID)
         {
             List<Technicien> notAssignedMechanics = new List<Technicien>();
             foreach (Technicien mechanic in GetAllTechnicians(BRANCH_ID))

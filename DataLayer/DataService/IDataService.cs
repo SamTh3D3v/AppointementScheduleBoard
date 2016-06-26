@@ -21,7 +21,7 @@ namespace DataLayer.DataService
         /// Add a new empty stall(no jobCards assign to it) stall
         /// </summary>
         /// <param name="stall">the stall object that need to be added</param>
-        int AddStall(Stall stall);
+        int AddStall(Stall stall);              
         /// <summary>
         /// Change the info related to a stall like its name ect
         /// </summary>
