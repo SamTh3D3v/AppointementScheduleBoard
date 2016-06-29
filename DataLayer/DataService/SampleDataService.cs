@@ -7,7 +7,25 @@ using DataLayer.Model;
 namespace DataLayer.DataService 
 {    
     public class SampleDataService: DataService
-    {               
+    {
+        private List<Stall> _sampleStallsCollection;
+        public List<Stall> SampleStallsCollection
+        {
+            get
+            {
+                return _sampleStallsCollection;
+            }
+
+            set
+            {
+                if (_sampleStallsCollection == value)
+                {
+                    return;
+                }
+
+                _sampleStallsCollection = value;                
+            }
+        }         
 
         public override ServerSettings GetServerSettings()
         {
@@ -47,8 +65,8 @@ namespace DataLayer.DataService
             {
                 new Branch()
                 {
-                  Id  = 1,
-                 Name = "Branch ID 1"
+                    Id = 1,
+                    Name = "Branch 1"
                 } , new Branch()
                 {
                   Id  = 2,
@@ -133,16 +151,34 @@ namespace DataLayer.DataService
 
         public override List<Stall> GetBranchStalls(int BRANCH_ID)
         {
-            var refDateTime = DateTime.Today.Add(GetServerSettings().StartHour);
+            
             switch (BRANCH_ID)
             {
                 case 1:
-                    return new List<Stall>()
+                    return SampleStallsCollection;
+                    
+                    
+                default:
+                    return new List<Stall>();                    
+
+            }
+        }
+
+        public override int AddStall(Stall stall)
+        {
+            SampleStallsCollection.Add(stall);
+            return 1;
+        }
+
+        public SampleDataService()
+        {
+            var refDateTime = DateTime.Today.Add(GetServerSettings().StartHour);
+            _sampleStallsCollection = new List<Stall>()
                     {
                         new Stall()
                         {
                             Id = 1,
-                            BranchId = 1,
+                            BranchId = 1,                            
                             StallName = "Stall 1",
                             JobTasksCollection = new ObservableCollection<ITimeLineJobTask>()
                             {
@@ -200,7 +236,7 @@ namespace DataLayer.DataService
                         new Stall()
                         {
                             Id = 2,
-                            BranchId = 1,
+                            BranchId = 1,                            
                             StallName = "Stall 2",
                             JobTasksCollection = new ObservableCollection<ITimeLineJobTask>()
                             {
@@ -245,7 +281,7 @@ namespace DataLayer.DataService
                         new Stall()
                         {
                             Id = 3,
-                            BranchId = 1,
+                            BranchId = 1,                            
                             StallName = "Stall 3",
                             JobTasksCollection = new ObservableCollection<ITimeLineJobTask>()
                             {
@@ -305,7 +341,7 @@ namespace DataLayer.DataService
                         new Stall()
                         {
                             Id = 4,
-                            BranchId = 1,
+                            BranchId = 1,                           
                             StallName = "Stall 4",
                             JobTasksCollection = new ObservableCollection<ITimeLineJobTask>()
                             {
@@ -348,7 +384,7 @@ namespace DataLayer.DataService
                         new Stall()
                         {
                             Id = 5,
-                            BranchId = 1,
+                            BranchId = 1,                           
                             StallName = "Stall 5",
                             JobTasksCollection = new ObservableCollection<ITimeLineJobTask>()
                             {
@@ -404,7 +440,7 @@ namespace DataLayer.DataService
                         {
                             Id = 6,
                             StallName = "Stall 6",
-                            BranchId = 1,
+                            BranchId = 1,                           
                             JobTasksCollection = new ObservableCollection<ITimeLineJobTask>()
                             {
                                 new JobTask()
@@ -449,14 +485,6 @@ namespace DataLayer.DataService
                             }
                         }
                     };
-                    
-
-                    break;
-                default:
-                    return new List<Stall>();
-                    break;
-
-            }
         }
     }
 }

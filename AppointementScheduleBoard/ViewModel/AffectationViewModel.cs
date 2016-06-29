@@ -21,27 +21,27 @@ namespace AppointementScheduleBoard.ViewModel
         private ObservableCollection<Stall> _myProperty;
         private Stall _selectedStall;
         private JobTask _selectedJobTask;
-        private ObservableCollection<Branch> _branchIdsCollection;
+        private ObservableCollection<Branch> _branchsCollection;
         private ObservableCollection<Technicien> _techniciansFiltredCollection;       
         private string _searchText ="" ;
             
         #endregion
         #region Properties
-        public ObservableCollection<Branch> BranchIdsCollection
+        public ObservableCollection<Branch> BranchsCollection
         {
             get
             {
-                return _branchIdsCollection;
+                return _branchsCollection;
             }
 
             set
             {
-                if (_branchIdsCollection == value)
+                if (_branchsCollection == value)
                 {
                     return;
                 }
 
-                _branchIdsCollection = value;
+                _branchsCollection = value;
                 RaisePropertyChanged();
             }
         }
@@ -164,10 +164,14 @@ namespace AppointementScheduleBoard.ViewModel
                 return _affectationViewLoadedCommand
                     ?? (_affectationViewLoadedCommand = new RelayCommand(async () =>
                     {
-                        StallsList = new ObservableCollection<Stall>(await Task.Run(() => MainDataService.GetBranchStalls(1)));
-                        BranchIdsCollection = new ObservableCollection<Branch>(await Task.Run(() => MainDataService.GetAllBranchs()));
+                        await LaodStalls();
+                        BranchsCollection = new ObservableCollection<Branch>(await Task.Run(() => MainDataService.GetAllBranchs()));
                     }));
             }
+        }
+        private async Task LaodStalls()
+        {
+             StallsList = new ObservableCollection<Stall>(await Task.Run(() => MainDataService.GetBranchStalls((int) MainFrameNavigationService.Parameter)));
         }
         private RelayCommand _addNewStallCommand;
         public RelayCommand AddNewStallCommand
@@ -179,7 +183,10 @@ namespace AppointementScheduleBoard.ViewModel
                     () =>
                     {
                         //Create a new Stall
-                        SelectedStall=new Stall();
+                        SelectedStall=new Stall()
+                        {
+                            BranchId = (int)MainFrameNavigationService.Parameter
+                        };                        
 
                     }));
             }
@@ -193,7 +200,7 @@ namespace AppointementScheduleBoard.ViewModel
                     ?? (_cancelNewStallCommand = new RelayCommand(
                     () =>
                     {
-
+                        SelectedStall = null;
                     }));
             }
         }
@@ -203,10 +210,10 @@ namespace AppointementScheduleBoard.ViewModel
             get
             {
                 return _saveNewStallCommand
-                    ?? (_saveNewStallCommand = new RelayCommand(
-                    () =>
+                    ?? (_saveNewStallCommand = new RelayCommand(async () =>
                     {
-
+                        MainDataService.AddStall(SelectedStall);
+                        await LaodStalls();
                     }));
             }
         }
