@@ -66,7 +66,7 @@
             </Button>
         </Grid>
         <Grid Grid.Row="1" Margin="1">
-            <ListView ItemsSource="{Binding TechniciansFiltredCollection,Mode=TwoWay}" SelectionMode="Multiple">
+            <ListView x:Name="TechniciansLv" ItemsSource="{Binding TechniciansFiltredCollection,Mode=TwoWay}" SelectionMode="Multiple">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -87,7 +87,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Button Content="Cancel" Command="{Binding CancelTechniciansListViewAffectationComand}" Grid.Column="0" Margin="1"/>
-            <Button Content="Save" Command="{Binding SaveTechnicianListViewAffectationCommand}" Grid.Column="1" Margin="1"/>
+            <Button Content="Save" Command="{Binding SaveTechnicianListViewAffectationCommand}" CommandParameter="{Binding ElementName=TechniciansLv,Path=SelectedItems}" Grid.Column="1" Margin="1"/>
         </Grid>
     </Grid>
 </controls:MetroWindow>

@@ -99,6 +99,38 @@ namespace DataLayer.DataService
             }
         }
 
+        public override List<Technicien> GetNotAssignedTechnicians(int BRANCH_ID)
+        {
+            switch (BRANCH_ID)
+            {
+                case 1:
+                    return new List<Technicien>()
+                    {
+                        new Technicien()
+                        {
+                            Id = 1,
+                            Name = "Technician 1"
+                        },new Technicien()
+                        {
+                            Id = 1,
+                            Name = "Technician 2"
+                        },new Technicien()
+                        {
+                            Id = 1,
+                            Name = "Technician 3"
+                        },new Technicien()
+                        {
+                            Id = 1,
+                            Name = "Technician 4"
+                        },
+                    };
+                    break;
+                default:
+                    return null;
+                    break;
+            }
+        }
+
         public override List<Stall> GetBranchStalls(int BRANCH_ID)
         {
             var refDateTime = DateTime.Today.Add(GetServerSettings().StartHour);

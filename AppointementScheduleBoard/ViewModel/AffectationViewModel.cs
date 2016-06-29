@@ -276,15 +276,21 @@ namespace AppointementScheduleBoard.ViewModel
                     }));
             }
         }
-        private RelayCommand _saveTechnicianListViewAffectationCommand ;
-        public RelayCommand SaveTechnicianListViewAffectationCommand
+        private RelayCommand<Object> _saveTechnicianListViewAffectationCommand ;
+        public RelayCommand<Object> SaveTechnicianListViewAffectationCommand
         {
             get
             {
                 return _saveTechnicianListViewAffectationCommand
-                    ?? (_saveTechnicianListViewAffectationCommand = new RelayCommand(
-                    () =>
+                    ?? (_saveTechnicianListViewAffectationCommand = new RelayCommand<Object>(
+                    (obj) =>
                     {
+                        var selectedTechniciansList = obj as IList<Technicien>;
+                        if (selectedTechniciansList != null)
+                            foreach (var tech in selectedTechniciansList)
+                            {
+                                MainDataService.AssignMechanicToStall(SelectedStall.Id, tech.Id);
+                            }
                         _techniciansListView.Close();
                         SearchText = "";
                     }));
@@ -317,7 +323,7 @@ namespace AppointementScheduleBoard.ViewModel
             {
                 _techniciansList =
                     new ObservableCollection<Technicien>(
-                        MainDataService.GetAllTechnicians((int) MainFrameNavigationService.Parameter));
+                        MainDataService.GetNotAssignedTechnicians((int) MainFrameNavigationService.Parameter));
                 TechniciansFiltredCollection=new ObservableCollection<Technicien>(_techniciansList);
             });
 

@@ -23,8 +23,9 @@ namespace DataLayer.DataService
             throw new NotImplementedException();
         }
 
-        public List<Technicien> GetNotAssignedTechnicians(int BRANCH_ID)
+        public virtual List<Technicien> GetNotAssignedTechnicians(int BRANCH_ID)
         {
+            //todo mourad
             throw new NotImplementedException();
         }
 

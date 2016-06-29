@@ -9,12 +9,12 @@
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="AffectationView" DataContext="{Binding AffectationViewModel,Source={StaticResource Locator}}">
-    <!--<i:Interaction.Triggers>
+    <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
             <command:EventToCommand Command="{Binding Mode=OneWay, Path=AffectationViewLoadedCommand}"
                             PassEventArgsToCommand="False" CommandParameter="{Binding  ElementName=MainWin}" />
         </i:EventTrigger>
-    </i:Interaction.Triggers>-->
+    </i:Interaction.Triggers>
     <Page.Resources>
         <Storyboard x:Key="OpenStallUiAnimation" >
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)"  Storyboard.TargetName="border">

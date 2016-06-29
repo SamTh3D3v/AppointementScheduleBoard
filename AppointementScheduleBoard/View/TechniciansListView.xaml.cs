@@ -20,7 +20,7 @@ namespace AppointementScheduleBoard.View
     {
         public TechniciansListView()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
     }
 }
