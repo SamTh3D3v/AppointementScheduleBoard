@@ -21,7 +21,8 @@ namespace AppointementScheduleBoard.ViewModel
         private bool _showTitleBarProperty;
         private bool _ignoreTaskbarOnMaximizeProperty;
         private LocalSettings _localSettings;
-        private ServerSettings _serverSettings;
+        private ServerSettings _serverSettings;      
+        private ObservableCollection<Stall> _stallsCollection;                
         #endregion
         #region Properties  
         public Branch SelectedBranch
@@ -151,6 +152,24 @@ namespace AppointementScheduleBoard.ViewModel
                 RaisePropertyChanged();
             }
         }
+        public ObservableCollection<Stall> StallsCollection
+        {
+            get
+            {
+                return _stallsCollection;
+            }
+
+            set
+            {
+                if (_stallsCollection == value)
+                {
+                    return;
+                }
+
+                _stallsCollection = value;
+                RaisePropertyChanged();
+            }
+        }
         #endregion
         #region Commands
         private RelayCommand _mainWindowLoadedCommand;
@@ -251,8 +270,10 @@ namespace AppointementScheduleBoard.ViewModel
                 BranchCollection = new ObservableCollection<Branch>(MainDataService.GetAllBranchs());
                 LocalSettings = MainDataService.GetLocalSettings();
                 ServerSettings = MainDataService.GetServerSettings();
+                SelectedBranch = BranchCollection?.First();
+                StallsCollection =new ObservableCollection<Stall>(MainDataService.GetBranchStalls(SelectedBranch.Id));
             });
-            SelectedBranch = BranchCollection?.First();
+            
 
         }
         #endregion

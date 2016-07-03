@@ -23,6 +23,7 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <GroupBox Header="Selected Branch" Grid.Row="0">
                                 <Grid>
@@ -148,6 +149,23 @@
                                     <CheckBox Content="plan /actual " IsChecked="{Binding LocalSettings.IsPlanActualHeaderVisible}" Grid.Row="3" Margin="5"/>
                                     <CheckBox Content="merge plan/actual " IsChecked="{Binding LocalSettings.IsPlanActualMerged}" Grid.Row="4" Margin="5"/>
 
+                                </Grid>
+                            </GroupBox>
+
+                            <GroupBox Header="Select Stalls to View" Grid.Row="5">
+                                <Grid>
+                                    <ItemsControl Margin="5" ItemsSource="{Binding StallsCollection}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal"></StackPanel>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                       <ItemsControl.ItemTemplate>
+                                           <DataTemplate >
+                                                <ToggleButton Margin="5" Content="{Binding StallName}" Width="50" Height="50"/>
+                                            </DataTemplate>
+                                       </ItemsControl.ItemTemplate>
+                                   </ItemsControl>
                                 </Grid>
                             </GroupBox>
 
