@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using DataLayer.Enums;
 using DataLayer.Model;
 
@@ -168,6 +169,19 @@ namespace DataLayer.DataService
         {
             SampleStallsCollection.Add(stall);
             return 1;
+        }
+
+        public override bool ReleaseMechanicFromStall(int MECHANIC_ID)
+        {
+            foreach (var stall in SampleStallsCollection)
+            {
+                if (stall.Techniciens.Any(t=>t.Id==MECHANIC_ID))
+                {
+                    stall.Techniciens.Remove(stall.Techniciens.First(t => t.Id == MECHANIC_ID));
+                    return true;
+                }
+            }
+            return false;
         }
 
         public SampleDataService()

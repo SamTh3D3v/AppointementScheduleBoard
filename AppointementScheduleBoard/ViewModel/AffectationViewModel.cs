@@ -169,6 +169,21 @@ namespace AppointementScheduleBoard.ViewModel
                     }));
             }
         }
+        private RelayCommand<int> _removeSelectedTechnicianCommand;
+        public RelayCommand<int> RemoveSelectedTechnicianCommand
+        {
+            get
+            {
+                return _removeSelectedTechnicianCommand
+                    ?? (_removeSelectedTechnicianCommand = new RelayCommand<int>(
+                    (id) =>
+                    {
+                        MainDataService.ReleaseMechanicFromStall(id);
+                        //to avoid refreshing
+                        //SelectedStall.Techniciens.Remove(SelectedStall.Techniciens.First(t => t.Id == id));
+                    }));
+            }
+        }
         private async Task LaodStalls()
         {
              StallsList = new ObservableCollection<Stall>(await Task.Run(() => MainDataService.GetBranchStalls((int) MainFrameNavigationService.Parameter)));
