@@ -22,6 +22,7 @@ namespace AppointementScheduleBoard.ViewModel
         private double _timeLineUnitSize = 1000;
         private ObservableCollection<ITimeLineJobTask> _hoursCollection;       
         private DateTime _startDateTime;
+        private DateTime _endDateTime;
         #endregion
         #region Properties 
         public bool IsPrograssRingActive
@@ -114,6 +115,24 @@ namespace AppointementScheduleBoard.ViewModel
                 RaisePropertyChanged();
             }
         }
+        public DateTime EndDateTime
+        {
+            get
+            {
+                return _endDateTime;
+            }
+
+            set
+            {
+                if (_endDateTime == value)
+                {
+                    return;
+                }
+
+                _endDateTime = value;
+                RaisePropertyChanged();
+            }
+        }
         #endregion
         #region Commands
         private RelayCommand _scheduleBoardLoadedCommand;
@@ -149,9 +168,8 @@ namespace AppointementScheduleBoard.ViewModel
             var list=new List<ITimeLineJobTask>();
             var startDateTime = StartDateTime;
             await Task.Run(() =>
-            {                                
-                var endDateTime = DateTime.Now.Date.AddHours(6).AddHours(12);
-                while (startDateTime < endDateTime)
+            {                                                
+                while (startDateTime < EndDateTime)
                 {
                     list.Add(new HourJobCard()
                     {
@@ -174,6 +192,8 @@ namespace AppointementScheduleBoard.ViewModel
             await Task.Run(()=>Thread.Sleep(3000));
             StallsCollection = new ObservableCollection<Stall>(await Task.Run(() => MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter)));
             StartDateTime = DateTime.Today.Add(MainDataService.GetServerSettings().StartHour);
+            EndDateTime = DateTime.Today.Add(MainDataService.GetServerSettings().EndHour);
+
             await UpdateHoursCollection();
             IsPrograssRingActive = false;
         }
