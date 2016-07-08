@@ -45,6 +45,7 @@
         <ResourceDictionary>
             <converters:FilterShipsConverter x:Key="FilterShipsConverter"/>
             <converters:BoolToVisibilityConvertre x:Key="BoolToVisibilityConvertre"/>
+            <converters:ValueToEqualsParameterConverter x:Key="IsValueEqualsParameterConverter"/>
         </ResourceDictionary>
 
 

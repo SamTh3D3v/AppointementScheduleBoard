@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Converters\BoolToVisibilityConvertre.cs" />
     <Compile Include="Converters\FilterShipsConverter.cs" />
+    <Compile Include="Converters\ValueToEqualsParameterConverter.cs" />
     <Compile Include="Helpers\TimeLineFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

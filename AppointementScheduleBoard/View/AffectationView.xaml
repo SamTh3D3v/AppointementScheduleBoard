@@ -6,6 +6,7 @@
       xmlns:local="clr-namespace:AppointementScheduleBoard.View"
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       xmlns:command="http://www.galasoft.ch/mvvmlight"
+      xmlns:system="clr-namespace:System;assembly=mscorlib"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="AffectationView" DataContext="{Binding AffectationViewModel,Source={StaticResource Locator}}">
@@ -228,12 +229,42 @@
                 ToolTip="Affect new technicien to selected stall">
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource MetroCircleButtonStyle}">
-                                <Setter Property="IsEnabled" Value="True"/>
+                                <Setter Property="IsEnabled" Value="False"/>
                                 <Style.Triggers>
                                     
-                                    <DataTrigger Binding="{Binding SelectedStall}" Value="{x:Null}">
+                                    <!--<DataTrigger Binding="{Binding SelectedStall}" Value="{x:Null}">
                                         <Setter Property="IsEnabled" Value="False"></Setter>
-                                    </DataTrigger>
+                                    </DataTrigger>-->
+                                    <MultiDataTrigger>  
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition>
+                                                <Condition.Binding>
+                                                    <Binding Path="SelectedStall" Converter="{StaticResource IsValueEqualsParameterConverter}">
+                                                        <Binding.ConverterParameter>
+                                                            <x:Null/>
+                                                        </Binding.ConverterParameter>
+                                                    </Binding>
+                                                </Condition.Binding>
+                                                <Condition.Value>
+                                                    <system:Boolean>False</system:Boolean>
+                                                </Condition.Value>
+                                            </Condition>
+                                            <Condition>
+                                                <Condition.Binding>
+                                                    <Binding Path="SelectedStall.Id" Converter="{StaticResource IsValueEqualsParameterConverter}">
+                                                        <Binding.ConverterParameter>
+                                                            <system:Int32>-1</system:Int32>
+                                                        </Binding.ConverterParameter>
+                                                    </Binding>
+                                                </Condition.Binding>
+                                                <Condition.Value>
+                                                    <system:Boolean>False</system:Boolean>
+                                                </Condition.Value>
+                                            </Condition>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="IsEnabled" Value="True"></Setter>
+                                    </MultiDataTrigger>
+                                    
                                 </Style.Triggers>
                             </Style>
                         </Button.Style>
