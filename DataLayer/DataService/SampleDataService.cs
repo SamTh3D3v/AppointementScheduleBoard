@@ -5,9 +5,9 @@ using System.Linq;
 using DataLayer.Enums;
 using DataLayer.Model;
 
-namespace DataLayer.DataService 
-{    
-    public class SampleDataService: DataService
+namespace DataLayer.DataService
+{
+    public class SampleDataService : DataService
     {
         private List<Stall> _sampleStallsCollection;
         public List<Stall> SampleStallsCollection
@@ -24,17 +24,36 @@ namespace DataLayer.DataService
                     return;
                 }
 
-                _sampleStallsCollection = value;                
+                _sampleStallsCollection = value;
             }
-        }         
+        }
+
+        private List<Technicien> _sampleTechniciansCollection;
+        public List<Technicien> SampleTechniciansCollection
+        {
+            get
+            {
+                return _sampleTechniciansCollection;
+            }
+
+            set
+            {
+                if (_sampleTechniciansCollection == value)
+                {
+                    return;
+                }
+
+                _sampleTechniciansCollection = value;
+            }
+        }
 
         public override ServerSettings GetServerSettings()
         {
             //This Data needs to be get from the EBS
             return new ServerSettings()
             {
-                StartHour = new TimeSpan(1,0,0),
-                EndHour = new TimeSpan(18,0,0)
+                StartHour = new TimeSpan(1, 0, 0),
+                EndHour = new TimeSpan(18, 0, 0)
             };
         }
 
@@ -80,10 +99,10 @@ namespace DataLayer.DataService
                 {
                   Id  = 4,
                  Name = "Branch ID 4"
-                }                 
+                }
             };
 
-       
+
         }
 
         public override List<Technicien> GetAllTechnicians(int BRANCH_ID)
@@ -91,30 +110,9 @@ namespace DataLayer.DataService
             switch (BRANCH_ID)
             {
                 case 1:
-                    return new List<Technicien>()
-                    {
-                        new Technicien()
-                        {
-                            Id = 1,
-                            Name = "Technician 1"
-                        },new Technicien()
-                        {
-                            Id = 1,
-                            Name = "Technician 2"
-                        },new Technicien()
-                        {
-                            Id = 1,
-                            Name = "Technician 3"
-                        },new Technicien()
-                        {
-                            Id = 1,
-                            Name = "Technician 4"
-                        },
-                    };
-                    break;
+                    return SampleTechniciansCollection;
                 default:
                     return null;
-                    break;
             }
         }
 
@@ -122,45 +120,22 @@ namespace DataLayer.DataService
         {
             switch (BRANCH_ID)
             {
-                case 1:
-                    return new List<Technicien>()
-                    {
-                        new Technicien()
-                        {
-                            Id = 1,
-                            Name = "Technician 1"
-                        },new Technicien()
-                        {
-                            Id = 1,
-                            Name = "Technician 2"
-                        },new Technicien()
-                        {
-                            Id = 1,
-                            Name = "Technician 3"
-                        },new Technicien()
-                        {
-                            Id = 1,
-                            Name = "Technician 4"
-                        },
-                    };
-                    break;
-                default:
-                    return null;
-                    break;
+                case 1: return SampleTechniciansCollection;
+                default: return null;
             }
         }
 
         public override List<Stall> GetBranchStalls(int BRANCH_ID)
         {
-            
+
             switch (BRANCH_ID)
             {
                 case 1:
                     return SampleStallsCollection;
-                    
-                    
+
+
                 default:
-                    return new List<Stall>();                    
+                    return new List<Stall>();
 
             }
         }
@@ -180,13 +155,19 @@ namespace DataLayer.DataService
         {
             foreach (var stall in SampleStallsCollection)
             {
-                if (stall.Techniciens.Any(t=>t.Id==MECHANIC_ID))
+                if (stall.Techniciens.Any(t => t.Id == MECHANIC_ID))
                 {
                     stall.Techniciens.Remove(stall.Techniciens.First(t => t.Id == MECHANIC_ID));
                     return true;
                 }
             }
             return false;
+        }
+
+        public override bool AssignMechanicToStall(int STALL_ID, int MECHANIC_ID)
+        {
+            SampleStallsCollection.First(s => s.Id == STALL_ID)?.Techniciens.Add(SampleTechniciansCollection.First(t => t.Id == MECHANIC_ID));
+            return true;
         }
 
         public override bool RemoveStall(int stallId)
@@ -203,7 +184,7 @@ namespace DataLayer.DataService
                         new Stall()
                         {
                             Id = 1,
-                            BranchId = 1,                            
+                            BranchId = 1,
                             StallName = "Stall 1",
                             JobTasksCollection = new ObservableCollection<ITimeLineJobTask>()
                             {
@@ -261,7 +242,7 @@ namespace DataLayer.DataService
                         new Stall()
                         {
                             Id = 2,
-                            BranchId = 1,                            
+                            BranchId = 1,
                             StallName = "Stall 2",
                             JobTasksCollection = new ObservableCollection<ITimeLineJobTask>()
                             {
@@ -306,7 +287,7 @@ namespace DataLayer.DataService
                         new Stall()
                         {
                             Id = 3,
-                            BranchId = 1,                            
+                            BranchId = 1,
                             StallName = "Stall 3",
                             JobTasksCollection = new ObservableCollection<ITimeLineJobTask>()
                             {
@@ -366,7 +347,7 @@ namespace DataLayer.DataService
                         new Stall()
                         {
                             Id = 4,
-                            BranchId = 1,                           
+                            BranchId = 1,
                             StallName = "Stall 4",
                             JobTasksCollection = new ObservableCollection<ITimeLineJobTask>()
                             {
@@ -409,7 +390,7 @@ namespace DataLayer.DataService
                         new Stall()
                         {
                             Id = 5,
-                            BranchId = 1,                           
+                            BranchId = 1,
                             StallName = "Stall 5",
                             JobTasksCollection = new ObservableCollection<ITimeLineJobTask>()
                             {
@@ -465,7 +446,7 @@ namespace DataLayer.DataService
                         {
                             Id = 6,
                             StallName = "Stall 6",
-                            BranchId = 1,                           
+                            BranchId = 1,
                             JobTasksCollection = new ObservableCollection<ITimeLineJobTask>()
                             {
                                 new JobTask()
@@ -509,6 +490,48 @@ namespace DataLayer.DataService
                                 }
                             }
                         }
+                    };
+            _sampleTechniciansCollection = new List<Technicien>()
+                    {
+                        new Technicien()
+                        {
+                            Id = 1,
+                            Name = "Technician 1"
+                        },new Technicien()
+                        {
+                            Id = 2,
+                            Name = "Technician 2"
+                        },new Technicien()
+                        {
+                            Id = 3,
+                            Name = "Technician 3"
+                        },new Technicien()
+                        {
+                            Id = 4,
+                            Name = "Technician 4"
+                        },
+                        new Technicien()
+                        {
+                            Id = 5,
+                            Name = "Technician 5"
+                        },new Technicien()
+                        {
+                            Id = 6,
+                            Name = "Technician 6"
+                        },new Technicien()
+                        {
+                            Id = 7,
+                            Name = "Technician 7"
+                        },new Technicien()
+                        {
+                            Id = 8,
+                            Name = "Technician 8"
+                        },new Technicien()
+                        {
+                            Id = 9,
+                            Name = "Technician 9"
+                        }
+
                     };
         }
     }

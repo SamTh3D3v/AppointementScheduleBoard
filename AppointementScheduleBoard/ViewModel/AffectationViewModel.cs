@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -323,20 +324,20 @@ namespace AppointementScheduleBoard.ViewModel
                     }));
             }
         }
-        private RelayCommand<Object> _saveTechnicianListViewAffectationCommand ;
-        public RelayCommand<Object> SaveTechnicianListViewAffectationCommand
+        private RelayCommand<object> _saveTechnicianListViewAffectationCommand ;
+        public RelayCommand<object> SaveTechnicianListViewAffectationCommand
         {
             get
             {
                 return _saveTechnicianListViewAffectationCommand
-                    ?? (_saveTechnicianListViewAffectationCommand = new RelayCommand<Object>(
+                    ?? (_saveTechnicianListViewAffectationCommand = new RelayCommand<object>(
                     (obj) =>
                     {
-                        var selectedTechniciansList = obj as IList<Technicien>;
+                        var selectedTechniciansList = obj as IList;
                         if (selectedTechniciansList != null)
                             foreach (var tech in selectedTechniciansList)
                             {
-                                MainDataService.AssignMechanicToStall(SelectedStall.Id, tech.Id);
+                                MainDataService.AssignMechanicToStall(SelectedStall.Id, (tech as Technicien).Id);
                             }
                         _techniciansListView.Close();
                         SearchText = "";
