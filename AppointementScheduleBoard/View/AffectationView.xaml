@@ -17,7 +17,7 @@
     </i:Interaction.Triggers>
     <Page.Resources>
         <Storyboard x:Key="OpenStallUiAnimation" >
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)"  Storyboard.TargetName="border">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)"  Storyboard.Target="{Binding ElementName=border}">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0" />
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="220"/>
             </DoubleAnimationUsingKeyFrames>
@@ -180,6 +180,11 @@
                             <Button Width="30" Height="30" Grid.Row="0" Grid.RowSpan="2" Grid.Column="4" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" Style="{DynamicResource MetroCircleButtonStyle}" 
                 Command="{Binding EditSelectedStallCommand}"
                 ToolTip="Edit stall">
+                                <Button.Triggers>
+                                    <EventTrigger RoutedEvent="Button.Click">
+                                        <BeginStoryboard Storyboard="{StaticResource OpenStallUiAnimation}"/>
+                                    </EventTrigger>
+                                </Button.Triggers>
                                 <Rectangle Width="10" Height="10"
                    Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                                     <Rectangle.OpacityMask>

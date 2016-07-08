@@ -215,7 +215,10 @@ namespace AppointementScheduleBoard.ViewModel
                         //Create a new Stall
                         SelectedStall=new Stall()
                         {
-                            BranchId = (int)MainFrameNavigationService.Parameter
+                            Id = -1, //a new Stall
+                            BranchId = (int)MainFrameNavigationService.Parameter,
+                            Techniciens = new ObservableCollection<Technicien>(),
+                            JobTasksCollection = new ObservableCollection<ITimeLineJobTask>()
                         };                        
 
                     }));
@@ -242,7 +245,14 @@ namespace AppointementScheduleBoard.ViewModel
                 return _saveNewStallCommand
                     ?? (_saveNewStallCommand = new RelayCommand(async () =>
                     {
-                        MainDataService.AddStall(SelectedStall);
+                        if (SelectedStall.Id == -1)
+                        {
+                            MainDataService.AddStall(SelectedStall);
+                        }
+                        else
+                        {
+                            MainDataService.UpdateStall(SelectedStall);
+                        }
                         await LaodStalls();
                     }));
             }

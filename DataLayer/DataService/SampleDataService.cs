@@ -171,6 +171,11 @@ namespace DataLayer.DataService
             return 1;
         }
 
+        public override int UpdateStall(Stall stall)
+        {
+            return 1;
+        }
+
         public override bool ReleaseMechanicFromStall(int MECHANIC_ID)
         {
             foreach (var stall in SampleStallsCollection)
