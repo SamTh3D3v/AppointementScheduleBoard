@@ -217,7 +217,7 @@
                                                         Background="LightGray"                                                          
                                                         DrawTimeGrid="True"                                                                                 
                                                         MinWidth="50"                                                        
-                                                        SynchedWithSiblings="False" >
+                                                        SynchedWithSiblings="True" >
                                                     <timeLineControl:TimeLineControl.Items>
                                                         <MultiBinding Converter="{StaticResource FilterShipsConverter}" ConverterParameter="{x:Static helpers:TimeLineFilter.Planned}">
                                                             <Binding Path="JobTasksCollection"></Binding>
@@ -268,7 +268,7 @@
                             </ItemsControl.ItemsPanel>
                         </ItemsControl>
                         <Border VerticalAlignment="Stretch" Background="Red" Width="2" 
-                                Grid.Row="0" Grid.RowSpan="2"  Margin="-12000,0,0,0" x:Name="BorderLine"/>
+                                Grid.Row="0" Grid.RowSpan="2"  Margin="-10000,0,0,0" x:Name="BorderLine"/>
                     </Grid>
                 </ScrollViewer>
             </Grid>

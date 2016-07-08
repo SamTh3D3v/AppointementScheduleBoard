@@ -159,7 +159,14 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <Slider Margin="2" Grid.Column="0" Minimum="1" Maximum="1000" Value="{Binding ScheduleBoardViewModel.TimeLineUnitSize,Mode=TwoWay,Source={StaticResource Locator},IsAsync=True}" />
+                                    <Slider Margin="2" Grid.Column="0" Minimum="1" Maximum="1000" Value="{Binding ScheduleBoardViewModel.TimeLineUnitSize,Mode=TwoWay,Source={StaticResource Locator},IsAsync=True}" >
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="ValueChanged">
+                                                <command:EventToCommand Command="{Binding Path=ScheduleBoardViewModel.UnitSizehangedCommand,Source={StaticResource Locator}}" 
+                            PassEventArgsToCommand="True"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Slider>
                                     <controls:NumericUpDown Margin="2" Minimum="1" Maximum="1000" Grid.Column="1" Value="{Binding ScheduleBoardViewModel.TimeLineUnitSize,Mode=TwoWay,Source={StaticResource Locator},IsAsync=True}" />
                                 </Grid>
                             </GroupBox>

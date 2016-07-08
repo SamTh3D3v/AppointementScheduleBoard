@@ -147,6 +147,18 @@ namespace AppointementScheduleBoard.ViewModel
                     }));
             }
         }
+        private RelayCommand _uniteSizeChangedCommand;
+        public RelayCommand UnitSizehangedCommand
+        {
+            get
+            {
+                return _uniteSizeChangedCommand
+                    ?? (_uniteSizeChangedCommand = new RelayCommand(async () =>
+                    {
+                        await UpdateHoursCollection();
+                    }));
+            }
+        }
         #endregion
         #region Ctors and methods
         public ScheduleBoardViewModel(IFrameNavigationService mainFrameNavigationService, IDataService mainDataService) : base(mainFrameNavigationService, mainDataService)
@@ -174,10 +186,10 @@ namespace AppointementScheduleBoard.ViewModel
                     list.Add(new HourJobCard()
                     {
                         StartTime = startDateTime,
-                        EndTime = startDateTime.AddMinutes(10),
+                        EndTime = startDateTime.AddMinutes(10 * (1000 / TimeLineUnitSize)),
                         HourDesignation = startDateTime.ToString("HH:mm")
                     });
-                    startDateTime = startDateTime.AddMinutes(10);
+                    startDateTime = startDateTime.AddMinutes(10*(1000/TimeLineUnitSize));
                 }                
             });
             HoursCollection=new ObservableCollection<ITimeLineJobTask>(list);
