@@ -184,6 +184,12 @@ namespace DataLayer.DataService
             return false;
         }
 
+        public override bool RemoveStall(int stallId)
+        {
+            SampleStallsCollection.Remove(SampleStallsCollection.Find(s => s.Id == stallId));
+            return true;
+        }
+
         public SampleDataService()
         {
             var refDateTime = DateTime.Today.Add(GetServerSettings().StartHour);
