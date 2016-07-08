@@ -80,7 +80,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        
+
         <ScrollViewer  HorizontalAlignment="Stretch"
                                       HorizontalScrollBarVisibility="Disabled"
                                       VerticalScrollBarVisibility="Auto"
@@ -118,11 +118,11 @@
                                                         <TextBlock Text="{Binding Name}" Foreground="LightGreen" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
-                                                
+
                                             </ItemsControl>
                                         </StackPanel>
                                     </ScrollViewer>
-                                   
+
                                 </Border>
                                 <Border Grid.Column="1" Width="75" Height="80" Grid.Row="0" BorderBrush="{StaticResource DarkerG}" 
                                         Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsPlanActualHeaderVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}"
@@ -274,18 +274,6 @@
             </Grid>
 
         </ScrollViewer>
-        <Grid Grid.Row="1" Visibility="Collapsed">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Slider  Grid.Column="0"
-                        Minimum="1"
-                        Maximum="1000"
-                 Value="{Binding TimeLineUnitSize,Mode=TwoWay}"
-                         />
-            <controls:NumericUpDown Minimum="1" Maximum="1000" Grid.Column="1" Value="{Binding TimeLineUnitSize,Mode=TwoWay}"/>
-        </Grid>
         <controls:ProgressRing Grid.Row="0" IsLarge="True" Width="100" Height="100" Grid.RowSpan="2" Foreground="{DynamicResource AccentColorBrush}" VerticalAlignment="Center" HorizontalAlignment="Center" IsActive="{Binding IsPrograssRingActive}"/>
     </Grid>
 </Page>

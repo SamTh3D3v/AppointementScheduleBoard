@@ -24,6 +24,7 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <GroupBox Header="Selected Branch" Grid.Row="0">
                                 <Grid>
@@ -152,7 +153,18 @@
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Header="Select Stalls to View" Grid.Row="5">
+                            <GroupBox Header="Unit size" Grid.Row="5">
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Slider Margin="2" Grid.Column="0" Minimum="1" Maximum="1000" Value="{Binding ScheduleBoardViewModel.TimeLineUnitSize,Mode=TwoWay,Source={StaticResource Locator},IsAsync=True}" />
+                                    <controls:NumericUpDown Margin="2" Minimum="1" Maximum="1000" Grid.Column="1" Value="{Binding ScheduleBoardViewModel.TimeLineUnitSize,Mode=TwoWay,Source={StaticResource Locator},IsAsync=True}" />
+                                </Grid>
+                            </GroupBox>
+
+                            <GroupBox Header="Select Stalls to View" Grid.Row="6">
                                 <Grid>
                                     <ItemsControl Margin="5" ItemsSource="{Binding StallsCollection}">
                                         <ItemsControl.ItemsPanel>
@@ -160,12 +172,12 @@
                                                 <StackPanel Orientation="Horizontal"></StackPanel>
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
-                                       <ItemsControl.ItemTemplate>
-                                           <DataTemplate >
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate >
                                                 <ToggleButton Margin="5" Content="{Binding StallName}" Width="50" Height="50"/>
                                             </DataTemplate>
-                                       </ItemsControl.ItemTemplate>
-                                   </ItemsControl>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
                                 </Grid>
                             </GroupBox>
 
