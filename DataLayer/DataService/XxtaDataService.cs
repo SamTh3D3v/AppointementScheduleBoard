@@ -328,5 +328,25 @@ namespace DataLayer.DataService
                 IsTimeHeaderVisible = bool.Parse(ConfigurationManager.AppSettings["IsTimeHeaderVisible"])
             };
         }
+
+        public void UpdateLocalSettings(LocalSettings settings)
+        {
+            ConfigurationManager.AppSettings["IsClockFormat24"] = settings.IsClockFormat24.ToString();
+            ConfigurationManager.AppSettings["RefreshTimeInMinutes"] = settings.RefreshTimeInMinutes.ToString();
+            ConfigurationManager.AppSettings["UnitSize"] = settings.UnitSize.ToString();
+            ConfigurationManager.AppSettings["IsShipClientWaitingVisible"] = settings.IsShipClientWaitingVisible.ToString();
+            ConfigurationManager.AppSettings["IsShipJobtypeVisible"] = settings.IsShipJobtypeVisible.ToString();
+            ConfigurationManager.AppSettings["IsShipPdtVisible"] = settings.IsShipPdtVisible.ToString();
+            ConfigurationManager.AppSettings["IsShipReceptionTimeVisible"] =
+                settings.IsShipReceptionTimeVisible.ToString();
+            ConfigurationManager.AppSettings["IsShipStatusVisible"] = settings.IsShipStatusVisible.ToString();
+            ConfigurationManager.AppSettings["IsPlanActualHeaderVisible"] =
+                settings.IsPlanActualHeaderVisible.ToString();
+            ConfigurationManager.AppSettings["IsPlanActualMerged"] = settings.IsPlanActualMerged.ToString();
+            ConfigurationManager.AppSettings["IsStallNamesVisible"] = settings.IsStallNamesVisible.ToString();
+            ConfigurationManager.AppSettings["IsTechnicientsNamesVisible"] =
+                settings.IsTechnicientsNamesVisible.ToString();
+            ConfigurationManager.AppSettings["IsTimeHeaderVisible"] = settings.IsTimeHeaderVisible.ToString();
+        }
     }
 }

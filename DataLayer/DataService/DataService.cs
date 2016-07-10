@@ -81,5 +81,10 @@ namespace DataLayer.DataService
             //todo Oussama
             throw new NotImplementedException();
         }
+
+        public virtual void UpdateLocalSettings(LocalSettings settings)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

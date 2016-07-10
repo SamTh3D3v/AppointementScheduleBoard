@@ -24,6 +24,7 @@ namespace AppointementScheduleBoard.ViewModel
         private ObservableCollection<ITimeLineJobTask> _hoursCollection;       
         private DateTime _startDateTime;
         private DateTime _endDateTime;
+        private DispatcherTimer _dispatcherTimer;
         #endregion
         #region Properties 
         public bool IsPrograssRingActive
@@ -171,14 +172,23 @@ namespace AppointementScheduleBoard.ViewModel
                     case "ReloadBoard":
                         await ReloadBoard();
                         break;
+                    case "RefreshTimeUpdated":
+                        var refTimeSec = MainDataService.GetLocalSettings().RefreshTimeInMinutes * 60;
+                        _dispatcherTimer.Interval = new TimeSpan(0, 0, (int)refTimeSec);
+                        break;
+                    case "ClockFormatChanged":
+                        //todo change the clock format
+                        break;
+
 
                 }
             });
-            var dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += dispatcherTimer_Tick;
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
-            dispatcherTimer.Start();
-        }
+            _dispatcherTimer = new DispatcherTimer();
+            _dispatcherTimer.Tick += dispatcherTimer_Tick;
+            var refreshTimeInSeconds=MainDataService.GetLocalSettings().RefreshTimeInMinutes*60;
+            _dispatcherTimer.Interval = new TimeSpan(0, 0, (int) refreshTimeInSeconds);
+            _dispatcherTimer.Start();
+        }            
         private async void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             await RefreshBoardPeriodicly();

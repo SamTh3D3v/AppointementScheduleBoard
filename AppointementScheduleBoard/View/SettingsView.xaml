@@ -48,7 +48,7 @@
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Header="Work hours" Grid.Row="1">
+                            <GroupBox Header="Settings" Grid.Row="1">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
@@ -62,13 +62,31 @@
                                     </Grid.ColumnDefinitions>
                                     <Label Content="working hours " Grid.Column="0" Grid.Row="0"/>
                                     <Label Content="clock format " Grid.Column="0" Grid.Row="1"/>
-                                    <Label Content="Unit size " Grid.Column="0" Grid.Row="2"/>
+                                    <Label Content="Refresh time " Grid.Column="0" Grid.Row="2"/>
 
                                     <Label Content="{Binding ServerSettings.StartHour}" ContentStringFormat="start: {0}"  Grid.Row="0" Grid.Column="1"/>
                                     <Label Content="{Binding ServerSettings.EndHour}" ContentStringFormat="-  end: {0}" Grid.Row="0" Grid.Column="2"/>
-                                    <RadioButton Content="24" IsChecked="{Binding LocalSettings.IsClockFormat24}" Grid.Row="1" Grid.Column="1" GroupName="clockFormat"/>
+                                    <RadioButton Content="24" IsChecked="{Binding LocalSettings.IsClockFormat24}" Grid.Row="1" Grid.Column="1" GroupName="clockFormat">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Checked">
+                                                <command:EventToCommand Command="{Binding Path=ClockFormateChangedChangedCommand}"
+                            PassEventArgsToCommand="True"/>
+                                            </i:EventTrigger>
+                                            <i:EventTrigger EventName="Unchecked">
+                                                <command:EventToCommand Command="{Binding Path=ClockFormateChangedChangedCommand}"
+                            PassEventArgsToCommand="True"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </RadioButton>
                                     <RadioButton Content="12" Grid.Row="1" Grid.Column="2" GroupName="clockFormat"/>
-                                    <controls:NumericUpDown Value="{Binding LocalSettings.UnitSize}" Minimum="1" Maximum="100" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2"/>
+                                    <controls:NumericUpDown Value="{Binding LocalSettings.RefreshTimeInMinutes,Mode=TwoWay}"  Minimum="0" Maximum="100" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="ValueChanged">
+                                                <command:EventToCommand Command="{Binding Path=RefreshTimeChangedCommand}"
+                            PassEventArgsToCommand="True"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </controls:NumericUpDown>
                                 </Grid>
                             </GroupBox>
 

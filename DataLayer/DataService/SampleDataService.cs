@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Linq;
 using System.Windows.Threading;
 using DataLayer.Enums;
@@ -59,25 +60,43 @@ namespace DataLayer.DataService
         }
 
         public override LocalSettings GetLocalSettings()
-        {
-            //Get those settings from the XML file
+        {            
             return new LocalSettings()
             {
-                IsClockFormat24 = true,
-                RefreshTimeInMinutes = 0.1,
-                UnitSize = 100,
-                IsShipClientWaitingVisible = true,
-                IsShipJobtypeVisible = true,
-                IsShipPdtVisible = true,
-                IsShipReceptionTimeVisible = true,
-                IsShipStatusVisible = true,
-
-                IsPlanActualHeaderVisible = true,
-                IsPlanActualMerged = false,
-                IsStallNamesVisible = true,
-                IsTechnicientsNamesVisible = true,
-                IsTimeHeaderVisible = true
+                IsClockFormat24 = bool.Parse(ConfigurationManager.AppSettings["IsClockFormat24"]),
+                RefreshTimeInMinutes = Double.Parse(ConfigurationManager.AppSettings["RefreshTimeInMinutes"]),
+                UnitSize = Double.Parse(ConfigurationManager.AppSettings["UnitSize"]),
+                IsShipClientWaitingVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipClientWaitingVisible"]),
+                IsShipJobtypeVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipJobtypeVisible"]),
+                IsShipPdtVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipPdtVisible"]),
+                IsShipReceptionTimeVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipReceptionTimeVisible"]),
+                IsShipStatusVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipStatusVisible"]),
+                IsPlanActualHeaderVisible = bool.Parse(ConfigurationManager.AppSettings["IsPlanActualHeaderVisible"]),
+                IsPlanActualMerged = bool.Parse(ConfigurationManager.AppSettings["IsPlanActualMerged"]),
+                IsStallNamesVisible = bool.Parse(ConfigurationManager.AppSettings["IsStallNamesVisible"]),
+                IsTechnicientsNamesVisible = bool.Parse(ConfigurationManager.AppSettings["IsTechnicientsNamesVisible"]),
+                IsTimeHeaderVisible = bool.Parse(ConfigurationManager.AppSettings["IsTimeHeaderVisible"])
             };
+        }
+
+        public override void UpdateLocalSettings(LocalSettings settings)
+        {
+            ConfigurationManager.AppSettings["IsClockFormat24"] = settings.IsClockFormat24.ToString();
+            ConfigurationManager.AppSettings["RefreshTimeInMinutes"] = settings.RefreshTimeInMinutes.ToString();
+            ConfigurationManager.AppSettings["UnitSize"] = settings.UnitSize.ToString();
+            ConfigurationManager.AppSettings["IsShipClientWaitingVisible"] = settings.IsShipClientWaitingVisible.ToString();
+            ConfigurationManager.AppSettings["IsShipJobtypeVisible"] = settings.IsShipJobtypeVisible.ToString();
+            ConfigurationManager.AppSettings["IsShipPdtVisible"] = settings.IsShipPdtVisible.ToString();
+            ConfigurationManager.AppSettings["IsShipReceptionTimeVisible"] =
+                settings.IsShipReceptionTimeVisible.ToString();
+            ConfigurationManager.AppSettings["IsShipStatusVisible"] = settings.IsShipStatusVisible.ToString();
+            ConfigurationManager.AppSettings["IsPlanActualHeaderVisible"] =
+                settings.IsPlanActualHeaderVisible.ToString();
+            ConfigurationManager.AppSettings["IsPlanActualMerged"] = settings.IsPlanActualMerged.ToString();
+            ConfigurationManager.AppSettings["IsStallNamesVisible"] = settings.IsStallNamesVisible.ToString();
+            ConfigurationManager.AppSettings["IsTechnicientsNamesVisible"] =
+                settings.IsTechnicientsNamesVisible.ToString();
+            ConfigurationManager.AppSettings["IsTimeHeaderVisible"] = settings.IsTimeHeaderVisible.ToString();
         }
 
         public override List<Branch> GetAllBranchs()
@@ -549,7 +568,7 @@ namespace DataLayer.DataService
             {
                 SampleStallsCollection.First().JobTasksCollection.First().StatusId = 152;
             }
-            
+
         }
     }
 }
