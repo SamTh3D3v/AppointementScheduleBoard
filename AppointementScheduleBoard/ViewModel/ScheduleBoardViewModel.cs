@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using AppointementScheduleBoard.Helpers;
 using DataLayer;
 using DataLayer.DataService;
@@ -146,7 +147,7 @@ namespace AppointementScheduleBoard.ViewModel
                         await ReloadBoard();                        
                     }));
             }
-        }
+        }   
         private RelayCommand _uniteSizeChangedCommand;
         public RelayCommand UnitSizehangedCommand
         {
@@ -173,6 +174,14 @@ namespace AppointementScheduleBoard.ViewModel
 
                 }
             });
+            var dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += dispatcherTimer_Tick;
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
+            dispatcherTimer.Start();
+        }
+        private async void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            await RefreshBoardPeriodicly();
         }
 
         private async Task UpdateHoursCollection()
@@ -208,6 +217,11 @@ namespace AppointementScheduleBoard.ViewModel
 
             await UpdateHoursCollection();
             IsPrograssRingActive = false;
+        }
+
+        private async Task RefreshBoardPeriodicly()
+        {
+            StallsCollection = new ObservableCollection<Stall>(await Task.Run(() => MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter)));
         }
         #endregion       
     }

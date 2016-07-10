@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Threading;
 using DataLayer.Enums;
 using DataLayer.Model;
 
@@ -533,6 +534,22 @@ namespace DataLayer.DataService
                         }
 
                     };
+            var dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += dispatcherTimer_Tick;
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
+            dispatcherTimer.Start();
+        }
+        private async void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            if (SampleStallsCollection.First().JobTasksCollection.First().StatusId == 152)
+            {
+                SampleStallsCollection.First().JobTasksCollection.First().StatusId = 15;
+            }
+            else
+            {
+                SampleStallsCollection.First().JobTasksCollection.First().StatusId = 152;
+            }
+            
         }
     }
 }
