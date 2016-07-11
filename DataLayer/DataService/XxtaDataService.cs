@@ -204,10 +204,8 @@ namespace DataLayer.DataService
             OracleCommand insertCommand = new OracleCommand(@"INSERT INTO STALL(STALL_ID , BRANCH_ID , STALL_NAME , STALL_DESCRIPTION , IS_ACTIVE)
                                                           VALUES(STALL_SEQ.NEXTVAL , :BRANCH_ID , :STALL_NAME , :STALL_DESCRIPTION , :IS_ACTIVE)", _connection);
 
-            insertCommand.Parameters.Add("STALL_ID", OracleDbType.Int32);
-            insertCommand.Parameters["STALL_ID"].Value = newStall.Id;
             insertCommand.Parameters.Add("BRANCH_ID", OracleDbType.Varchar2);
-            insertCommand.Parameters["BRANCH_ID"].Value = newStall.BranchId;
+            insertCommand.Parameters["BRANCH_ID"].Value = newStall.BranchId.ToString();
             insertCommand.Parameters.Add("STALL_NAME", OracleDbType.Varchar2);
             insertCommand.Parameters["STALL_NAME"].Value = newStall.StallName;
             insertCommand.Parameters.Add("STALL_DESCRIPTION", OracleDbType.Varchar2);
@@ -245,6 +243,7 @@ namespace DataLayer.DataService
 
         public bool RemoveStall(int stall_Id)
         {
+            
             OracleCommand deleteCommand = new OracleCommand(@"DELETE STALL 
                                                               WHERE STALL_ID = :STALL_ID", _connection);
             deleteCommand.Parameters.Add("STALL_ID", OracleDbType.Int32);
@@ -254,6 +253,22 @@ namespace DataLayer.DataService
             return true;
         }
 
+        public bool isStallFree(int stall_Id)
+        {
+            OracleCommand query = new OracleCommand(@"SELECT COUNT(*) 
+                                                      FROM STALL_TECHNICIENS
+                                                      WHERE STALL_ID = :STALL_ID ", _connection);
+            query.Parameters.Add("STALL_ID", OracleDbType.Int32);
+            query.Parameters["STALL_ID"].Value = stall_Id;
+
+            OracleDataReader reader = query.ExecuteReader();
+            reader.Read();
+            if (int.Parse(reader.GetValue(0).ToString()) > 0)
+                return false;
+            else
+                return true;
+
+        }
         public bool AssignMechanicToStall(int STALL_ID, int MECHANIC_ID)
         {
             if (IsMechanicInStall(MECHANIC_ID))
@@ -316,14 +331,17 @@ namespace DataLayer.DataService
         {
             OracleCommand query = new OracleCommand(@"SELECT SYSDATE FROM DUAL ", _connection);
             OracleDataReader reader = query.ExecuteReader();
-
+            reader.Read();
+            DateTime sysDate = reader.GetDateTime(0);
+            reader.Close();
             //TODO : Mourad Search the params in EBS
             return new ServerSettings()
             {
                 StartHour = new TimeSpan(1, 0, 0),
                 EndHour = new TimeSpan(18, 0, 0),
-                DatabaseCurrentDate = reader.GetDateTime(0)
+                DatabaseCurrentDate = sysDate
             };
+            
         }
 
         public LocalSettings GetLocalSettings()

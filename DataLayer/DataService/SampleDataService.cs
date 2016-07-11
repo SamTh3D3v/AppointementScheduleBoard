@@ -77,11 +77,11 @@ namespace DataLayer.DataService
                 IsStallNamesVisible = bool.Parse(ConfigurationManager.AppSettings["IsStallNamesVisible"]),
                 IsTechnicientsNamesVisible = bool.Parse(ConfigurationManager.AppSettings["IsTechnicientsNamesVisible"]),
                 IsTimeHeaderVisible = bool.Parse(ConfigurationManager.AppSettings["IsTimeHeaderVisible"]),
-                IrrLateJobVr = ConfigurationManager.AppSettings["IrrLateJobVr"],
-                IrrLateJobBooked = ConfigurationManager.AppSettings["IrrLateJobBooked"],
-                IrrPlannedTimeExeeded = ConfigurationManager.AppSettings["IrrPlannedTimeExeeded"],
-                PdtExceededInProgress = ConfigurationManager.AppSettings["PdtExceededInProgress"],
-                PdtExceededWaittingForInvoice =ConfigurationManager.AppSettings["PdtExceededWaittingForInvoice"]
+                IrrLateJobVr = ConfigurationManager.AppSettings["IrrLateJobVr"].ToString(),
+                IrrLateJobBooked = ConfigurationManager.AppSettings["IrrLateJobBooked"].ToString(),
+                IrrPlannedTimeExeeded = ConfigurationManager.AppSettings["IrrPlannedTimeExeeded"].ToString(),
+                PdtExceededInProgress = ConfigurationManager.AppSettings["PdtExceededInProgress"].ToString(),
+                PdtExceededWaittingForInvoice =ConfigurationManager.AppSettings["PdtExceededWaittingForInvoice"].ToString()
                 
             };
         }
