@@ -176,12 +176,13 @@ namespace AppointementScheduleBoard.ViewModel
             get
             {
                 return _removeSelectedTechnicianCommand
-                    ?? (_removeSelectedTechnicianCommand = new RelayCommand<int>(
-                    (id) =>
+                    ?? (_removeSelectedTechnicianCommand = new RelayCommand<int>(async (id) =>
                     {
                         MainDataService.ReleaseMechanicFromStall(id);
                         //to avoid refreshing
                         //SelectedStall.Techniciens.Remove(SelectedStall.Techniciens.First(t => t.Id == id));
+                        //Or Whatever 
+                        await LaodStalls();
                     }));
             }
         }
@@ -330,18 +331,17 @@ namespace AppointementScheduleBoard.ViewModel
             get
             {
                 return _saveTechnicianListViewAffectationCommand
-                    ?? (_saveTechnicianListViewAffectationCommand = new RelayCommand<object>(
-                    (obj) =>
+                    ?? (_saveTechnicianListViewAffectationCommand = new RelayCommand<object>(async (obj) =>
                     {
                         var selectedTechniciansList = obj as IList;
                         if (selectedTechniciansList != null)
                             foreach (var tech in selectedTechniciansList)
                             {
-                                MainDataService.AssignMechanicToStall(SelectedStall.Id, (tech as Technicien).Id);
-                                SelectedStall.Techniciens.Add((Technicien) tech);
+                                MainDataService.AssignMechanicToStall(SelectedStall.Id, (tech as Technicien).Id);                                
                             }
                         _techniciansListView.Close();
                         SearchText = "";
+                        await LaodStalls();
                     }));
             }
         }
