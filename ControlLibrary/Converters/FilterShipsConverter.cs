@@ -23,7 +23,7 @@ namespace ControlLibrary.Converters
                 case TimeLineFilter.Planned:
                     var plannedTasks= 
               ((ObservableCollection<ITimeLineJobTask >)values[0]).Where(
-                  j => j.StatusId == 145 || j.StatusId == 152).ToList();
+                  j => j.StatusId == 145 || j.StatusId == 152 || j.StatusId ==144).ToList();  //144 : Allocated
                     return new ObservableCollection<ITimeLineJobTask>(plannedTasks);
                 case TimeLineFilter.Actual:
                     var actualTasks =

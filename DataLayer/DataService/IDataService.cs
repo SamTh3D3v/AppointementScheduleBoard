@@ -49,5 +49,7 @@ namespace DataLayer.DataService
         /// </summary>
         /// <returns></returns>
         LocalSettings GetLocalSettings();
+
+        void UpdateLocalSettings(LocalSettings settings);
     }
 }

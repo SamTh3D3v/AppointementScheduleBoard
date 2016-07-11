@@ -257,6 +257,35 @@ namespace AppointementScheduleBoard.ViewModel
                     }));
             }
         }
+        private RelayCommand _refreshTimeChangedCommand;    
+        public RelayCommand RefreshTimeChangedCommand
+        {
+            get
+            {
+                return _refreshTimeChangedCommand
+                    ?? (_refreshTimeChangedCommand = new RelayCommand(
+                    () =>
+                    {
+                        MainDataService.UpdateLocalSettings(LocalSettings);
+                        Messenger.Default.Send<NotificationMessage>(new NotificationMessage("RefreshTimeUpdated"));
+                    }));
+            }
+        }
+        private RelayCommand _clockFormateChangedChangedCommand;
+        public RelayCommand ClockFormateChangedChangedCommand
+        {
+            get
+            {
+                return _clockFormateChangedChangedCommand
+                    ?? (_clockFormateChangedChangedCommand = new RelayCommand(
+                    () =>
+                    {
+                        MainDataService.UpdateLocalSettings(LocalSettings);
+                        Messenger.Default.Send<NotificationMessage>(new NotificationMessage("ClockFormatChanged"));
+                    }));
+            }
+        }
+        
         #endregion
         #region Ctors and methods
         public MainViewModel(IFrameNavigationService mainFrameNavigationService,IDataService mainDataService) : base(mainFrameNavigationService, mainDataService)

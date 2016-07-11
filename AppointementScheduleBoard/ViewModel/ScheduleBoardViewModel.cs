@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using AppointementScheduleBoard.Helpers;
 using DataLayer;
 using DataLayer.DataService;
@@ -23,6 +24,7 @@ namespace AppointementScheduleBoard.ViewModel
         private ObservableCollection<ITimeLineJobTask> _hoursCollection;       
         private DateTime _startDateTime;
         private DateTime _endDateTime;
+        private DispatcherTimer _dispatcherTimer;
         #endregion
         #region Properties 
         public bool IsPrograssRingActive
@@ -146,7 +148,7 @@ namespace AppointementScheduleBoard.ViewModel
                         await ReloadBoard();                        
                     }));
             }
-        }
+        }   
         private RelayCommand _uniteSizeChangedCommand;
         public RelayCommand UnitSizehangedCommand
         {
@@ -170,9 +172,26 @@ namespace AppointementScheduleBoard.ViewModel
                     case "ReloadBoard":
                         await ReloadBoard();
                         break;
+                    case "RefreshTimeUpdated":
+                        var refTimeSec = MainDataService.GetLocalSettings().RefreshTimeInMinutes * 60;
+                        _dispatcherTimer.Interval = new TimeSpan(0, 0, (int)refTimeSec);
+                        break;
+                    case "ClockFormatChanged":
+                        //todo change the clock format
+                        break;
+
 
                 }
             });
+            _dispatcherTimer = new DispatcherTimer();
+            _dispatcherTimer.Tick += dispatcherTimer_Tick;
+            var refreshTimeInSeconds=MainDataService.GetLocalSettings().RefreshTimeInMinutes*60;
+            _dispatcherTimer.Interval = new TimeSpan(0, 0, (int) refreshTimeInSeconds);
+            _dispatcherTimer.Start();
+        }            
+        private async void dispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            await RefreshBoardPeriodicly();
         }
 
         private async Task UpdateHoursCollection()
@@ -208,6 +227,11 @@ namespace AppointementScheduleBoard.ViewModel
 
             await UpdateHoursCollection();
             IsPrograssRingActive = false;
+        }
+
+        private async Task RefreshBoardPeriodicly()
+        {
+            StallsCollection = new ObservableCollection<Stall>(await Task.Run(() => MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter)));
         }
         #endregion       
     }
