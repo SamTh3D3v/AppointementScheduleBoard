@@ -101,7 +101,7 @@ namespace DataLayer.DataService
                                                    +"WHERE BRANCH_ID = :BRANCH_ID AND IS_ACTIVE = 'Y' ", _connection);
             query.Parameters.Add("BRANCH_ID", OracleDbType.Varchar2);
             query.Parameters["BRANCH_ID"].Value = BRANCH_ID.ToString();
-            //OpenConnection();
+
             OracleDataReader stallReader = query.ExecuteReader();
             if (stallReader.HasRows)
             {
@@ -175,14 +175,12 @@ namespace DataLayer.DataService
                                     jobTask.Status = jobTasksReader.GetString(6);
                                     jobTask.PDT = jobTasksReader.GetDateTime(9);
                                     jobTask.PlannedStartTime = jobTasksReader.GetDateTime(7);
-                                    jobTask.StartTime = jobTasksReader.GetDateTime(8);
+                                    jobTask.ActualStartTime = jobTasksReader.GetDateTime(8);
                                     jobTask.EndTime = jobTasksReader.GetDateTime(10);
                                     if (currentStall.JobTasksCollection.Count(c => c.Id == jobTask.Id) == 0)
                                     {
                                         currentStall.JobTasksCollection.Add(jobTask);
                                     }
-                                    
-
                                 }
                             }
                             jobTasksReader.Close();
@@ -197,17 +195,18 @@ namespace DataLayer.DataService
 
             }
             stallReader.Close();
-            //CloseConnection();
+
             return OrganisationStalls;
         }
 
         public int AddStall(Stall newStall)
         {
-            OracleCommand insertCommand = new OracleCommand("INSERT INTO STALL(STALL_ID , BRANCH_ID , STALL_NAME , STALL_DESCRIPTION , IS_ACTIVE) "
-                                                          + "VALUES(STALL_SEQ.NEXTVAL , :BRANCH_ID , :STALL_NAME , :STALL_DESCRIPTION , :IS_ACTIVE)", _connection);
+            OracleCommand insertCommand = new OracleCommand(@"INSERT INTO STALL(STALL_ID , BRANCH_ID , STALL_NAME , STALL_DESCRIPTION , IS_ACTIVE)
+                                                          VALUES(STALL_SEQ.NEXTVAL , :BRANCH_ID , :STALL_NAME , :STALL_DESCRIPTION , :IS_ACTIVE)", _connection);
+
             insertCommand.Parameters.Add("STALL_ID", OracleDbType.Int32);
             insertCommand.Parameters["STALL_ID"].Value = newStall.Id;
-            insertCommand.Parameters.Add("@BRANCH_ID", OracleDbType.Varchar2);
+            insertCommand.Parameters.Add("BRANCH_ID", OracleDbType.Varchar2);
             insertCommand.Parameters["BRANCH_ID"].Value = newStall.BranchId;
             insertCommand.Parameters.Add("STALL_NAME", OracleDbType.Varchar2);
             insertCommand.Parameters["STALL_NAME"].Value = newStall.StallName;
@@ -215,9 +214,9 @@ namespace DataLayer.DataService
             insertCommand.Parameters["STALL_DESCRIPTION"].Value = newStall.StallDescription;
             insertCommand.Parameters.Add("IS_ACTIVE", OracleDbType.Varchar2);
             insertCommand.Parameters["IS_ACTIVE"].Value = newStall.IsActive;
-            //OpenConnection();
+
             insertCommand.ExecuteNonQuery();
-            //CloseConnection();
+
             return newStall.Id;
         }
 
@@ -239,20 +238,19 @@ namespace DataLayer.DataService
             updateCommand.Parameters.Add("IS_ACTIVE", OracleDbType.Varchar2);
             updateCommand.Parameters["IS_ACTIVE"].Value = UpdatedStall.IsActive;
 
-            //OpenConnection();
             updateCommand.ExecuteNonQuery();
-            //CloseConnection();
+
             return UpdatedStall.Id;
         }
 
         public bool RemoveStall(int stall_Id)
         {
-            OracleCommand deleteCommand = new OracleCommand("DELETE STALL WHERE STALL_ID = :STALL_ID", _connection);
+            OracleCommand deleteCommand = new OracleCommand(@"DELETE STALL 
+                                                              WHERE STALL_ID = :STALL_ID", _connection);
             deleteCommand.Parameters.Add("STALL_ID", OracleDbType.Int32);
             deleteCommand.Parameters["STALL_ID"].Value = stall_Id;
-            //OpenConnection();
+            
             deleteCommand.ExecuteNonQuery();
-            //CloseConnection();
             return true;
         }
 
@@ -264,16 +262,14 @@ namespace DataLayer.DataService
             }
             else
             {
-                OracleCommand insertCommand = new OracleCommand("INSERT INTO STALL_TECHNICIENS "
-                                                              + "VALUES(STALL_TECHNICIENS_SEQ.NEXTVAL , :STALL_ID , :MECHANIC_ID , SYSDATE) ", _connection);
+                OracleCommand insertCommand = new OracleCommand(@"INSERT INTO STALL_TECHNICIENS
+                                                                  VALUES(STALL_TECHNICIENS_SEQ.NEXTVAL , :STALL_ID , :MECHANIC_ID , SYSDATE) ", _connection);
                 insertCommand.Parameters.Add("STALL_ID", OracleDbType.Int32);
                 insertCommand.Parameters["STALL_ID"].Value = STALL_ID;
                 insertCommand.Parameters.Add("MECHANIC_ID", OracleDbType.Int32);
                 insertCommand.Parameters["MECHANIC_ID"].Value = MECHANIC_ID;
-
-                //OpenConnection();
+                
                 insertCommand.ExecuteNonQuery();
-                //CloseConnection();
             }
             return true;
         }
@@ -286,14 +282,12 @@ namespace DataLayer.DataService
             }
             else
             {
-                OracleCommand deleteCommand = new OracleCommand("DELETE FROM STALL_TECHNICIENS "
-                                                              + "WHERE TECHNICIEN_ID = :MECHANIC_ID ", _connection);
+                OracleCommand deleteCommand = new OracleCommand(@"DELETE FROM STALL_TECHNICIENS
+                                                                  WHERE TECHNICIEN_ID = :MECHANIC_ID ", _connection);
                 deleteCommand.Parameters.Add("MECHANIC_ID", OracleDbType.Int32);
                 deleteCommand.Parameters["MECHANIC_ID"].Value = MECHANIC_ID;
 
-                //OpenConnection();
                 deleteCommand.ExecuteNonQuery();
-                //CloseConnection();
             }
             return true;
         }
@@ -301,9 +295,9 @@ namespace DataLayer.DataService
         public bool IsMechanicInStall(int MECHANIC_ID)
         {
             bool IsInStall = false;
-            OracleCommand query = new OracleCommand("SELECT COUNT(*) AS COUNT "
-                                                  + "FROM STALL_TECHNICIENS "
-                                                  + "WHERE TECHNICIEN_ID = :MECHANIC_ID ", _connection);
+            OracleCommand query = new OracleCommand(@"SELECT COUNT(*) AS COUNT
+                                                      FROM STALL_TECHNICIENS
+                                                      WHERE TECHNICIEN_ID = :MECHANIC_ID ", _connection);
             query.Parameters.Add("MECHANIC_ID", OracleDbType.Int32);
             query.Parameters["MECHANIC_ID"].Value = MECHANIC_ID;
             //OpenConnection();
@@ -320,12 +314,15 @@ namespace DataLayer.DataService
 
         public ServerSettings GetServerSettings()
         {
+            OracleCommand query = new OracleCommand(@"SELECT SYSDATE FROM DUAL ", _connection);
+            OracleDataReader reader = query.ExecuteReader();
+
             //TODO : Mourad Search the params in EBS
             return new ServerSettings()
             {
                 StartHour = new TimeSpan(1, 0, 0),
                 EndHour = new TimeSpan(18, 0, 0),
-
+                DatabaseCurrentDate = reader.GetDateTime(0)
             };
         }
 
@@ -333,33 +330,33 @@ namespace DataLayer.DataService
         {
             return new LocalSettings()
             {
-                //IsClockFormat24 =bool.Parse(ConfigurationManager.AppSettings["IsClockFormat24"]),
-                //RefreshTimeInMinutes = Double.Parse(ConfigurationManager.AppSettings["RefreshTimeInMinutes"]),
-                //UnitSize = Double.Parse(ConfigurationManager.AppSettings["UnitSize"]),
-                //IsShipClientWaitingVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipClientWaitingVisible"]),
-                //IsShipJobtypeVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipJobtypeVisible"]),
-                //IsShipPdtVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipPdtVisible"]),
-                //IsShipReceptionTimeVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipReceptionTimeVisible"]),
-                //IsShipStatusVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipStatusVisible"]),
-                //IsPlanActualHeaderVisible = bool.Parse(ConfigurationManager.AppSettings["IsPlanActualHeaderVisible"]),
-                //IsPlanActualMerged = bool.Parse(ConfigurationManager.AppSettings["IsPlanActualMerged"]),
-                //IsStallNamesVisible = bool.Parse(ConfigurationManager.AppSettings["IsStallNamesVisible"]),
-                //IsTechnicientsNamesVisible = bool.Parse(ConfigurationManager.AppSettings["IsTechnicientsNamesVisible"]),
-                //IsTimeHeaderVisible = bool.Parse(ConfigurationManager.AppSettings["IsTimeHeaderVisible"])
-                IsClockFormat24 = true,
-                RefreshTimeInMinutes = 0.1,
-                UnitSize = 100,
-                IsShipClientWaitingVisible = true,
-                IsShipJobtypeVisible = true,
-                IsShipPdtVisible = true,
-                IsShipReceptionTimeVisible = true,
-                IsShipStatusVisible = true,
+                IsClockFormat24 = bool.Parse(ConfigurationManager.AppSettings["IsClockFormat24"]),
+                RefreshTimeInMinutes = Double.Parse(ConfigurationManager.AppSettings["RefreshTimeInMinutes"]),
+                UnitSize = Double.Parse(ConfigurationManager.AppSettings["UnitSize"]),
+                IsShipClientWaitingVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipClientWaitingVisible"]),
+                IsShipJobtypeVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipJobtypeVisible"]),
+                IsShipPdtVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipPdtVisible"]),
+                IsShipReceptionTimeVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipReceptionTimeVisible"]),
+                IsShipStatusVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipStatusVisible"]),
+                IsPlanActualHeaderVisible = bool.Parse(ConfigurationManager.AppSettings["IsPlanActualHeaderVisible"]),
+                IsPlanActualMerged = bool.Parse(ConfigurationManager.AppSettings["IsPlanActualMerged"]),
+                IsStallNamesVisible = bool.Parse(ConfigurationManager.AppSettings["IsStallNamesVisible"]),
+                IsTechnicientsNamesVisible = bool.Parse(ConfigurationManager.AppSettings["IsTechnicientsNamesVisible"]),
+                IsTimeHeaderVisible = bool.Parse(ConfigurationManager.AppSettings["IsTimeHeaderVisible"])
+                //IsClockFormat24 = true,
+                //RefreshTimeInMinutes = 0.1,
+                //UnitSize = 100,
+                //IsShipClientWaitingVisible = true,
+                //IsShipJobtypeVisible = true,
+                //IsShipPdtVisible = true,
+                //IsShipReceptionTimeVisible = true,
+                //IsShipStatusVisible = true,
 
-                IsPlanActualHeaderVisible = true,
-                IsPlanActualMerged = false,
-                IsStallNamesVisible = true,
-                IsTechnicientsNamesVisible = true,
-                IsTimeHeaderVisible = true
+                //IsPlanActualHeaderVisible = true,
+                //IsPlanActualMerged = false,
+                //IsStallNamesVisible = true,
+                //IsTechnicientsNamesVisible = true,
+                //IsTimeHeaderVisible = true
             };
         }
 
