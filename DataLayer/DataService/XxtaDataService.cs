@@ -11,7 +11,7 @@ using DataLayer.Exceptions;
 
 namespace DataLayer.DataService
 {
-    public class XxtaDataService : IDataService
+    public class XxtaDataService : IDataService , IDisposable
     {
         OracleConnection _connection ;
         public XxtaDataService()
@@ -21,23 +21,24 @@ namespace DataLayer.DataService
                                 "(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)" +
                                  "(HOST=10.254.0.170)(PORT=1551))(CONNECT_DATA=" +
                                   "(SERVICE_NAME=DEV)))";
+            _connection.Open();
         }
         public void OpenConnection()
         {
-            if (_connection.State != System.Data.ConnectionState.Open)
-                _connection.Open();  
+            //if (_connection.State != System.Data.ConnectionState.Open)
+            //    _connection.Open();  
         }
         public void CloseConnection()
         {
-            if (_connection.State == System.Data.ConnectionState.Open)
-                _connection.Close();
+            //if (_connection.State == System.Data.ConnectionState.Open)
+            //    _connection.Close();
         }
         public List<Branch> GetAllBranchs()
         {
             List<Branch> branchs = new List<Branch>();
             OracleCommand branchsQuery = new OracleCommand("SELECT BRANCH_ID , SUC_NAME " 
                                                          + "FROM APPS.XXTA_BRANCH_SIT ", _connection);
-            _connection.Open();
+            //_connection.Open();
             OracleDataReader BranchsReader = branchsQuery.ExecuteReader();
             if (BranchsReader.HasRows)
             {
@@ -51,7 +52,7 @@ namespace DataLayer.DataService
             }
 
             BranchsReader.Close();
-            _connection.Close();
+            //_connection.Close();
             return branchs;
         }
 
@@ -63,7 +64,7 @@ namespace DataLayer.DataService
                                                            + "WHERE BRANCH_CODE = :BRANCH_ID ", _connection);
             mechanicsQuery.Parameters.Add("BRANCH_ID", OracleDbType.Varchar2);
             mechanicsQuery.Parameters["BRANCH_ID"].Value = BRANCH_ID.ToString();
-            _connection.Open();
+            //_connection.Open();
             OracleDataReader mechanicsReader = mechanicsQuery.ExecuteReader();
             if (mechanicsReader.HasRows)
             {
@@ -76,7 +77,7 @@ namespace DataLayer.DataService
                 }
             }
             mechanicsReader.Close();
-            _connection.Close();
+            //_connection.Close();
             return mechanics;
         }
 
@@ -100,7 +101,7 @@ namespace DataLayer.DataService
                                                    +"WHERE BRANCH_ID = :BRANCH_ID AND IS_ACTIVE = 'Y' ", _connection);
             query.Parameters.Add("BRANCH_ID", OracleDbType.Varchar2);
             query.Parameters["BRANCH_ID"].Value = BRANCH_ID.ToString();
-            OpenConnection();
+            //OpenConnection();
             OracleDataReader stallReader = query.ExecuteReader();
             if (stallReader.HasRows)
             {
@@ -196,7 +197,7 @@ namespace DataLayer.DataService
 
             }
             stallReader.Close();
-            CloseConnection();
+            //CloseConnection();
             return OrganisationStalls;
         }
 
@@ -214,9 +215,9 @@ namespace DataLayer.DataService
             insertCommand.Parameters["STALL_DESCRIPTION"].Value = newStall.StallDescription;
             insertCommand.Parameters.Add("IS_ACTIVE", OracleDbType.Varchar2);
             insertCommand.Parameters["IS_ACTIVE"].Value = newStall.IsActive;
-            OpenConnection();
+            //OpenConnection();
             insertCommand.ExecuteNonQuery();
-            CloseConnection();
+            //CloseConnection();
             return newStall.Id;
         }
 
@@ -238,9 +239,9 @@ namespace DataLayer.DataService
             updateCommand.Parameters.Add("IS_ACTIVE", OracleDbType.Varchar2);
             updateCommand.Parameters["IS_ACTIVE"].Value = UpdatedStall.IsActive;
 
-            OpenConnection();
+            //OpenConnection();
             updateCommand.ExecuteNonQuery();
-            CloseConnection();
+            //CloseConnection();
             return UpdatedStall.Id;
         }
 
@@ -249,9 +250,9 @@ namespace DataLayer.DataService
             OracleCommand deleteCommand = new OracleCommand("DELETE STALL WHERE STALL_ID = :STALL_ID", _connection);
             deleteCommand.Parameters.Add("STALL_ID", OracleDbType.Int32);
             deleteCommand.Parameters["STALL_ID"].Value = stall_Id;
-            OpenConnection();
+            //OpenConnection();
             deleteCommand.ExecuteNonQuery();
-            CloseConnection();
+            //CloseConnection();
             return true;
         }
 
@@ -270,9 +271,9 @@ namespace DataLayer.DataService
                 insertCommand.Parameters.Add("MECHANIC_ID", OracleDbType.Int32);
                 insertCommand.Parameters["MECHANIC_ID"].Value = MECHANIC_ID;
 
-                OpenConnection();
+                //OpenConnection();
                 insertCommand.ExecuteNonQuery();
-                CloseConnection();
+                //CloseConnection();
             }
             return true;
         }
@@ -290,9 +291,9 @@ namespace DataLayer.DataService
                 deleteCommand.Parameters.Add("MECHANIC_ID", OracleDbType.Int32);
                 deleteCommand.Parameters["MECHANIC_ID"].Value = MECHANIC_ID;
 
-                OpenConnection();
+                //OpenConnection();
                 deleteCommand.ExecuteNonQuery();
-                CloseConnection();
+                //CloseConnection();
             }
             return true;
         }
@@ -305,7 +306,7 @@ namespace DataLayer.DataService
                                                   + "WHERE TECHNICIEN_ID = :MECHANIC_ID ", _connection);
             query.Parameters.Add("MECHANIC_ID", OracleDbType.Int32);
             query.Parameters["MECHANIC_ID"].Value = MECHANIC_ID;
-            OpenConnection();
+            //OpenConnection();
             OracleDataReader reader = query.ExecuteReader();
 
             reader.Read();
@@ -313,7 +314,7 @@ namespace DataLayer.DataService
                 IsInStall = true;
 
             reader.Close();
-            CloseConnection();
+            //CloseConnection();
             return IsInStall;
         }
 
@@ -323,7 +324,8 @@ namespace DataLayer.DataService
             return new ServerSettings()
             {
                 StartHour = new TimeSpan(1, 0, 0),
-                EndHour = new TimeSpan(18, 0, 0)
+                EndHour = new TimeSpan(18, 0, 0),
+
             };
         }
 
@@ -379,6 +381,11 @@ namespace DataLayer.DataService
             ConfigurationManager.AppSettings["IsTechnicientsNamesVisible"] =
                 settings.IsTechnicientsNamesVisible.ToString();
             ConfigurationManager.AppSettings["IsTimeHeaderVisible"] = settings.IsTimeHeaderVisible.ToString();
+        }
+
+        public void Dispose()
+        {
+            _connection.Close();
         }
     }
 }

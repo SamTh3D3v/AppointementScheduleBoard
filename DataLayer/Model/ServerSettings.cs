@@ -7,5 +7,6 @@ namespace DataLayer.Model
     {
         public TimeSpan StartHour { get; set; }
         public TimeSpan EndHour { get; set; }
+        public DateTime DatabaseCurrentDate { get; set; }
     }
 }
