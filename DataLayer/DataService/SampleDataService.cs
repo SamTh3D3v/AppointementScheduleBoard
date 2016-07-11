@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Linq;
+using System.Windows.Media;
 using System.Windows.Threading;
 using DataLayer.Enums;
 using DataLayer.Model;
@@ -245,7 +246,8 @@ namespace DataLayer.DataService
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
                                     Status = "Received",
-                                    StatusId = 152
+                                    StatusId = 152,
+                                    JobTaskBackGround = Brushes.Orange
 
                                 }
                             }
@@ -290,6 +292,7 @@ namespace DataLayer.DataService
                                     ReceptionTime = DateTime.Now,
                                     Status = "InProgress",
                                     StatusId = 147,
+                                    JobTaskBackGround = Brushes.Red
 
                                 }
 
@@ -449,7 +452,8 @@ namespace DataLayer.DataService
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
                                     Status = "Received",
-                                    StatusId = 152
+                                    StatusId = 152,
+                                    JobTaskBackGround = Brushes.Orange
 
                                 }
                             },

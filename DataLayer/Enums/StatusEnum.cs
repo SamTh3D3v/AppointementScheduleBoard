@@ -2,6 +2,6 @@
 {
     public enum StatusEnum
     {
-        Booked, Received, InProgress, WaitingForParts, WaitingForQc, WaitingForWashing
+        Booked=145, Received=152, InProgress, WaitingForParts, WaitingForQc, WaitingForWashing,Allocated=144
     }
 }

@@ -59,7 +59,7 @@
 
         <DataTemplate  DataType="{x:Type model:JobTask}"
                        x:Key="UsedTemplateProperty">
-            <userControls:JobCardItem/>
+            <userControls:JobCardItem Background="{Binding JobTaskBackGround}"/>
         </DataTemplate>
         <DataTemplate  DataType="{x:Type viewModel1:HourJobCard}"
                        x:Key="HeaderTemplateProperty">

@@ -15,14 +15,23 @@ using System.Windows.Shapes;
 
 namespace AppointementScheduleBoard.UserControls
 {
-    /// <summary>
-    /// Interaction logic for JobCardItem.xaml
-    /// </summary>
+    
     public partial class JobCardItem : UserControl
     {
+        public Brush ShipBrush
+        {
+            get { return (Brush)GetValue(ShipBrushProperty); }
+            set { SetValue(ShipBrushProperty, value); }
+        }
+
+
+        public static readonly DependencyProperty ShipBrushProperty =
+            DependencyProperty.Register("ShipBrush", typeof(Brush), typeof(JobCardItem), new UIPropertyMetadata(null));
+
+
         public JobCardItem()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
     }
 }

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AppointementScheduleBoard.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" >
+             d:DesignHeight="100" d:DesignWidth="350" x:Name="JcUserControl">
     <UserControl.Resources>
         <Style TargetType="TextBlock" x:Key="LabelStyle">
             <Setter Property="FontFamily" Value="segoe ui"></Setter>
@@ -16,65 +16,89 @@
             <Setter Property="Margin" Value="4"></Setter>
         </Style>
     </UserControl.Resources>
-    <Border                                         
+    <Grid>
+        <Border                                         
                     Margin="2"                    
                     Background="{StaticResource DarkG}" MinHeight="20">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Border Background="{StaticResource DarkerG}" Margin="1" Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsShipJobtypeVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}">
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="Job type" Style="{StaticResource LabelStyle}" FontSize="14"/>
-                    <TextBlock Text="{Binding JobType}" Style="{StaticResource LabelStyle}" Foreground="White" FontSize="14"/>
-                </StackPanel>
-            </Border>
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Border Margin="1" Grid.Row="0" Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsShipReceptionTimeVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="70"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Rec time" Style="{StaticResource LabelStyle}" />
-                        <TextBlock Grid.Column="1" Text="{Binding ReceptionTime,StringFormat='HH:mm'}" Style="{StaticResource LabelStyle}" Foreground="White" />
-                    </Grid>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="Clignoter"/>
+            </VisualStateManager.VisualStateGroups>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Border Background="{StaticResource DarkerG}" Margin="1" Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsShipJobtypeVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Job type" Style="{StaticResource LabelStyle}" FontSize="14"/>
+                        <TextBlock Text="{Binding JobType}" Style="{StaticResource LabelStyle}" Foreground="White" FontSize="14"/>
+                    </StackPanel>
                 </Border>
-                <Border Margin="1" Grid.Row="1" Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsShipPdtVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="70"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="PDT" Style="{StaticResource LabelStyle}" />
-                        <TextBlock Grid.Column="1" Text="{Binding PDT,StringFormat='HH:mm'}" Style="{StaticResource LabelStyle}" Foreground="White" />
-                    </Grid>
-                </Border>
-                <Border Margin="1" Grid.Row="2" Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsShipClientWaitingVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="70"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Cust wait" Style="{StaticResource LabelStyle}" />
-                        <TextBlock Grid.Column="1" Text="{Binding IsClientWaiting}" Style="{StaticResource LabelStyle}" Foreground="White"/>
-                    </Grid>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Border Margin="1" Grid.Row="0" Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsShipReceptionTimeVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Rec time" Style="{StaticResource LabelStyle}" />
+                            <TextBlock Grid.Column="1" Text="{Binding ReceptionTime,StringFormat='HH:mm'}" Style="{StaticResource LabelStyle}" Foreground="White" />
+                        </Grid>
+                    </Border>
+                    <Border Margin="1" Grid.Row="1" Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsShipPdtVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="PDT" Style="{StaticResource LabelStyle}" />
+                            <TextBlock Grid.Column="1" Text="{Binding PDT,StringFormat='HH:mm'}" Style="{StaticResource LabelStyle}" Foreground="White" />
+                        </Grid>
+                    </Border>
+                    <Border Margin="1" Grid.Row="2" Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsShipClientWaitingVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Cust wait" Style="{StaticResource LabelStyle}" />
+                            <TextBlock Grid.Column="1" Text="{Binding IsClientWaiting}" Style="{StaticResource LabelStyle}" Foreground="White"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+                <Border Background="{StaticResource DarkerG}" Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsShipStatusVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}" Grid.Column="2" Margin="1">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="Status" Style="{StaticResource LabelStyle}" FontSize="14"/>
+                        <TextBlock Text="{Binding Status}" Style="{StaticResource LabelStyle}" Foreground="White" FontSize="14"/>
+                    </StackPanel>
                 </Border>
             </Grid>
-            <Border Background="{StaticResource DarkerG}" Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsShipStatusVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}" Grid.Column="2" Margin="1">
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="Status" Style="{StaticResource LabelStyle}" FontSize="14"/>
-                    <TextBlock Text="{Binding Status}" Style="{StaticResource LabelStyle}" Foreground="White" FontSize="14"/>
-                </StackPanel>
-            </Border>
-        </Grid>
-    </Border>
+        </Border>
+        <Border x:Name="border"   Background="{Binding ElementName=JcUserControl,Path=Background}" Opacity=".5">
+            <Border.Triggers>
+                <EventTrigger RoutedEvent="Border.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="border" RepeatBehavior="Forever">
+                                <EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
+                                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
+                                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="0.5"/>
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Border.Triggers>
+            <!--<Border.Effect>
+                <DropShadowEffect />
+            </Border.Effect>-->
+        </Border>
+    </Grid>
+
 </UserControl>

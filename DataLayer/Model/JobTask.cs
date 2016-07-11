@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using DataLayer.Annotations;
 using DataLayer.Enums;
 
@@ -23,6 +24,7 @@ namespace DataLayer.Model
         private DateTime? _actualStartTime;
         private DateTime? _plannedStartTime;
         private int _statusId;
+        private Brush _jobTaskBackGround;
 
         #endregion
         #region Properties
@@ -151,6 +153,25 @@ namespace DataLayer.Model
                 {
                     ActualStartTime = value;
                 }
+            }
+        }                                
+
+        public Brush JobTaskBackGround
+        {
+            get
+            {
+                return _jobTaskBackGround;
+            }
+
+            set
+            {
+                if (_jobTaskBackGround == value)
+                {
+                    return;
+                }
+
+                _jobTaskBackGround = value;
+                OnPropertyChanged();
             }
         }
         public DateTime? EndTime { get; set; }

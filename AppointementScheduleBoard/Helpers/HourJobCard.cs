@@ -1,4 +1,5 @@
 using System;
+using System.Windows.Media;
 using DataLayer.Enums;
 using DataLayer.Model;
 
@@ -19,5 +20,6 @@ namespace AppointementScheduleBoard.Helpers
         public int StatusId { get; set; }
         public DateTime? PlannedStartTime { get; set; }
         public bool TimelineViewExpanded { get; set; }
+        public Brush JobTaskBackGround { get; set; }
     }
 }
