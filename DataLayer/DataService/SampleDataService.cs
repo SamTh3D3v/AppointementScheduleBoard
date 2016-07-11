@@ -55,8 +55,8 @@ namespace DataLayer.DataService
             //This Data needs to be get from the EBS
             return new ServerSettings()
             {
-                StartHour = new TimeSpan(7, 0, 0),
-                EndHour = new TimeSpan(17, 0, 0)
+                StartHour = new TimeSpan(21, 0, 0),
+                EndHour = new TimeSpan(24, 0, 0)
             };
         }
 

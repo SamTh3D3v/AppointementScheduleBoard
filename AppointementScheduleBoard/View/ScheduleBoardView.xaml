@@ -63,7 +63,7 @@
         </DataTemplate>
         <DataTemplate  DataType="{x:Type viewModel1:HourJobCard}"
                        x:Key="HeaderTemplateProperty">
-            <Grid Background="Black" Margin="1" >
+            <Grid Background="Black" Margin="1" x:Name="HourGrid">
                 <TextBlock VerticalAlignment="Center" FontFamily="segoe ui" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" Text="{Binding HourDesignation}"/>
             </Grid>
         </DataTemplate>
@@ -168,7 +168,8 @@
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
-                <ScrollViewer Grid.Column="1" HorizontalAlignment="Stretch"
+                <ScrollViewer Grid.Column="1" HorizontalAlignment="Stretch" x:Name="MainSv"  
+                              HorizontalContentAlignment="Left"
                                       HorizontalScrollBarVisibility="Auto"
                                       VerticalScrollBarVisibility="Disabled"
                                       VerticalAlignment="Stretch">
@@ -188,7 +189,7 @@
                                                         UnitSize="{Binding TimeLineUnitSize,Mode=TwoWay}"                                                        
                                                         Background="{StaticResource DarkerG}"                                                          
                                                         DrawTimeGrid="True"
-                                                        MinWidth="50"   
+                                                        MinWidth="50"                                                             
                                                          Items="{Binding HoursCollection,Mode=TwoWay}"
                                                         SynchedWithSiblings="False" />
                         <ItemsControl Grid.Row="1" ItemsSource="{Binding Path=StallsCollection}"
@@ -267,8 +268,8 @@
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                         </ItemsControl>
-                        <Border VerticalAlignment="Stretch" Background="Red" Width="2" 
-                                Grid.Row="0" Grid.RowSpan="2"  Margin="-10000,0,0,0" x:Name="BorderLine"/>
+                        <Border VerticalAlignment="Stretch" BorderBrush="Red" BorderThickness="2,0,0,0"
+                                Grid.Row="0" Grid.RowSpan="2"  Margin="0" x:Name="BorderLine"/>
                     </Grid>
                 </ScrollViewer>
             </Grid>
