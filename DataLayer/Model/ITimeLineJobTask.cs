@@ -22,6 +22,6 @@ namespace DataLayer.Model
         DateTime? StartTime { get; set; }
         DateTime? EndTime { get; set; }
         Boolean TimelineViewExpanded { get; set; }
-        Brush JobTaskBackGround { get; set; }
+        String JobTaskBackGround { get; set; }
     }
 }

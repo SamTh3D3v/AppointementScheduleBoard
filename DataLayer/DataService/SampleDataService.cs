@@ -259,8 +259,7 @@ namespace DataLayer.DataService
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
                                     Status = "Received",
-                                    StatusId = 152,
-                                    JobTaskBackGround = Brushes.Orange
+                                    StatusId = 152                                    
 
                                 }
                             }
@@ -304,8 +303,7 @@ namespace DataLayer.DataService
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
                                     Status = "InProgress",
-                                    StatusId = 147,
-                                    JobTaskBackGround = Brushes.Red
+                                    StatusId = 147                                    
 
                                 }
 
@@ -465,8 +463,7 @@ namespace DataLayer.DataService
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
                                     Status = "Received",
-                                    StatusId = 152,
-                                    JobTaskBackGround = Brushes.Orange
+                                    StatusId = 152                                    
 
                                 }
                             },
