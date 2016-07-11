@@ -1,6 +1,8 @@
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using AppointementScheduleBoard.Helpers;
 using DataLayer.DataService;
 using DataLayer.Model;
@@ -285,7 +287,20 @@ namespace AppointementScheduleBoard.ViewModel
                     }));
             }
         }
-        
+        private RelayCommand _irregSettingsChangedCommand;
+        public RelayCommand IrregSettingsChangedCommand
+        {
+            get
+            {
+                return _irregSettingsChangedCommand
+                    ?? (_irregSettingsChangedCommand = new RelayCommand(
+                    () =>
+                    {
+                        MainDataService.UpdateLocalSettings(LocalSettings); 
+                    }));
+            }
+        }     
+
         #endregion
         #region Ctors and methods
         public MainViewModel(IFrameNavigationService mainFrameNavigationService,IDataService mainDataService) : base(mainFrameNavigationService, mainDataService)

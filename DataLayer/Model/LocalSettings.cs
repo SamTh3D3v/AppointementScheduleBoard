@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using DataLayer.Annotations;
 using DataLayer.Enums;
 
@@ -28,6 +29,12 @@ namespace DataLayer.Model
         private bool _isTechnicientsNamesVisible;
         private bool _isPlanActualHeaderVisible;
         private bool _isPlanActualMerged;
+
+        private String _irrLateJobVr;
+        private String _irrLateJobBooked;
+        private String _irrPlannedTimeExeeded;
+        private String _pdtExceededInProgress;
+        private String _pdtExceededWaittingForInvoice;
 
         #endregion
         #region Properties
@@ -121,7 +128,6 @@ namespace DataLayer.Model
                 OnPropertyChanged();
             }
         }
-
         public bool IsTimeHeaderVisible
         {
             get { return _isTimeHeaderVisible; }
@@ -132,7 +138,6 @@ namespace DataLayer.Model
                 OnPropertyChanged();
             }
         }
-
         public bool IsStallNamesVisible
         {
             get { return _isStallNamesVisible; }
@@ -143,7 +148,6 @@ namespace DataLayer.Model
                 OnPropertyChanged();
             }
         }
-
         public bool IsTechnicientsNamesVisible
         {
             get { return _isTechnicientsNamesVisible; }
@@ -154,7 +158,6 @@ namespace DataLayer.Model
                 OnPropertyChanged();
             }
         }
-
         public bool IsPlanActualHeaderVisible
         {
             get { return _isPlanActualHeaderVisible; }
@@ -165,7 +168,6 @@ namespace DataLayer.Model
                 OnPropertyChanged();
             }
         }
-
         public bool IsPlanActualMerged
         {
             get { return _isPlanActualMerged; }
@@ -173,6 +175,102 @@ namespace DataLayer.Model
             {
                 if (value == _isPlanActualMerged) return;
                 _isPlanActualMerged = value;
+                OnPropertyChanged();
+            }
+        }
+
+        //Irregularities Colors             
+        public String IrrLateJobVr
+        {
+            get
+            {
+                return _irrLateJobVr;
+            }
+
+            set
+            {
+                if (_irrLateJobVr == value)
+                {
+                    return;
+                }
+
+                _irrLateJobVr = value;
+                OnPropertyChanged();
+            }
+        }
+     
+        public String IrrLateJobBooked
+        {
+            get
+            {
+                return _irrLateJobBooked;
+            }
+
+            set
+            {
+                if (_irrLateJobBooked == value)
+                {
+                    return;
+                }
+
+                _irrLateJobBooked = value;
+                OnPropertyChanged();
+            }
+        }
+               
+        public String IrrPlannedTimeExeeded
+        {
+            get
+            {
+                return _irrPlannedTimeExeeded;
+            }
+
+            set
+            {   
+                if (_irrPlannedTimeExeeded == value)
+                {
+                    return;
+                }
+
+                _irrPlannedTimeExeeded = value;
+                OnPropertyChanged();
+            }
+        }
+                
+        public String PdtExceededInProgress
+        {
+            get
+            {
+                return _pdtExceededInProgress;
+            }
+
+            set
+            {   
+                if (_pdtExceededInProgress == value)
+                {
+                    return;
+                }
+
+                _pdtExceededInProgress = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public String PdtExceededWaittingForInvoice
+        {
+            get
+            {
+                return _pdtExceededWaittingForInvoice;
+            }
+
+            set
+            {
+                if (_pdtExceededWaittingForInvoice == value)
+                {
+                    return;
+                }
+
+                _pdtExceededWaittingForInvoice = value;
                 OnPropertyChanged();
             }
         }

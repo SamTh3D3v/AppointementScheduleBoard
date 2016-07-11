@@ -18,8 +18,8 @@ namespace DataLayer.Model
         private string _stallName;
         private string _stallDescription;
         private string _isActive;
-        private ObservableCollection<ITimeLineJobTask> _jobTasksCollection;
-        private ObservableCollection<Technicien> _techniciens;
+        private ObservableCollection<ITimeLineJobTask> _jobTasksCollection=new ObservableCollection<ITimeLineJobTask>();
+        private ObservableCollection<Technicien> _techniciens=new ObservableCollection<Technicien>();
         #endregion
         #region Properties
 

@@ -76,7 +76,13 @@ namespace DataLayer.DataService
                 IsPlanActualMerged = bool.Parse(ConfigurationManager.AppSettings["IsPlanActualMerged"]),
                 IsStallNamesVisible = bool.Parse(ConfigurationManager.AppSettings["IsStallNamesVisible"]),
                 IsTechnicientsNamesVisible = bool.Parse(ConfigurationManager.AppSettings["IsTechnicientsNamesVisible"]),
-                IsTimeHeaderVisible = bool.Parse(ConfigurationManager.AppSettings["IsTimeHeaderVisible"])
+                IsTimeHeaderVisible = bool.Parse(ConfigurationManager.AppSettings["IsTimeHeaderVisible"]),
+                IrrLateJobVr = ConfigurationManager.AppSettings["IrrLateJobVr"],
+                IrrLateJobBooked = ConfigurationManager.AppSettings["IrrLateJobBooked"],
+                IrrPlannedTimeExeeded = ConfigurationManager.AppSettings["IrrPlannedTimeExeeded"],
+                PdtExceededInProgress = ConfigurationManager.AppSettings["PdtExceededInProgress"],
+                PdtExceededWaittingForInvoice =ConfigurationManager.AppSettings["PdtExceededWaittingForInvoice"]
+                
             };
         }
 
@@ -98,6 +104,13 @@ namespace DataLayer.DataService
             ConfigurationManager.AppSettings["IsTechnicientsNamesVisible"] =
                 settings.IsTechnicientsNamesVisible.ToString();
             ConfigurationManager.AppSettings["IsTimeHeaderVisible"] = settings.IsTimeHeaderVisible.ToString();
+
+            ConfigurationManager.AppSettings["IrrLateJobVr"] = settings.IrrLateJobVr.ToString();
+            ConfigurationManager.AppSettings["IrrLateJobBooked"] = settings.IrrLateJobBooked.ToString();
+            ConfigurationManager.AppSettings["IrrPlannedTimeExeeded"] = settings.IrrPlannedTimeExeeded.ToString();
+            ConfigurationManager.AppSettings["PdtExceededInProgress"] = settings.PdtExceededInProgress.ToString();
+            ConfigurationManager.AppSettings["PdtExceededWaittingForInvoice"] = settings.PdtExceededWaittingForInvoice.ToString();
+            
         }
 
         public override List<Branch> GetAllBranchs()
