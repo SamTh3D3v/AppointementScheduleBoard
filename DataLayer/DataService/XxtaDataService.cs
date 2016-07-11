@@ -243,7 +243,9 @@ namespace DataLayer.DataService
 
         public bool RemoveStall(int stall_Id)
         {
-            
+            if (!isStallFree(stall_Id))
+                throw new BusinessException("the stall is not free !");
+
             OracleCommand deleteCommand = new OracleCommand(@"DELETE STALL 
                                                               WHERE STALL_ID = :STALL_ID", _connection);
             deleteCommand.Parameters.Add("STALL_ID", OracleDbType.Int32);
