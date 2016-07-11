@@ -243,6 +243,7 @@ namespace DataLayer.DataService
 
         public bool RemoveStall(int stall_Id)
         {
+            
             OracleCommand deleteCommand = new OracleCommand(@"DELETE STALL 
                                                               WHERE STALL_ID = :STALL_ID", _connection);
             deleteCommand.Parameters.Add("STALL_ID", OracleDbType.Int32);
@@ -252,6 +253,22 @@ namespace DataLayer.DataService
             return true;
         }
 
+        public bool isStallFree(int stall_Id)
+        {
+            OracleCommand query = new OracleCommand(@"SELECT COUNT(*) 
+                                                      FROM STALL_TECHNICIENS
+                                                      WHERE STALL_ID = :STALL_ID ", _connection);
+            query.Parameters.Add("STALL_ID", OracleDbType.Int32);
+            query.Parameters["STALL_ID"].Value = stall_Id;
+
+            OracleDataReader reader = query.ExecuteReader();
+            reader.Read();
+            if (int.Parse(reader.GetValue(0).ToString()) > 0)
+                return false;
+            else
+                return true;
+
+        }
         public bool AssignMechanicToStall(int STALL_ID, int MECHANIC_ID)
         {
             if (IsMechanicInStall(MECHANIC_ID))
