@@ -338,6 +338,7 @@ namespace AppointementScheduleBoard.ViewModel
                             foreach (var tech in selectedTechniciansList)
                             {
                                 MainDataService.AssignMechanicToStall(SelectedStall.Id, (tech as Technicien).Id);
+                                SelectedStall.Techniciens.Add((Technicien) tech);
                             }
                         _techniciansListView.Close();
                         SearchText = "";

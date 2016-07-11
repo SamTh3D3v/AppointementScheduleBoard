@@ -9,19 +9,20 @@ using System.Windows.Threading;
 using AppointementScheduleBoard.Helpers;
 using DataLayer;
 using DataLayer.DataService;
+using DataLayer.Enums;
 using DataLayer.Model;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace AppointementScheduleBoard.ViewModel
 {
-    public class ScheduleBoardViewModel: NavigableViewModelBase
+    public class ScheduleBoardViewModel : NavigableViewModelBase
     {
         #region Fields  
         private bool _isPrograssRingActive;
         private ObservableCollection<Stall> _sallsCollection;
         private double _timeLineUnitSize = 1000;
-        private ObservableCollection<ITimeLineJobTask> _hoursCollection;       
+        private ObservableCollection<ITimeLineJobTask> _hoursCollection;
         private DateTime _startDateTime;
         private DateTime _endDateTime;
         private DispatcherTimer _dispatcherTimer;
@@ -144,11 +145,11 @@ namespace AppointementScheduleBoard.ViewModel
             {
                 return _scheduleBoardLoadedCommand
                     ?? (_scheduleBoardLoadedCommand = new RelayCommand(async () =>
-                    {                        
-                        await ReloadBoard();                        
+                    {
+                        await ReloadBoard();
                     }));
             }
-        }   
+        }
         private RelayCommand _uniteSizeChangedCommand;
         public RelayCommand UnitSizehangedCommand
         {
@@ -185,21 +186,21 @@ namespace AppointementScheduleBoard.ViewModel
             });
             _dispatcherTimer = new DispatcherTimer();
             _dispatcherTimer.Tick += dispatcherTimer_Tick;
-            var refreshTimeInSeconds=MainDataService.GetLocalSettings().RefreshTimeInMinutes*60;
-            _dispatcherTimer.Interval = new TimeSpan(0, 0, (int) refreshTimeInSeconds);
+            var refreshTimeInSeconds = MainDataService.GetLocalSettings().RefreshTimeInMinutes * 60;
+            _dispatcherTimer.Interval = new TimeSpan(0, 0, (int)refreshTimeInSeconds);
             _dispatcherTimer.Start();
-        }            
+        }
         private async void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             await RefreshBoardPeriodicly();
         }
 
         private async Task UpdateHoursCollection()
-        {                         
-            var list=new List<ITimeLineJobTask>();
+        {
+            var list = new List<ITimeLineJobTask>();
             var startDateTime = StartDateTime;
             await Task.Run(() =>
-            {                                                
+            {
                 while (startDateTime < EndDateTime)
                 {
                     list.Add(new HourJobCard()
@@ -208,10 +209,10 @@ namespace AppointementScheduleBoard.ViewModel
                         EndTime = startDateTime.AddMinutes(10 * (1000 / TimeLineUnitSize)),
                         HourDesignation = startDateTime.ToString("HH:mm")
                     });
-                    startDateTime = startDateTime.AddMinutes(10*(1000/TimeLineUnitSize));
-                }                
+                    startDateTime = startDateTime.AddMinutes(10 * (1000 / TimeLineUnitSize));
+                }
             });
-            HoursCollection=new ObservableCollection<ITimeLineJobTask>(list);
+            HoursCollection = new ObservableCollection<ITimeLineJobTask>(list);
 
 
         }
@@ -220,7 +221,7 @@ namespace AppointementScheduleBoard.ViewModel
         {
             IsPrograssRingActive = true;
             //for test purpuses             
-            await Task.Run(()=>Thread.Sleep(3000));
+            await Task.Run(() => Thread.Sleep(3000));
             StallsCollection = new ObservableCollection<Stall>(await Task.Run(() => MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter)));
             StartDateTime = DateTime.Today.Add(MainDataService.GetServerSettings().StartHour);
             EndDateTime = DateTime.Today.Add(MainDataService.GetServerSettings().EndHour);
@@ -231,7 +232,54 @@ namespace AppointementScheduleBoard.ViewModel
 
         private async Task RefreshBoardPeriodicly()
         {
-            StallsCollection = new ObservableCollection<Stall>(await Task.Run(() => MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter)));
+            await Task.Run(() =>
+             {
+                 var collection = MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter);
+                 collection.ForEach(s =>
+                 {
+                     foreach (var jt in s.JobTasksCollection)
+                     {
+                        //Irregularities
+                        if (jt.PlannedStartTime < DateTime.Now)
+                         {
+
+                             if (jt.StatusId == (int)StatusEnum.Received)
+                             {
+                                 jt.JobTaskBackGround = MainDataService.GetLocalSettings().IrrLateJobVr;
+                                 continue;
+                             }
+                             else if (jt.StatusId == (int)StatusEnum.Booked)
+                             {
+                                 jt.JobTaskBackGround = MainDataService.GetLocalSettings().IrrLateJobBooked;
+                                 continue;
+                             }
+
+                         }
+
+                         if (jt.EndTime < DateTime.Now)
+                         {
+
+                             if (jt.StatusId == (int)StatusEnum.InProgress || jt.StatusId == (int)StatusEnum.WaitingForParts
+                             || jt.StatusId == (int)StatusEnum.WaitingForQc || jt.StatusId == (int)StatusEnum.WaitingForWashing)
+                             {
+                                 jt.JobTaskBackGround = MainDataService.GetLocalSettings().PdtExceededInProgress;
+                                 continue;
+                             }
+                             else if (jt.StatusId == (int)StatusEnum.WaitingForInvoice)
+                             {
+                                 jt.JobTaskBackGround = MainDataService.GetLocalSettings().PdtExceededWaittingForInvoice;
+                                 continue;
+                             }
+
+                         }
+                         jt.JobTaskBackGround = "#00000000";
+
+
+                     }
+                 });
+                 StallsCollection = new ObservableCollection<Stall>(collection);
+             });
+
         }
         #endregion       
     }

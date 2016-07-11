@@ -24,7 +24,7 @@ namespace DataLayer.Model
         private DateTime? _actualStartTime;
         private DateTime? _plannedStartTime;
         private int _statusId;
-        private Brush _jobTaskBackGround;
+        private String _jobTaskBackGround;
 
         #endregion
         #region Properties
@@ -156,7 +156,7 @@ namespace DataLayer.Model
             }
         }                                
 
-        public Brush JobTaskBackGround
+        public String JobTaskBackGround
         {
             get
             {

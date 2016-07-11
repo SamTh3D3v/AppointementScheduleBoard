@@ -20,6 +20,6 @@ namespace AppointementScheduleBoard.Helpers
         public int StatusId { get; set; }
         public DateTime? PlannedStartTime { get; set; }
         public bool TimelineViewExpanded { get; set; }
-        public Brush JobTaskBackGround { get; set; }
+        public String JobTaskBackGround { get; set; }
     }
 }
