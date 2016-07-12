@@ -21,5 +21,6 @@ namespace AppointementScheduleBoard.Helpers
         public DateTime? PlannedStartTime { get; set; }
         public bool TimelineViewExpanded { get; set; }
         public String JobTaskBackGround { get; set; }
+        public bool IsJobTaskBliking { get; set; }
     }
 }

@@ -23,5 +23,6 @@ namespace DataLayer.Model
         DateTime? EndTime { get; set; }
         Boolean TimelineViewExpanded { get; set; }
         String JobTaskBackGround { get; set; }
+        bool IsJobTaskBliking { get; set; }
     }
 }

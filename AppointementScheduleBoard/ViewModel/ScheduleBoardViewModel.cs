@@ -246,11 +246,13 @@ namespace AppointementScheduleBoard.ViewModel
                              if (jt.StatusId == (int)StatusEnum.Received)
                              {
                                  jt.JobTaskBackGround = MainDataService.GetLocalSettings().IrrLateJobVr;
+                                 jt.IsJobTaskBliking= MainDataService.GetLocalSettings().IrrLateJobVrBlink;
                                  continue;
                              }
                              else if (jt.StatusId == (int)StatusEnum.Booked)
                              {
                                  jt.JobTaskBackGround = MainDataService.GetLocalSettings().IrrLateJobBooked;
+                                 jt.IsJobTaskBliking = MainDataService.GetLocalSettings().IrrLateJobBookedBlink;
                                  continue;
                              }
 
@@ -263,11 +265,15 @@ namespace AppointementScheduleBoard.ViewModel
                              || jt.StatusId == (int)StatusEnum.WaitingForQc || jt.StatusId == (int)StatusEnum.WaitingForWashing)
                              {
                                  jt.JobTaskBackGround = MainDataService.GetLocalSettings().PdtExceededInProgress;
+                                 jt.IsJobTaskBliking = MainDataService.GetLocalSettings().PdtExceededInProgressBlink;
                                  continue;
                              }
                              else if (jt.StatusId == (int)StatusEnum.WaitingForInvoice)
                              {
                                  jt.JobTaskBackGround = MainDataService.GetLocalSettings().PdtExceededWaittingForInvoice;
+                                 jt.IsJobTaskBliking = MainDataService.GetLocalSettings().PdtExceededWaittingForInvoiceBlink;
+
+
                                  continue;
                              }
 
