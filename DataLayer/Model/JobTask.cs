@@ -12,7 +12,7 @@ using DataLayer.Enums;
 
 namespace DataLayer.Model
 {
-    public class JobTask : INotifyPropertyChanged, ITimeLineJobTask
+    public class JobTask:INotifyPropertyChanged, ITimeLineJobTask
     {
         #region Fields
         private string _jobType;
@@ -24,8 +24,8 @@ namespace DataLayer.Model
         private DateTime? _actualStartTime;
         private DateTime? _plannedStartTime;
         private int _statusId;
-        private String _jobTaskBackGround;
-        private bool _isJobTaskBliking;
+        private String _jobTaskBackGround;     
+        private bool _isJobTaskBliking ;            
 
         #endregion
         #region Properties
@@ -101,7 +101,7 @@ namespace DataLayer.Model
             {
                 if (value == _statusId) return;
                 _statusId = value;
-                OnPropertyChanged();
+                OnPropertyChanged();                 
             }
         }
 
@@ -122,7 +122,7 @@ namespace DataLayer.Model
                 _plannedStartTime = value;
                 OnPropertyChanged();
             }
-        }
+        }                     
         public DateTime? ActualStartTime
         {
             get
@@ -144,8 +144,18 @@ namespace DataLayer.Model
         public DateTime? StartTime
         {
             get { return ActualStartTime ?? PlannedStartTime; }
-            set{}
-        }
+            set
+            {
+                if (ActualStartTime==null)
+                {
+                    PlannedStartTime = value;
+                }
+                else
+                {
+                    ActualStartTime = value;
+                }
+            }
+        }                                
 
         public String JobTaskBackGround
         {

@@ -195,11 +195,11 @@ namespace AppointementScheduleBoard.ViewModel
             get
             {
                 return _selectedBranchChangedCommand
-                    ?? (_selectedBranchChangedCommand = new RelayCommand(async () =>
+                    ?? (_selectedBranchChangedCommand = new RelayCommand(
+                    () =>
                     {                        
                         MainFrameNavigationService.NavigateTo(App.ScheduleBoardViewKey, SelectedBranch.Id);
                         Messenger.Default.Send<NotificationMessage>(new NotificationMessage("ReloadBoard"));
-                        StallsCollection = new ObservableCollection<Stall>(await Task.Run(()=>MainDataService.GetBranchStalls(SelectedBranch.Id)));
                     }));
             }
         }
