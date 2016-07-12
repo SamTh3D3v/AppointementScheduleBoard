@@ -112,10 +112,13 @@
                                             <TextBlock Text="{Binding StallName}" VerticalAlignment="Top"
                                                Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsStallNamesVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}"
                                                HorizontalAlignment="Center" FontFamily="segoe ui" FontWeight="Bold" Foreground="White"/>
-                                            <ItemsControl ItemsSource="{Binding Techniciens}">
+                                            <ItemsControl ItemsSource="{Binding Techniciens}" Margin="0,3,0,0">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
-                                                        <TextBlock Text="{Binding Name}" Foreground="LightGreen" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                                            <TextBlock Width="95" Text="{Binding Name}" TextWrapping="Wrap" Foreground="LightGreen" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                            <Rectangle Fill="White" Height="1" Margin="1"  HorizontalAlignment="Stretch"/>
+                                                        </StackPanel>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
 
@@ -168,7 +171,7 @@
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
-                <ScrollViewer Grid.Column="1" HorizontalAlignment="Stretch" x:Name="MainSv"  
+                <ScrollViewer Grid.Column="1" HorizontalAlignment="Stretch" x:Name="MainSv" Background="LightGray" 
                               HorizontalContentAlignment="Left"
                                       HorizontalScrollBarVisibility="Auto"
                                       VerticalScrollBarVisibility="Disabled"
@@ -191,7 +194,8 @@
                                                         DrawTimeGrid="True"
                                                         MinWidth="50"                                                             
                                                          Items="{Binding HoursCollection,Mode=TwoWay}"
-                                                        SynchedWithSiblings="False" />
+                                                        SynchedWithSiblings="False"
+                                                         />
                         <ItemsControl Grid.Row="1" ItemsSource="{Binding Path=StallsCollection}"
 	                               	AlternationCount="2"
 	                            	HorizontalAlignment="Stretch">
@@ -205,7 +209,7 @@
 
                                         <Border Grid.Row="0" Grid.RowSpan="2" BorderBrush="Black" BorderThickness="1">
                                             <StackPanel Orientation="Vertical">
-                                                <timeLineControl:TimeLineControl Height="80" Width="{Binding ElementName=TimeLineHeader, Path=Width,UpdateSourceTrigger=PropertyChanged}"
+                                                <timeLineControl:TimeLineControl Height="80" Width="{Binding ElementName=TimeLineHeader, Path=ActualWidth,UpdateSourceTrigger=PropertyChanged}"
                                                          Manager="{Binding}"
                                                                          DayLineBrush="Black" 
                                                                          HourLineBrush="{StaticResource DarkG}"
@@ -216,7 +220,8 @@
                                                                                  
                                                         UnitSize="{Binding DataContext.TimeLineUnitSize,RelativeSource={RelativeSource AncestorType={x:Type Page}},Mode=TwoWay}"                                                        
                                                         Background="LightGray"                                                          
-                                                        DrawTimeGrid="True"                                                                                 
+                                                        DrawTimeGrid="True" 
+                                                                                 
                                                         MinWidth="50"                                                        
                                                         SynchedWithSiblings="True" >
                                                     <timeLineControl:TimeLineControl.Items>

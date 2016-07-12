@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -61,11 +62,11 @@ namespace DataLayer.DataService
         }
 
         public override LocalSettings GetLocalSettings()
-        {            
+        {         
             return new LocalSettings()
             {
                 IsClockFormat24 = bool.Parse(ConfigurationManager.AppSettings["IsClockFormat24"]),
-                RefreshTimeInMinutes = Double.Parse(ConfigurationManager.AppSettings["RefreshTimeInMinutes"]),
+                RefreshTimeInMinutes = Double.Parse(ConfigurationManager.AppSettings["RefreshTimeInMinutes"],new CultureInfo("En")),
                 UnitSize = Double.Parse(ConfigurationManager.AppSettings["UnitSize"]),
                 IsShipClientWaitingVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipClientWaitingVisible"]),
                 IsShipJobtypeVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipJobtypeVisible"]),
@@ -245,8 +246,8 @@ namespace DataLayer.DataService
                                     JobType = "PMA05",
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
-                                    Status = "Booked",
-                                    StatusId = 145,
+                                    Status = "Received",
+                                    StatusId = 152,
                                     TimelineViewExpanded = true
 
                                 },
@@ -588,13 +589,15 @@ namespace DataLayer.DataService
         }
         private async void dispatcherTimer_Tick(object sender, EventArgs e)
         {
-            if (SampleStallsCollection.First().JobTasksCollection.First().StatusId == 152)
+            if (SampleStallsCollection.First().JobTasksCollection.First().StatusId ==(int) StatusEnum.Received)
             {
-                SampleStallsCollection.First().JobTasksCollection.First().StatusId = 15;
+                SampleStallsCollection.First().JobTasksCollection.First().StatusId = 147;
+                SampleStallsCollection.First().JobTasksCollection.First().Status = "In Progress";
             }
             else
             {
                 SampleStallsCollection.First().JobTasksCollection.First().StatusId = 152;
+                SampleStallsCollection.First().JobTasksCollection.First().Status = "Received";
             }
 
         }

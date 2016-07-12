@@ -254,8 +254,9 @@ namespace AppointementScheduleBoard.ViewModel
                         else
                         {
                             MainDataService.UpdateStall(SelectedStall);
-                        }
-                        await LaodStalls();
+                        }                        
+                        await LaodStalls();                        
+
                     }));
             }
         }
@@ -340,8 +341,8 @@ namespace AppointementScheduleBoard.ViewModel
                                 MainDataService.AssignMechanicToStall(SelectedStall.Id, (tech as Technicien).Id);                                
                             }
                         _techniciansListView.Close();
-                        SearchText = "";
-                        await LaodStalls();
+                        SearchText = "";                        
+                        await LaodStalls();                        
                     }));
             }
         }
