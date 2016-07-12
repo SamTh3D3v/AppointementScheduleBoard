@@ -220,15 +220,16 @@ namespace DataLayer.DataService
 
         public int UpdateStall(Stall UpdatedStall)
         {
-            OracleCommand updateCommand = new OracleCommand("UPDATE STALL SET BRANCH_ID = :BRANCH_ID , "
-                                                            + "STALL_NAME = :STALL_NAME , "
-                                                            + "STALL_DESCRIPTION = :STALL_DESCRIPTION , "
-                                                            + "IS_ACTIVE = :IS_ACTIVE "
-                                                            + "WHERE STALL_ID = :STALL_ID ", _connection);
+            OracleCommand updateCommand = new OracleCommand(@"UPDATE STALL 
+                                                              SET BRANCH_ID = :BRANCH_ID , 
+                                                              STALL_NAME = :STALL_NAME , 
+                                                              STALL_DESCRIPTION = :STALL_DESCRIPTION , 
+                                                              IS_ACTIVE = :IS_ACTIVE
+                                                              WHERE STALL_ID = :STALL_ID ", _connection);
             updateCommand.Parameters.Add("STALL_ID", OracleDbType.Int32);
             updateCommand.Parameters["STALL_ID"].Value = UpdatedStall.Id;
             updateCommand.Parameters.Add("BRANCH_ID", OracleDbType.Varchar2);
-            updateCommand.Parameters["BRANCH_ID"].Value = UpdatedStall.BranchId;
+            updateCommand.Parameters["BRANCH_ID"].Value = UpdatedStall.BranchId.ToString();
             updateCommand.Parameters.Add("STALL_NAME", OracleDbType.Varchar2);
             updateCommand.Parameters["STALL_NAME"].Value = UpdatedStall.StallName;
             updateCommand.Parameters.Add("STALL_DESCRIPTION", OracleDbType.Varchar2);
