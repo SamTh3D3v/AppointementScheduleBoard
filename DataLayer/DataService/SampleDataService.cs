@@ -245,8 +245,8 @@ namespace DataLayer.DataService
                                     JobType = "PMA05",
                                     PDT = DateTime.Now,
                                     ReceptionTime = DateTime.Now,
-                                    Status = "Booked",
-                                    StatusId = 145,
+                                    Status = "Received",
+                                    StatusId = 152,
                                     TimelineViewExpanded = true
 
                                 },
@@ -588,13 +588,15 @@ namespace DataLayer.DataService
         }
         private async void dispatcherTimer_Tick(object sender, EventArgs e)
         {
-            if (SampleStallsCollection.First().JobTasksCollection.First().StatusId == 152)
+            if (SampleStallsCollection.First().JobTasksCollection.First().StatusId ==(int) StatusEnum.Received)
             {
-                SampleStallsCollection.First().JobTasksCollection.First().StatusId = 15;
+                SampleStallsCollection.First().JobTasksCollection.First().StatusId = 147;
+                SampleStallsCollection.First().JobTasksCollection.First().Status = "In Progress";
             }
             else
             {
                 SampleStallsCollection.First().JobTasksCollection.First().StatusId = 152;
+                SampleStallsCollection.First().JobTasksCollection.First().Status = "Received";
             }
 
         }
