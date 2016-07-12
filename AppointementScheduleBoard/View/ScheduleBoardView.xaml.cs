@@ -40,6 +40,9 @@ namespace AppointementScheduleBoard.View
             var margin = BorderLine.Margin;
             margin.Left = currentTimeMarginOffset;
             BorderLine.Margin = margin;
+
+            var halfTheViewPortSize = MainSv.ActualWidth /2;
+            MainSv.ScrollToHorizontalOffset(currentTimeMarginOffset - halfTheViewPortSize);
         }
     }
 }
