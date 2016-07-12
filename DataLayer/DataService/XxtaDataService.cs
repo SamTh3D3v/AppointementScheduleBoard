@@ -195,9 +195,6 @@ namespace DataLayer.DataService
 
             }
             stallReader.Close();
-            //a temporary ugly workarround (will be updated INC) 
-            var endTime = GetServerSettings().EndHour.TotalSeconds;
-            OrganisationStalls.FirstOrDefault()?.JobTasksCollection.Add(new JobTask() {PlannedStartTime = DateTime.Now.AddSeconds(endTime),EndTime = DateTime.Now.AddSeconds(endTime+1) });
 
             return OrganisationStalls;
         }
