@@ -171,7 +171,7 @@
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
-                <ScrollViewer Grid.Column="1" HorizontalAlignment="Stretch" x:Name="MainSv"  
+                <ScrollViewer Grid.Column="1" HorizontalAlignment="Stretch" x:Name="MainSv" Background="LightGray" 
                               HorizontalContentAlignment="Left"
                                       HorizontalScrollBarVisibility="Auto"
                                       VerticalScrollBarVisibility="Disabled"
