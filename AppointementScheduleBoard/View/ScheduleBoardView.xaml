@@ -112,10 +112,13 @@
                                             <TextBlock Text="{Binding StallName}" VerticalAlignment="Top"
                                                Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsStallNamesVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}"
                                                HorizontalAlignment="Center" FontFamily="segoe ui" FontWeight="Bold" Foreground="White"/>
-                                            <ItemsControl ItemsSource="{Binding Techniciens}">
+                                            <ItemsControl ItemsSource="{Binding Techniciens}" Margin="0,3,0,0">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
-                                                        <TextBlock Text="{Binding Name}" Foreground="LightGreen" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                                            <TextBlock Width="95" Text="{Binding Name}" TextWrapping="Wrap" Foreground="LightGreen" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                            <Rectangle Fill="White" Height="1" Margin="1"  HorizontalAlignment="Stretch"/>
+                                                        </StackPanel>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
 
