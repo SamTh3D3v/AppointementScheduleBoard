@@ -82,19 +82,35 @@
             </Grid>
         </Border>
         <Border x:Name="border"   Background="{Binding ElementName=JcUserControl,Path=Background}" Opacity=".5">
-            <Border.Triggers>
-                <EventTrigger RoutedEvent="Border.Loaded">
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="border" RepeatBehavior="Forever">
-                                <EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
-                                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
-                                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="0.5"/>
-                            </DoubleAnimationUsingKeyFrames>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </EventTrigger>
-            </Border.Triggers>
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsJobTaskBliking}" Value="True">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" RepeatBehavior="Forever">
+                                            <EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
+                                            <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0"/>
+                                            <EasingDoubleKeyFrame KeyTime="0:0:1" Value="0.5"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)">
+                                            <EasingDoubleKeyFrame KeyTime="0" Value="0.5"/>
+                                            <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0.5"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
             <!--<Border.Effect>
                 <DropShadowEffect />
             </Border.Effect>-->

@@ -55,7 +55,7 @@ namespace DataLayer.DataService
             //This Data needs to be get from the EBS
             return new ServerSettings()
             {
-                StartHour = new TimeSpan(7, 0, 0),
+                StartHour = new TimeSpan(8, 0, 0),
                 EndHour = new TimeSpan(17, 0, 0)
             };
         }
@@ -77,12 +77,19 @@ namespace DataLayer.DataService
                 IsStallNamesVisible = bool.Parse(ConfigurationManager.AppSettings["IsStallNamesVisible"]),
                 IsTechnicientsNamesVisible = bool.Parse(ConfigurationManager.AppSettings["IsTechnicientsNamesVisible"]),
                 IsTimeHeaderVisible = bool.Parse(ConfigurationManager.AppSettings["IsTimeHeaderVisible"]),
+
                 IrrLateJobVr = ConfigurationManager.AppSettings["IrrLateJobVr"].ToString(),
                 IrrLateJobBooked = ConfigurationManager.AppSettings["IrrLateJobBooked"].ToString(),
                 IrrPlannedTimeExeeded = ConfigurationManager.AppSettings["IrrPlannedTimeExeeded"].ToString(),
                 PdtExceededInProgress = ConfigurationManager.AppSettings["PdtExceededInProgress"].ToString(),
-                PdtExceededWaittingForInvoice =ConfigurationManager.AppSettings["PdtExceededWaittingForInvoice"].ToString()
-                
+                PdtExceededWaittingForInvoice =ConfigurationManager.AppSettings["PdtExceededWaittingForInvoice"].ToString(),
+
+                IrrLateJobVrBlink = bool.Parse(ConfigurationManager.AppSettings["IrrLateJobVrBlink"].ToString()),
+                IrrLateJobBookedBlink = bool.Parse(ConfigurationManager.AppSettings["IrrLateJobBookedBlink"].ToString()),
+                IrrPlannedTimeExeededBlink = bool.Parse(ConfigurationManager.AppSettings["IrrPlannedTimeExeededBlink"].ToString()),
+                PdtExceededInProgressBlink = bool.Parse(ConfigurationManager.AppSettings["PdtExceededInProgressBlink"].ToString()),
+                PdtExceededWaittingForInvoiceBlink = bool.Parse(ConfigurationManager.AppSettings["PdtExceededWaittingForInvoiceBlink"].ToString())
+
             };
         }
 
@@ -110,7 +117,14 @@ namespace DataLayer.DataService
             ConfigurationManager.AppSettings["IrrPlannedTimeExeeded"] = settings.IrrPlannedTimeExeeded.ToString();
             ConfigurationManager.AppSettings["PdtExceededInProgress"] = settings.PdtExceededInProgress.ToString();
             ConfigurationManager.AppSettings["PdtExceededWaittingForInvoice"] = settings.PdtExceededWaittingForInvoice.ToString();
-            
+
+            ConfigurationManager.AppSettings["IrrLateJobVrBlink"] = settings.IrrLateJobVrBlink.ToString();
+            ConfigurationManager.AppSettings["IrrLateJobBookedBlink"] = settings.IrrLateJobBookedBlink.ToString();
+            ConfigurationManager.AppSettings["IrrPlannedTimeExeededBlink"] = settings.IrrPlannedTimeExeededBlink.ToString();
+            ConfigurationManager.AppSettings["PdtExceededInProgressBlink"] = settings.PdtExceededInProgressBlink.ToString();
+            ConfigurationManager.AppSettings["PdtExceededWaittingForInvoiceBlink"] = settings.PdtExceededWaittingForInvoiceBlink.ToString();
+
+
         }
 
         public override List<Branch> GetAllBranchs()

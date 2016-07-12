@@ -24,7 +24,8 @@ namespace DataLayer.Model
         private DateTime? _actualStartTime;
         private DateTime? _plannedStartTime;
         private int _statusId;
-        private String _jobTaskBackGround;
+        private String _jobTaskBackGround;     
+        private bool _isJobTaskBliking ;            
 
         #endregion
         #region Properties
@@ -171,6 +172,24 @@ namespace DataLayer.Model
                 }
 
                 _jobTaskBackGround = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsJobTaskBliking
+        {
+            get
+            {
+                return _isJobTaskBliking;
+            }
+
+            set
+            {
+                if (_isJobTaskBliking == value)
+                {
+                    return;
+                }
+
+                _isJobTaskBliking = value;
                 OnPropertyChanged();
             }
         }

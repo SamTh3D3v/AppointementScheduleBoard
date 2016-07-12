@@ -363,7 +363,22 @@ namespace DataLayer.DataService
                 IsPlanActualMerged = bool.Parse(ConfigurationManager.AppSettings["IsPlanActualMerged"]),
                 IsStallNamesVisible = bool.Parse(ConfigurationManager.AppSettings["IsStallNamesVisible"]),
                 IsTechnicientsNamesVisible = bool.Parse(ConfigurationManager.AppSettings["IsTechnicientsNamesVisible"]),
-                IsTimeHeaderVisible = bool.Parse(ConfigurationManager.AppSettings["IsTimeHeaderVisible"])
+                IsTimeHeaderVisible = bool.Parse(ConfigurationManager.AppSettings["IsTimeHeaderVisible"]),
+
+
+
+                IrrLateJobVr = ConfigurationManager.AppSettings["IrrLateJobVr"].ToString(),
+                IrrLateJobBooked = ConfigurationManager.AppSettings["IrrLateJobBooked"].ToString(),
+                IrrPlannedTimeExeeded = ConfigurationManager.AppSettings["IrrPlannedTimeExeeded"].ToString(),
+                PdtExceededInProgress = ConfigurationManager.AppSettings["PdtExceededInProgress"].ToString(),
+                PdtExceededWaittingForInvoice = ConfigurationManager.AppSettings["PdtExceededWaittingForInvoice"].ToString(),
+
+                IrrLateJobVrBlink = bool.Parse(ConfigurationManager.AppSettings["IrrLateJobVrBlink"].ToString()),
+                IrrLateJobBookedBlink = bool.Parse(ConfigurationManager.AppSettings["IrrLateJobBookedBlink"].ToString()),
+                IrrPlannedTimeExeededBlink = bool.Parse(ConfigurationManager.AppSettings["IrrPlannedTimeExeededBlink"].ToString()),
+                PdtExceededInProgressBlink = bool.Parse(ConfigurationManager.AppSettings["PdtExceededInProgressBlink"].ToString()),
+                PdtExceededWaittingForInvoiceBlink = bool.Parse(ConfigurationManager.AppSettings["PdtExceededWaittingForInvoiceBlink"].ToString())
+
                 //IsClockFormat24 = true,
                 //RefreshTimeInMinutes = 0.1,
                 //UnitSize = 100,
@@ -399,6 +414,20 @@ namespace DataLayer.DataService
             ConfigurationManager.AppSettings["IsTechnicientsNamesVisible"] =
                 settings.IsTechnicientsNamesVisible.ToString();
             ConfigurationManager.AppSettings["IsTimeHeaderVisible"] = settings.IsTimeHeaderVisible.ToString();
+
+            ConfigurationManager.AppSettings["IrrLateJobVr"] = settings.IrrLateJobVr.ToString();
+            ConfigurationManager.AppSettings["IrrLateJobBooked"] = settings.IrrLateJobBooked.ToString();
+            ConfigurationManager.AppSettings["IrrPlannedTimeExeeded"] = settings.IrrPlannedTimeExeeded.ToString();
+            ConfigurationManager.AppSettings["PdtExceededInProgress"] = settings.PdtExceededInProgress.ToString();
+            ConfigurationManager.AppSettings["PdtExceededWaittingForInvoice"] = settings.PdtExceededWaittingForInvoice.ToString();
+
+            ConfigurationManager.AppSettings["IrrLateJobVrBlink"] = settings.IrrLateJobVrBlink.ToString();
+            ConfigurationManager.AppSettings["IrrLateJobBookedBlink"] = settings.IrrLateJobBookedBlink.ToString();
+            ConfigurationManager.AppSettings["IrrPlannedTimeExeededBlink"] = settings.IrrPlannedTimeExeededBlink.ToString();
+            ConfigurationManager.AppSettings["PdtExceededInProgressBlink"] = settings.PdtExceededInProgressBlink.ToString();
+            ConfigurationManager.AppSettings["PdtExceededWaittingForInvoiceBlink"] = settings.PdtExceededWaittingForInvoiceBlink.ToString();
+
+
         }
 
         public void Dispose()

@@ -12,7 +12,7 @@ using DataLayer.Enums;
 namespace DataLayer.Model
 {
     //this settings are from the XML file; 
-    public class LocalSettings:INotifyPropertyChanged
+    public class LocalSettings : INotifyPropertyChanged
     {
         #region Fields
         private double _refreshTimeInMinutes;
@@ -35,6 +35,13 @@ namespace DataLayer.Model
         private String _irrPlannedTimeExeeded;
         private String _pdtExceededInProgress;
         private String _pdtExceededWaittingForInvoice;
+
+        private bool _irrLateJobVrBlink;
+        private bool _irrLateJobBookedBlink;
+        private bool _irrPlannedTimeExeededBlink;
+        private bool _pdtExceededInProgressBlink;
+        private bool _pdtExceededWaittingForInvoiceBlink;
+
 
         #endregion
         #region Properties
@@ -198,7 +205,6 @@ namespace DataLayer.Model
                 OnPropertyChanged();
             }
         }
-     
         public String IrrLateJobBooked
         {
             get
@@ -217,7 +223,6 @@ namespace DataLayer.Model
                 OnPropertyChanged();
             }
         }
-               
         public String IrrPlannedTimeExeeded
         {
             get
@@ -226,7 +231,7 @@ namespace DataLayer.Model
             }
 
             set
-            {   
+            {
                 if (_irrPlannedTimeExeeded == value)
                 {
                     return;
@@ -236,7 +241,6 @@ namespace DataLayer.Model
                 OnPropertyChanged();
             }
         }
-                
         public String PdtExceededInProgress
         {
             get
@@ -245,7 +249,7 @@ namespace DataLayer.Model
             }
 
             set
-            {   
+            {
                 if (_pdtExceededInProgress == value)
                 {
                     return;
@@ -255,7 +259,6 @@ namespace DataLayer.Model
                 OnPropertyChanged();
             }
         }
-        
         public String PdtExceededWaittingForInvoice
         {
             get
@@ -271,6 +274,97 @@ namespace DataLayer.Model
                 }
 
                 _pdtExceededWaittingForInvoice = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IrrLateJobVrBlink
+        {
+            get
+            {
+                return _irrLateJobVrBlink;
+            }
+
+            set
+            {
+                if (_irrLateJobVrBlink == value)
+                {
+                    return;
+                }
+
+                _irrLateJobVrBlink = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IrrLateJobBookedBlink
+        {
+            get
+            {
+                return _irrLateJobBookedBlink;
+            }
+
+            set
+            {
+                if (_irrLateJobBookedBlink == value)
+                {
+                    return;
+                }
+
+                _irrLateJobBookedBlink = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IrrPlannedTimeExeededBlink
+        {
+            get
+            {
+                return _irrPlannedTimeExeededBlink;
+            }
+
+            set
+            {
+                if (_irrPlannedTimeExeededBlink == value)
+                {
+                    return;
+                }
+
+                _irrPlannedTimeExeededBlink = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool PdtExceededInProgressBlink
+        {
+            get
+            {
+                return _pdtExceededInProgressBlink;
+            }
+
+            set
+            {
+                if (_pdtExceededInProgressBlink == value)
+                {
+                    return;
+                }
+
+                _pdtExceededInProgressBlink = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool PdtExceededWaittingForInvoiceBlink
+        {
+            get
+            {
+                return _pdtExceededWaittingForInvoiceBlink;
+            }
+
+            set
+            {
+                if (_pdtExceededWaittingForInvoiceBlink == value)
+                {
+                    return;
+                }
+
+                _pdtExceededWaittingForInvoiceBlink = value;
                 OnPropertyChanged();
             }
         }
