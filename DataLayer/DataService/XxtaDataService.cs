@@ -8,12 +8,13 @@ using Oracle.DataAccess.Client;
 using DataLayer.Model;
 using System.Configuration;
 using DataLayer.Exceptions;
+using System.Globalization;
 
 namespace DataLayer.DataService
 {
-    public class XxtaDataService : IDataService , IDisposable
+    public class XxtaDataService : IDataService, IDisposable
     {
-        OracleConnection _connection ;
+        OracleConnection _connection;
         public XxtaDataService()
         {
             _connection = new OracleConnection();
@@ -21,24 +22,22 @@ namespace DataLayer.DataService
                                 "(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)" +
                                  "(HOST=10.254.0.170)(PORT=1551))(CONNECT_DATA=" +
                                   "(SERVICE_NAME=DEV)))";
-            _connection.Open();
+            try
+            {
+                _connection.Open();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
-        public void OpenConnection()
-        {
-            //if (_connection.State != System.Data.ConnectionState.Open)
-            //    _connection.Open();  
-        }
-        public void CloseConnection()
-        {
-            //if (_connection.State == System.Data.ConnectionState.Open)
-            //    _connection.Close();
-        }
+
         public List<Branch> GetAllBranchs()
         {
             List<Branch> branchs = new List<Branch>();
-            OracleCommand branchsQuery = new OracleCommand("SELECT BRANCH_ID , SUC_NAME " 
+            OracleCommand branchsQuery = new OracleCommand("SELECT BRANCH_ID , SUC_NAME "
                                                          + "FROM APPS.XXTA_BRANCH_SIT ", _connection);
-            //_connection.Open();
+
             OracleDataReader BranchsReader = branchsQuery.ExecuteReader();
             if (BranchsReader.HasRows)
             {
@@ -52,7 +51,7 @@ namespace DataLayer.DataService
             }
 
             BranchsReader.Close();
-            //_connection.Close();
+
             return branchs;
         }
 
@@ -62,9 +61,10 @@ namespace DataLayer.DataService
             OracleCommand mechanicsQuery = new OracleCommand("SELECT RESOURCE_ID , MECHANIC_NAME "
                                                            + "FROM APPS.XXDMS_JA_CLK_RESOURCES_V "
                                                            + "WHERE BRANCH_CODE = :BRANCH_ID ", _connection);
+            mechanicsQuery.BindByName = true;
             mechanicsQuery.Parameters.Add("BRANCH_ID", OracleDbType.Varchar2);
             mechanicsQuery.Parameters["BRANCH_ID"].Value = BRANCH_ID.ToString();
-            //_connection.Open();
+
             OracleDataReader mechanicsReader = mechanicsQuery.ExecuteReader();
             if (mechanicsReader.HasRows)
             {
@@ -77,7 +77,7 @@ namespace DataLayer.DataService
                 }
             }
             mechanicsReader.Close();
-            //_connection.Close();
+
             return mechanics;
         }
 
@@ -96,9 +96,10 @@ namespace DataLayer.DataService
         {
             List<Stall> OrganisationStalls = new List<Stall>();
 
-            OracleCommand query = new OracleCommand("SELECT STALL_ID , BRANCH_ID , STALL_NAME , STALL_DESCRIPTION , IS_ACTIVE " 
-                                                   +"FROM  STALL "
-                                                   +"WHERE BRANCH_ID = :BRANCH_ID AND IS_ACTIVE = 'Y' ", _connection);
+            OracleCommand query = new OracleCommand("SELECT STALL_ID , BRANCH_ID , STALL_NAME , STALL_DESCRIPTION , IS_ACTIVE "
+                                                   + "FROM  STALL "
+                                                   + "WHERE BRANCH_ID = :BRANCH_ID AND IS_ACTIVE = 'Y' ", _connection);
+            query.BindByName = true;
             query.Parameters.Add("BRANCH_ID", OracleDbType.Varchar2);
             query.Parameters["BRANCH_ID"].Value = BRANCH_ID.ToString();
 
@@ -108,8 +109,11 @@ namespace DataLayer.DataService
                 while (stallReader.Read())
                 {
                     Stall currentStall = new Stall();
-                    currentStall.Id = Int32.Parse(stallReader.GetOracleValue(0).ToString());
-                    currentStall.StallName = stallReader.GetOracleString(2).ToString();
+                    currentStall.Id = stallReader.GetInt32(0);
+                    currentStall.BranchId = int.Parse(stallReader.GetString(1));
+                    currentStall.StallName = stallReader.GetString(2);
+                    currentStall.StallDescription = stallReader.GetString(3);
+                    currentStall.IsActive = stallReader.GetString(4);
 
                     currentStall.Techniciens = new System.Collections.ObjectModel.ObservableCollection<Technicien>();
                     currentStall.JobTasksCollection = new System.Collections.ObjectModel.ObservableCollection<ITimeLineJobTask>();
@@ -121,6 +125,8 @@ namespace DataLayer.DataService
                                                                      INNER JOIN APPS.XXDMS_JA_CLK_RESOURCES_V REC
                                                                      ON TECH.TECHNICIEN_ID = REC.RESOURCE_ID
                                                                      WHERE STALL.STALL_ID = :STALL_ID ", _connection);
+
+                    techniciensQuery.BindByName = true;
                     techniciensQuery.Parameters.Add("STALL_ID", OracleDbType.Decimal);
                     techniciensQuery.Parameters["STALL_ID"].Value = (Decimal)currentStall.Id;
                     OracleDataReader techniciensReader = techniciensQuery.ExecuteReader();
@@ -134,7 +140,7 @@ namespace DataLayer.DataService
                             currentStall.Techniciens.Add(technicien);
 
                             // Fill current stall job cards with current technicien job cards 
-                            OracleCommand jobTasksQuery = new OracleCommand("     SELECT  ALLOC.ALLOCATION_ID , " 
+                            OracleCommand jobTasksQuery = new OracleCommand("     SELECT  ALLOC.ALLOCATION_ID , "
                                                                           + "             TASK.TASK_ID, "
                                                                           + "             SR.INCIDENT_NUMBER AS JOBCARD_NUMBER, "
                                                                           + "             AB.BOOKING_NUMBER, "
@@ -159,24 +165,26 @@ namespace DataLayer.DataService
                                                                           + "      INNER JOIN CS.CS_INCIDENT_SEVERITIES_TL SEVERITY "
                                                                           + "      ON SR.INCIDENT_SEVERITY_ID = SEVERITY.INCIDENT_SEVERITY_ID  AND SEVERITY.LANGUAGE = 'F' "
                                                                           + "      WHERE ALLOC.MECHANIC_ID = :MECHANIC_ID AND TRUNC(ALLOC.ALLOCATION_DT) = TRUNC(SYSDATE) ", _connection);
+
+                            jobTasksQuery.BindByName = true;
                             jobTasksQuery.Parameters.Add("MECHANIC_ID", OracleDbType.Int32);
                             jobTasksQuery.Parameters["MECHANIC_ID"].Value = technicien.Id;
 
-                            
+
                             OracleDataReader jobTasksReader = jobTasksQuery.ExecuteReader();
                             if (jobTasksReader.HasRows)
                             {
                                 while (jobTasksReader.Read())
                                 {
                                     JobTask jobTask = new JobTask();
-                                    jobTask.Id = (Int32)jobTasksReader.GetValue(0);
+                                    jobTask.Id = Int32.Parse(jobTasksReader.GetValue(0).ToString());
                                     jobTask.JobType = jobTasksReader.GetString(4);
                                     jobTask.ReceptionTime = jobTasksReader.GetDateTime(5);
                                     jobTask.Status = jobTasksReader.GetString(6);
                                     jobTask.PDT = jobTasksReader.GetDateTime(9);
-                                    jobTask.PlannedStartTime = jobTasksReader.GetDateTime(7);
-                                    jobTask.ActualStartTime = jobTasksReader.GetDateTime(8);
-                                    jobTask.EndTime = jobTasksReader.GetDateTime(10);
+                                    jobTask.PlannedStartTime = jobTasksReader.IsDBNull(7) ? null : (DateTime?)jobTasksReader.GetDateTime(7);
+                                    jobTask.ActualStartTime = jobTasksReader.IsDBNull(8)?null:(DateTime?)jobTasksReader.GetDateTime(8);
+                                    jobTask.EndTime = jobTasksReader.IsDBNull(10) ? null : (DateTime?)jobTasksReader.GetDateTime(10);
                                     if (currentStall.JobTasksCollection.Count(c => c.Id == jobTask.Id) == 0)
                                     {
                                         currentStall.JobTasksCollection.Add(jobTask);
@@ -204,6 +212,7 @@ namespace DataLayer.DataService
             OracleCommand insertCommand = new OracleCommand(@"INSERT INTO STALL(STALL_ID , BRANCH_ID , STALL_NAME , STALL_DESCRIPTION , IS_ACTIVE)
                                                           VALUES(STALL_SEQ.NEXTVAL , :BRANCH_ID , :STALL_NAME , :STALL_DESCRIPTION , :IS_ACTIVE)", _connection);
 
+            insertCommand.BindByName = true;
             insertCommand.Parameters.Add("BRANCH_ID", OracleDbType.Varchar2);
             insertCommand.Parameters["BRANCH_ID"].Value = newStall.BranchId.ToString();
             insertCommand.Parameters.Add("STALL_NAME", OracleDbType.Varchar2);
@@ -220,15 +229,20 @@ namespace DataLayer.DataService
 
         public int UpdateStall(Stall UpdatedStall)
         {
-            OracleCommand updateCommand = new OracleCommand("UPDATE STALL SET BRANCH_ID = :BRANCH_ID , "
-                                                            + "STALL_NAME = :STALL_NAME , "
-                                                            + "STALL_DESCRIPTION = :STALL_DESCRIPTION , "
-                                                            + "IS_ACTIVE = :IS_ACTIVE "
-                                                            + "WHERE STALL_ID = :STALL_ID ", _connection);
-            updateCommand.Parameters.Add("STALL_ID", OracleDbType.Int32);
-            updateCommand.Parameters["STALL_ID"].Value = UpdatedStall.Id;
+
+            OracleCommand updateCommand = new OracleCommand(@"UPDATE STALL 
+                                                              SET BRANCH_ID = :BRANCH_ID ,
+                                                                  STALL_NAME = :STALL_NAME , 
+                                                                  STALL_DESCRIPTION = :STALL_DESCRIPTION , 
+                                                                  IS_ACTIVE = :IS_ACTIVE
+                                                              WHERE STALL_ID = :STALL_ID ", _connection);
+
+            updateCommand.BindByName = true;
+
+            updateCommand.Parameters.Add("STALL_ID", OracleDbType.Decimal);
+            updateCommand.Parameters["STALL_ID"].Value = (decimal)UpdatedStall.Id;
             updateCommand.Parameters.Add("BRANCH_ID", OracleDbType.Varchar2);
-            updateCommand.Parameters["BRANCH_ID"].Value = UpdatedStall.BranchId;
+            updateCommand.Parameters["BRANCH_ID"].Value = UpdatedStall.BranchId.ToString();
             updateCommand.Parameters.Add("STALL_NAME", OracleDbType.Varchar2);
             updateCommand.Parameters["STALL_NAME"].Value = UpdatedStall.StallName;
             updateCommand.Parameters.Add("STALL_DESCRIPTION", OracleDbType.Varchar2);
@@ -243,16 +257,20 @@ namespace DataLayer.DataService
 
         public bool RemoveStall(int stall_Id)
         {
+
             if (!isStallFree(stall_Id))
                 throw new BusinessException("the stall is not free !");
 
             OracleCommand deleteCommand = new OracleCommand(@"DELETE STALL 
                                                               WHERE STALL_ID = :STALL_ID", _connection);
+
+            //deleteCommand.BindByName = true;
             deleteCommand.Parameters.Add("STALL_ID", OracleDbType.Int32);
             deleteCommand.Parameters["STALL_ID"].Value = stall_Id;
-            
+
             deleteCommand.ExecuteNonQuery();
             return true;
+
         }
 
         public bool isStallFree(int stall_Id)
@@ -260,6 +278,8 @@ namespace DataLayer.DataService
             OracleCommand query = new OracleCommand(@"SELECT COUNT(*) 
                                                       FROM STALL_TECHNICIENS
                                                       WHERE STALL_ID = :STALL_ID ", _connection);
+
+            query.BindByName = true;
             query.Parameters.Add("STALL_ID", OracleDbType.Int32);
             query.Parameters["STALL_ID"].Value = stall_Id;
 
@@ -273,6 +293,7 @@ namespace DataLayer.DataService
         }
         public bool AssignMechanicToStall(int STALL_ID, int MECHANIC_ID)
         {
+
             if (IsMechanicInStall(MECHANIC_ID))
             {
                 throw new BusinessException("Already assigned !");
@@ -281,18 +302,22 @@ namespace DataLayer.DataService
             {
                 OracleCommand insertCommand = new OracleCommand(@"INSERT INTO STALL_TECHNICIENS
                                                                   VALUES(STALL_TECHNICIENS_SEQ.NEXTVAL , :STALL_ID , :MECHANIC_ID , SYSDATE) ", _connection);
+
+                insertCommand.BindByName = true;
                 insertCommand.Parameters.Add("STALL_ID", OracleDbType.Int32);
                 insertCommand.Parameters["STALL_ID"].Value = STALL_ID;
                 insertCommand.Parameters.Add("MECHANIC_ID", OracleDbType.Int32);
                 insertCommand.Parameters["MECHANIC_ID"].Value = MECHANIC_ID;
-                
+
                 insertCommand.ExecuteNonQuery();
             }
             return true;
+
         }
 
         public bool ReleaseMechanicFromStall(int MECHANIC_ID)
         {
+
             if (!IsMechanicInStall(MECHANIC_ID))
             {
                 throw new BusinessException("Not assigned !");
@@ -301,12 +326,15 @@ namespace DataLayer.DataService
             {
                 OracleCommand deleteCommand = new OracleCommand(@"DELETE FROM STALL_TECHNICIENS
                                                                   WHERE TECHNICIEN_ID = :MECHANIC_ID ", _connection);
+
+                deleteCommand.BindByName = true;
                 deleteCommand.Parameters.Add("MECHANIC_ID", OracleDbType.Int32);
                 deleteCommand.Parameters["MECHANIC_ID"].Value = MECHANIC_ID;
 
                 deleteCommand.ExecuteNonQuery();
             }
             return true;
+
         }
 
         public bool IsMechanicInStall(int MECHANIC_ID)
@@ -315,9 +343,11 @@ namespace DataLayer.DataService
             OracleCommand query = new OracleCommand(@"SELECT COUNT(*) AS COUNT
                                                       FROM STALL_TECHNICIENS
                                                       WHERE TECHNICIEN_ID = :MECHANIC_ID ", _connection);
+
+            query.BindByName = true;
             query.Parameters.Add("MECHANIC_ID", OracleDbType.Int32);
             query.Parameters["MECHANIC_ID"].Value = MECHANIC_ID;
-            //OpenConnection();
+
             OracleDataReader reader = query.ExecuteReader();
 
             reader.Read();
@@ -325,7 +355,7 @@ namespace DataLayer.DataService
                 IsInStall = true;
 
             reader.Close();
-            //CloseConnection();
+
             return IsInStall;
         }
 
@@ -343,7 +373,7 @@ namespace DataLayer.DataService
                 EndHour = new TimeSpan(18, 0, 0),
                 DatabaseCurrentDate = sysDate
             };
-            
+
         }
 
         public LocalSettings GetLocalSettings()
@@ -351,7 +381,7 @@ namespace DataLayer.DataService
             return new LocalSettings()
             {
                 IsClockFormat24 = bool.Parse(ConfigurationManager.AppSettings["IsClockFormat24"]),
-                RefreshTimeInMinutes = Double.Parse(ConfigurationManager.AppSettings["RefreshTimeInMinutes"]),
+                RefreshTimeInMinutes = Double.Parse(ConfigurationManager.AppSettings["RefreshTimeInMinutes"] ,new CultureInfo("En-US")),
                 UnitSize = Double.Parse(ConfigurationManager.AppSettings["UnitSize"]),
                 IsShipClientWaitingVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipClientWaitingVisible"]),
                 IsShipJobtypeVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipJobtypeVisible"]),
@@ -377,21 +407,6 @@ namespace DataLayer.DataService
                 IrrPlannedTimeExeededBlink = bool.Parse(ConfigurationManager.AppSettings["IrrPlannedTimeExeededBlink"].ToString()),
                 PdtExceededInProgressBlink = bool.Parse(ConfigurationManager.AppSettings["PdtExceededInProgressBlink"].ToString()),
                 PdtExceededWaittingForInvoiceBlink = bool.Parse(ConfigurationManager.AppSettings["PdtExceededWaittingForInvoiceBlink"].ToString())
-
-                //IsClockFormat24 = true,
-                //RefreshTimeInMinutes = 0.1,
-                //UnitSize = 100,
-                //IsShipClientWaitingVisible = true,
-                //IsShipJobtypeVisible = true,
-                //IsShipPdtVisible = true,
-                //IsShipReceptionTimeVisible = true,
-                //IsShipStatusVisible = true,
-
-                //IsPlanActualHeaderVisible = true,
-                //IsPlanActualMerged = false,
-                //IsStallNamesVisible = true,
-                //IsTechnicientsNamesVisible = true,
-                //IsTimeHeaderVisible = true
             };
         }
 
