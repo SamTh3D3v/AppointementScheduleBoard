@@ -45,7 +45,7 @@ namespace AppointementScheduleBoard.ViewModel
         private static void SetupDataService()
         {
             //to use the test data service (local data)
-            MainSampleDataService = new XxtaDataService();
+            MainSampleDataService = new SampleDataService();
             //to use the PROD dataservice 
             //MainSampleDataService=new DataService();
             SimpleIoc.Default.Register<IDataService>(()=> MainSampleDataService);
