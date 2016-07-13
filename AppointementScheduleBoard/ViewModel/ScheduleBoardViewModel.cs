@@ -255,6 +255,12 @@ namespace AppointementScheduleBoard.ViewModel
                                  jt.IsJobTaskBliking = MainDataService.GetLocalSettings().IrrLateJobBookedBlink;
                                  continue;
                              }
+                             else if (jt.StatusId == (int)StatusEnum.Allocated)
+                             {
+                                 jt.JobTaskBackGround = MainDataService.GetLocalSettings().IrrLateJobBooked;
+                                 jt.IsJobTaskBliking = MainDataService.GetLocalSettings().IrrLateJobBookedBlink;
+                                 continue;
+                             }
 
                          }
 

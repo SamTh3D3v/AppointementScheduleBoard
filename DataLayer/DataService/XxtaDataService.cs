@@ -8,6 +8,7 @@ using Oracle.DataAccess.Client;
 using DataLayer.Model;
 using System.Configuration;
 using DataLayer.Exceptions;
+using System.Globalization;
 
 namespace DataLayer.DataService
 {
@@ -176,14 +177,14 @@ namespace DataLayer.DataService
                                 while (jobTasksReader.Read())
                                 {
                                     JobTask jobTask = new JobTask();
-                                    jobTask.Id = (Int32)jobTasksReader.GetValue(0);
+                                    jobTask.Id = Int32.Parse(jobTasksReader.GetValue(0).ToString());
                                     jobTask.JobType = jobTasksReader.GetString(4);
                                     jobTask.ReceptionTime = jobTasksReader.GetDateTime(5);
                                     jobTask.Status = jobTasksReader.GetString(6);
                                     jobTask.PDT = jobTasksReader.GetDateTime(9);
-                                    jobTask.PlannedStartTime = jobTasksReader.GetDateTime(7);
-                                    jobTask.ActualStartTime = jobTasksReader.GetDateTime(8);
-                                    jobTask.EndTime = jobTasksReader.GetDateTime(10);
+                                    jobTask.PlannedStartTime = jobTasksReader.IsDBNull(7) ? null : (DateTime?)jobTasksReader.GetDateTime(7);
+                                    jobTask.ActualStartTime = jobTasksReader.IsDBNull(8)?null:(DateTime?)jobTasksReader.GetDateTime(8);
+                                    jobTask.EndTime = jobTasksReader.IsDBNull(10) ? null : (DateTime?)jobTasksReader.GetDateTime(10);
                                     if (currentStall.JobTasksCollection.Count(c => c.Id == jobTask.Id) == 0)
                                     {
                                         currentStall.JobTasksCollection.Add(jobTask);
@@ -383,7 +384,7 @@ namespace DataLayer.DataService
             return new LocalSettings()
             {
                 IsClockFormat24 = bool.Parse(ConfigurationManager.AppSettings["IsClockFormat24"]),
-                RefreshTimeInMinutes = Double.Parse(ConfigurationManager.AppSettings["RefreshTimeInMinutes"]),
+                RefreshTimeInMinutes = Double.Parse(ConfigurationManager.AppSettings["RefreshTimeInMinutes"] ,new CultureInfo("En-US")),
                 UnitSize = Double.Parse(ConfigurationManager.AppSettings["UnitSize"]),
                 IsShipClientWaitingVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipClientWaitingVisible"]),
                 IsShipJobtypeVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipJobtypeVisible"]),
