@@ -18,10 +18,10 @@ namespace DataLayer.DataService
         public XxtaDataService()
         {
             _connection = new OracleConnection();
-            _connection.ConnectionString = "user id=itcomp;password=itcomp;data source=" +
+            _connection.ConnectionString = "user id=itcomp;password=ItcompSer2016$;data source=" +
                                 "(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)" +
-                                 "(HOST=10.254.0.170)(PORT=1551))(CONNECT_DATA=" +
-                                  "(SERVICE_NAME=DEV)))";
+                                 "(HOST=10.254.0.158)(PORT=1641))(CONNECT_DATA=" +
+                                  "(SERVICE_NAME=PROD)))";
             try
             {
                 _connection.Open();
