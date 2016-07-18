@@ -92,6 +92,7 @@ namespace DataLayer.DataService
             }
             return notAssignedMechanics;
         }
+
         public List<Stall> GetBranchStalls(int BRANCH_ID)
         {
             List<Stall> OrganisationStalls = new List<Stall>();
@@ -115,9 +116,9 @@ namespace DataLayer.DataService
                     currentStall.StallDescription = stallReader.GetString(3);
                     currentStall.IsActive = stallReader.GetString(4);
 
-                    currentStall.Techniciens = new System.Collections.ObjectModel.ObservableCollection<Technicien>();
-                    currentStall.JobTasksCollection = new System.Collections.ObjectModel.ObservableCollection<ITimeLineJobTask>();
+
                     //fill current stall with techniciens
+                    currentStall.Techniciens = new System.Collections.ObjectModel.ObservableCollection<Technicien>();
                     OracleCommand techniciensQuery = new OracleCommand(@"SELECT STALL.STALL_ID , TECH.TECHNICIEN_ID , REC.MECHANIC_NAME
                                                                      FROM STALL 
                                                                      INNER JOIN STALL_TECHNICIENS TECH
@@ -125,7 +126,6 @@ namespace DataLayer.DataService
                                                                      INNER JOIN APPS.XXDMS_JA_CLK_RESOURCES_V REC
                                                                      ON TECH.TECHNICIEN_ID = REC.RESOURCE_ID
                                                                      WHERE STALL.STALL_ID = :STALL_ID ", _connection);
-
                     techniciensQuery.BindByName = true;
                     techniciensQuery.Parameters.Add("STALL_ID", OracleDbType.Decimal);
                     techniciensQuery.Parameters["STALL_ID"].Value = (Decimal)currentStall.Id;
@@ -138,65 +138,74 @@ namespace DataLayer.DataService
                             technicien.Id = (Int32)(decimal)techniciensReader.GetValue(1);
                             technicien.Name = techniciensReader.GetString(2);
                             currentStall.Techniciens.Add(technicien);
-
-                            // Fill current stall job cards with current technicien job cards 
-                            OracleCommand jobTasksQuery = new OracleCommand("     SELECT  ALLOC.ALLOCATION_ID , "
-                                                                          + "             TASK.TASK_ID, "
-                                                                          + "             SR.INCIDENT_NUMBER AS JOBCARD_NUMBER, "
-                                                                          + "             AB.BOOKING_NUMBER, "
-                                                                          + "             INCTYPE.NAME AS INCIDENTTYPE, "
-                                                                          + "             SR.INC_RESPONDED_BY_DATE AS RECEPTIONTIME, "
-                                                                          + "             STATUS.NAME AS STATUS, "
-                                                                          + "             SR.OBLIGATION_DATE AS ESTIMATED_STARTTIME, "
-                                                                          + "             SR.START_DATE_ACTIVE AS STARTTIME, "
-                                                                          + "             SR.EXPECTED_RESOLUTION_DATE AS PDT, "
-                                                                          + "             SR.INCIDENT_RESOLVED_DATE AS ENDTIME "
-                                                                          + "      FROM XXTA.XXDMS_JOB_ALLCTN_DTLS_ALL ALLOC "
-                                                                          + "      INNER JOIN CS.CS_INCIDENTS_ALL_B SR "
-                                                                          + "      ON ALLOC.INCIDENT_ID = SR.INCIDENT_ID "
-                                                                          + "      INNER JOIN XXTA.XXDMS_AB_HEADERS AB "
-                                                                          + "      ON SR.INCIDENT_ID = AB.INCIDENT_ID "
-                                                                          + "      INNER JOIN XXTA.XXDMS_ALLCTN_TASK_DTLS TASK "
-                                                                          + "      ON ALLOC.ALLOCATION_ID = TASK.ALLOCATION_ID "
-                                                                          + "      INNER JOIN CS.CS_INCIDENT_STATUSES_TL STATUS "
-                                                                          + "      ON SR.INCIDENT_STATUS_ID = STATUS.INCIDENT_STATUS_ID  AND STATUS.LANGUAGE = 'F' "
-                                                                          + "      INNER JOIN CS.CS_INCIDENT_TYPES_TL INCTYPE "
-                                                                          + "      ON SR.INCIDENT_TYPE_ID = INCTYPE.INCIDENT_TYPE_ID  AND INCTYPE.LANGUAGE = 'F' "
-                                                                          + "      INNER JOIN CS.CS_INCIDENT_SEVERITIES_TL SEVERITY "
-                                                                          + "      ON SR.INCIDENT_SEVERITY_ID = SEVERITY.INCIDENT_SEVERITY_ID  AND SEVERITY.LANGUAGE = 'F' "
-                                                                          + "      WHERE ALLOC.MECHANIC_ID = :MECHANIC_ID AND TRUNC(ALLOC.ALLOCATION_DT) = TRUNC(SYSDATE) ", _connection);
-
-                            jobTasksQuery.BindByName = true;
-                            jobTasksQuery.Parameters.Add("MECHANIC_ID", OracleDbType.Int32);
-                            jobTasksQuery.Parameters["MECHANIC_ID"].Value = technicien.Id;
-
-
-                            OracleDataReader jobTasksReader = jobTasksQuery.ExecuteReader();
-                            if (jobTasksReader.HasRows)
-                            {
-                                while (jobTasksReader.Read())
-                                {
-                                    JobTask jobTask = new JobTask();
-                                    jobTask.Id = Int32.Parse(jobTasksReader.GetValue(0).ToString());
-                                    jobTask.JobType = jobTasksReader.GetString(4);
-                                    jobTask.ReceptionTime = jobTasksReader.GetDateTime(5);
-                                    jobTask.Status = jobTasksReader.GetString(6);
-                                    jobTask.PDT = jobTasksReader.GetDateTime(9);
-                                    jobTask.PlannedStartTime = jobTasksReader.IsDBNull(7) ? null : (DateTime?)jobTasksReader.GetDateTime(7);
-                                    jobTask.ActualStartTime = jobTasksReader.IsDBNull(8)?null:(DateTime?)jobTasksReader.GetDateTime(8);
-                                    jobTask.EndTime = jobTasksReader.IsDBNull(10) ? null : (DateTime?)jobTasksReader.GetDateTime(10);
-                                    if (currentStall.JobTasksCollection.Count(c => c.Id == jobTask.Id) == 0)
-                                    {
-                                        currentStall.JobTasksCollection.Add(jobTask);
-                                    }
-                                }
-                            }
-                            jobTasksReader.Close();
                         }
                     }
-
-
                     techniciensReader.Close();
+
+                    // Fill current stall with job cards 
+                    currentStall.JobTasksCollection = new System.Collections.ObjectModel.ObservableCollection<ITimeLineJobTask>();
+                    OracleCommand jobTasksQuery = new OracleCommand(@"  SELECT AB.BOOKING_NUMBER AS BOOKING_NUMBER ,
+                                                                               AB.INCIDENT_ID AS INCIDENT_ID ,
+                                                                               AB.BOOKING_DATE AS BOOKING_DATE, 
+                                                                               NVL(SR_STATUS.NAME , 'Booked') AS STATUS , 
+                                                                               SEVERITY.NAME AS SEVERITY_LEVEL , 
+                                                                               T_TYPE.NAME AS JOB_TYPE ,
+                                                                               OPER.HOURS HOURS , 
+                                                                               SR.OBLIGATION_DATE AS ESTIMATED_START , 
+                                                                               SR.INCIDENT_RESOLVED_DATE AS REAL_END ,
+                                                                               ( SELECT COUNT(ALLOCATION_ID) AS SPLIT_NUMBER
+                                                                                 FROM XXDMS_JOB_ALLCTN_DTLS_ALL ALLOC
+                                                                                 WHERE ALLOC.INCIDENT_ID = AB.INCIDENT_ID ) AS MECHANICS_COUNT , 
+                                                                              CLOCK_IO.*
+                                                                        FROM XXTA.XXDMS_AB_HEADERS AB
+                                                                        LEFT OUTER JOIN XXTA.XXDMS_AB_OPERATIONS OPER
+                                                                        ON AB.HEADER_ID = OPER.HEADER_ID
+                                                                        LEFT OUTER JOIN JTF.JTF_TASK_TYPES_TL T_TYPE
+                                                                        ON OPER.TASK_TYPE_ID = T_TYPE.TASK_TYPE_ID AND LANGUAGE = 'F'
+                                                                        LEFT OUTER JOIN CS.CS_INCIDENTS_ALL_B SR
+                                                                        ON AB.INCIDENT_ID = SR.INCIDENT_ID
+                                                                        LEFT OUTER JOIN CS.CS_INCIDENT_STATUSES_TL SR_STATUS
+                                                                        ON SR.INCIDENT_STATUS_ID = SR_STATUS.INCIDENT_STATUS_ID AND SR_STATUS.LANGUAGE = 'F'
+                                                                        LEFT OUTER JOIN CS.CS_INCIDENT_SEVERITIES_TL SEVERITY
+                                                                        ON AB.SEVERITY_ID = SEVERITY.INCIDENT_SEVERITY_ID  AND SEVERITY.LANGUAGE = 'F'
+                                                                        LEFT OUTER JOIN ( SELECT *
+                                                                                          FROM (  SELECT STARTER.INCIDENT_ID , GOOL.ACTION_CD AS ACTION , GOOL.IN_OUT_DT AS DT
+                                                                                                  FROM CS.CS_INCIDENTS_ALL_B STARTER
+                                                                                                  LEFT OUTER JOIN XXDMS_JOB_ALLCTN_DTLS_ALL BRIDGE
+                                                                                                  ON STARTER.INCIDENT_ID = BRIDGE.INCIDENT_ID
+                                                                                                  LEFT OUTER JOIN XXTA.XXDMS_ALLCTN_IN_OUT_DTLS GOOL
+                                                                                                  ON BRIDGE.ALLOCATION_ID = GOOL.ALLOCATION_ID
+                                                                                                )
+                                                                                          PIVOT (MAX(DT) AS DT FOR ACTION IN('CLOCK_IN' AS CLOCK_IN_DATE , 'CLOCK_OUT' AS CLOCK_OUT_DATE ))) CLOCK_IO
+                                                                        ON AB.INCIDENT_ID = CLOCK_IO.INCIDENT_ID
+                                                                        WHERE AB.BOOKING_DATE > TO_DATE( '01-07-2016' , 'DD-MM-YYYY')", _connection);
+
+                    jobTasksQuery.BindByName = true;
+                    jobTasksQuery.Parameters.Add("STALL_ID", OracleDbType.Decimal);
+                    jobTasksQuery.Parameters["STALL_ID"].Value = (Decimal)currentStall.Id;
+
+                    OracleDataReader jobTasksReader = jobTasksQuery.ExecuteReader();
+                    if (jobTasksReader.HasRows)
+                    {
+                        while (jobTasksReader.Read())
+                        {
+                            JobTask jobTask = new JobTask();
+                            jobTask.Id = Int32.Parse(jobTasksReader.GetValue(0).ToString());
+                            jobTask.JobType = jobTasksReader.GetString(4);
+                            jobTask.ReceptionTime = jobTasksReader.GetDateTime(5);
+                            jobTask.Status = jobTasksReader.GetString(6);
+                            jobTask.PDT = jobTasksReader.GetDateTime(9);
+                            jobTask.PlannedStartTime = jobTasksReader.IsDBNull(7) ? null : (DateTime?)jobTasksReader.GetDateTime(7);
+                            jobTask.ActualStartTime = jobTasksReader.IsDBNull(8) ? null : (DateTime?)jobTasksReader.GetDateTime(8);
+                            jobTask.EndTime = jobTasksReader.IsDBNull(10) ? null : (DateTime?)jobTasksReader.GetDateTime(10);
+                            if (currentStall.JobTasksCollection.Count(c => c.Id == jobTask.Id) == 0)
+                            {
+                                currentStall.JobTasksCollection.Add(jobTask);
+                            }
+                        }
+                    }
+                    jobTasksReader.Close();
+
 
                     OrganisationStalls.Add(currentStall);
                 }
