@@ -106,17 +106,12 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <Border Grid.Column="0" Width="100" Height="160" Grid.Row="0" Grid.RowSpan="2" BorderBrush="{StaticResource DarkerG}" BorderThickness="1">
-
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Text="{Binding StallName}" VerticalAlignment="Top"
+                                <Border Grid.Column="0" Width="100" MinHeight="80" Grid.Row="0" Grid.RowSpan="2" BorderBrush="{StaticResource DarkerG}" BorderThickness="1">
+                                    <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+                                        <StackPanel Orientation="Vertical">
+                                            <TextBlock Text="{Binding StallName}" VerticalAlignment="Top"
                                                Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsStallNamesVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}"
                                                HorizontalAlignment="Center" FontFamily="segoe ui" FontWeight="Bold" Foreground="White"/>
-                                        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
                                             <ItemsControl ItemsSource="{Binding Techniciens}" Margin="0,3,0,0">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
@@ -128,9 +123,8 @@
                                                 </ItemsControl.ItemTemplate>
 
                                             </ItemsControl>
-                                        </ScrollViewer>
-                                    </Grid>
-
+                                        </StackPanel>
+                                    </ScrollViewer>
 
                                 </Border>
                                 <Border Grid.Column="1" Width="75" Height="80" Grid.Row="0" BorderBrush="{StaticResource DarkerG}" 
