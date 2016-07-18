@@ -195,8 +195,15 @@ namespace AppointementScheduleBoard.ViewModel
             await RefreshBoardPeriodicly();
         }
 
+        private bool hoursMutex = false;
+        private bool stallsMutex = false;
+
+
         private async Task UpdateHoursCollection()
         {
+            if (hoursMutex) return;
+            hoursMutex = true;
+            
             var list = new List<ITimeLineJobTask>();
             var startDateTime = StartDateTime;
             await Task.Run(() =>
@@ -213,25 +220,29 @@ namespace AppointementScheduleBoard.ViewModel
                 }
             });
             HoursCollection = new ObservableCollection<ITimeLineJobTask>(list);
-
+            hoursMutex = false;
 
         }
 
         private async Task ReloadBoard()
         {
+            if (stallsMutex) return;
+            stallsMutex = true;
             IsPrograssRingActive = true;
             //for test purpuses             
             await Task.Run(() => Thread.Sleep(3000));
-            StallsCollection = new ObservableCollection<Stall>(await Task.Run(() => MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter)));
             StartDateTime = DateTime.Today.Add(MainDataService.GetServerSettings().StartHour);
             EndDateTime = DateTime.Today.Add(MainDataService.GetServerSettings().EndHour);
-
+            StallsCollection = new ObservableCollection<Stall>(await Task.Run(() => MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter)));          
             await UpdateHoursCollection();
             IsPrograssRingActive = false;
+            stallsMutex = false;
         }
 
         private async Task RefreshBoardPeriodicly()
         {
+            if (stallsMutex) return;
+            stallsMutex = true;
             await Task.Run(() =>
              {
                  var collection = MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter);
@@ -291,6 +302,7 @@ namespace AppointementScheduleBoard.ViewModel
                  });
                  StallsCollection = new ObservableCollection<Stall>(collection);
              });
+            stallsMutex = false;
 
         }
         #endregion       
