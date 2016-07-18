@@ -106,12 +106,17 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <Border Grid.Column="0" Width="100" MinHeight="80" Grid.Row="0" Grid.RowSpan="2" BorderBrush="{StaticResource DarkerG}" BorderThickness="1">
-                                    <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
-                                        <StackPanel Orientation="Vertical">
-                                            <TextBlock Text="{Binding StallName}" VerticalAlignment="Top"
+                                <Border Grid.Column="0" Width="100" Height="160" Grid.Row="0" Grid.RowSpan="2" BorderBrush="{StaticResource DarkerG}" BorderThickness="1">
+
+                                    <Grid >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="{Binding StallName}" VerticalAlignment="Top"
                                                Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsStallNamesVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}"
                                                HorizontalAlignment="Center" FontFamily="segoe ui" FontWeight="Bold" Foreground="White"/>
+                                        <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Grid.Row="1">
                                             <ItemsControl ItemsSource="{Binding Techniciens}" Margin="0,3,0,0">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
@@ -123,8 +128,8 @@
                                                 </ItemsControl.ItemTemplate>
 
                                             </ItemsControl>
-                                        </StackPanel>
-                                    </ScrollViewer>
+                                        </ScrollViewer>
+                                    </Grid>
 
                                 </Border>
                                 <Border Grid.Column="1" Width="75" Height="80" Grid.Row="0" BorderBrush="{StaticResource DarkerG}" 
@@ -192,9 +197,9 @@
                                                         UnitSize="{Binding TimeLineUnitSize,Mode=TwoWay}"                                                        
                                                         Background="{StaticResource DarkerG}"                                                          
                                                         DrawTimeGrid="True"
-                                                        MinWidth="50"                                                             
+                                                                                                                
                                                          Items="{Binding HoursCollection,Mode=TwoWay}"
-                                                        SynchedWithSiblings="False" />
+                                                        SynchedWithSiblings="True" />
                         <ItemsControl Grid.Row="1" ItemsSource="{Binding Path=StallsCollection}"
 	                               	AlternationCount="2"
 	                            	HorizontalAlignment="Stretch">
@@ -208,7 +213,7 @@
 
                                         <Border Grid.Row="0" Grid.RowSpan="2" BorderBrush="Black" BorderThickness="1">
                                             <StackPanel Orientation="Vertical">
-                                                <timeLineControl:TimeLineControl Height="80" Width="{Binding ElementName=TimeLineHeader, Path=Width,UpdateSourceTrigger=PropertyChanged}"
+                                                <timeLineControl:TimeLineControl Height="80" 
                                                          Manager="{Binding}"
                                                                          DayLineBrush="Black" 
                                                                          HourLineBrush="{StaticResource DarkG}"
@@ -216,11 +221,10 @@
                                                         ItemTemplate="{StaticResource UsedTemplateProperty}"
                                                         HorizontalAlignment="Left"                                                           
                                                          StartDate="{Binding DataContext.StartDateTime, RelativeSource={RelativeSource AncestorType={x:Type Page}},Mode=TwoWay}"                                                                      
-                                                                                 
+                                                               Width="200"                  
                                                         UnitSize="{Binding DataContext.TimeLineUnitSize,RelativeSource={RelativeSource AncestorType={x:Type Page}},Mode=TwoWay}"                                                        
                                                         Background="LightGray"                                                          
-                                                        DrawTimeGrid="True"                                                                                 
-                                                        MinWidth="50"                                                        
+                                                        DrawTimeGrid="True"                                                                                                                                                                                            
                                                         SynchedWithSiblings="True" >
                                                     <timeLineControl:TimeLineControl.Items>
                                                         <MultiBinding Converter="{StaticResource FilterShipsConverter}" ConverterParameter="{x:Static helpers:TimeLineFilter.Planned}">
@@ -240,8 +244,7 @@
                                                                          
                                                         UnitSize="{Binding DataContext.TimeLineUnitSize,RelativeSource={RelativeSource AncestorType={x:Type Page}},Mode=TwoWay}"                                                                                                                             
                                                         Background="LightGray"                                                         
-                                                        DrawTimeGrid="True"
-                                                        MinWidth="50"                                                           
+                                                        DrawTimeGrid="True"                                                                                                              
                                                         SynchedWithSiblings="True" >
                                                     <timeLineControl:TimeLineControl.Items>
                                                         <MultiBinding Converter="{StaticResource FilterShipsConverter}" ConverterParameter="{x:Static helpers:TimeLineFilter.Actual}">
