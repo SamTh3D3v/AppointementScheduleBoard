@@ -17,17 +17,36 @@ namespace AppointementScheduleBoard.ViewModel
     {
 
         #region Fields
-        private TechniciansListView _techniciansListView ;
-        private ObservableCollection<Technicien> _techniciansList; 
+        private bool _isLookingForTechnicians;        
+        private TechniciansListView _techniciansListView;
+        private ObservableCollection<Technicien> _techniciansList;
         private ObservableCollection<Stall> _myProperty;
         private Stall _selectedStall;
         private JobTask _selectedJobTask;
         private ObservableCollection<Branch> _branchsCollection;
-        private ObservableCollection<Technicien> _techniciansFiltredCollection;       
-        private string _searchText ="" ;
-            
+        private ObservableCollection<Technicien> _techniciansFiltredCollection;
+        private string _searchText = "";
+
         #endregion
         #region Properties
+        public bool IsLookingForTechnicians
+        {
+            get
+            {
+                return _isLookingForTechnicians;
+            }
+
+            set
+            {
+                if (_isLookingForTechnicians == value)
+                {
+                    return;
+                }
+
+                _isLookingForTechnicians = value;
+                RaisePropertyChanged();
+            }
+        }
         public ObservableCollection<Branch> BranchsCollection
         {
             get
@@ -142,7 +161,7 @@ namespace AppointementScheduleBoard.ViewModel
         public RelayCommand SearchTechniciansCommand
         {
             get
-            {       
+            {
                 return _searchTechniciansCommand
                     ?? (_searchTechniciansCommand = new RelayCommand(async () =>
                     {
@@ -156,7 +175,7 @@ namespace AppointementScheduleBoard.ViewModel
                     }));
             }
         }
-        
+
         private RelayCommand _affectationViewLoadedCommand;
         public RelayCommand AffectationViewLoadedCommand
         {
@@ -203,7 +222,7 @@ namespace AppointementScheduleBoard.ViewModel
         }
         private async Task LaodStalls()
         {
-             StallsList = new ObservableCollection<Stall>(await Task.Run(() => MainDataService.GetBranchStalls((int) MainFrameNavigationService.Parameter)));
+            StallsList = new ObservableCollection<Stall>(await Task.Run(() => MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter)));
         }
         private RelayCommand _addNewStallCommand;
         public RelayCommand AddNewStallCommand
@@ -215,13 +234,13 @@ namespace AppointementScheduleBoard.ViewModel
                     () =>
                     {
                         //Create a new Stall
-                        SelectedStall=new Stall()
+                        SelectedStall = new Stall()
                         {
                             Id = -1, //a new Stall
                             BranchId = (int)MainFrameNavigationService.Parameter,
                             Techniciens = new ObservableCollection<Technicien>(),
                             JobTasksCollection = new ObservableCollection<ITimeLineJobTask>()
-                        };                        
+                        };
 
                     }));
             }
@@ -311,7 +330,7 @@ namespace AppointementScheduleBoard.ViewModel
                     }));
             }
         }
-        private RelayCommand _cancelTechniciansListViewAffectationComandCommand ;   
+        private RelayCommand _cancelTechniciansListViewAffectationComandCommand;
         public RelayCommand CancelTechniciansListViewAffectationComand
         {
             get
@@ -322,10 +341,12 @@ namespace AppointementScheduleBoard.ViewModel
                     {
                         _techniciansListView.Close();
                         SearchText = "";
+                        _techniciansList = new ObservableCollection<Technicien>();
+                        TechniciansFiltredCollection = new ObservableCollection<Technicien>();
                     }));
             }
         }
-        private RelayCommand<object> _saveTechnicianListViewAffectationCommand ;
+        private RelayCommand<object> _saveTechnicianListViewAffectationCommand;
         public RelayCommand<object> SaveTechnicianListViewAffectationCommand
         {
             get
@@ -337,10 +358,12 @@ namespace AppointementScheduleBoard.ViewModel
                         if (selectedTechniciansList != null)
                             foreach (var tech in selectedTechniciansList)
                             {
-                                MainDataService.AssignMechanicToStall(SelectedStall.Id, (tech as Technicien).Id);                                
+                                MainDataService.AssignMechanicToStall(SelectedStall.Id, (tech as Technicien).Id);
                             }
                         _techniciansListView.Close();
                         SearchText = "";
+                        _techniciansList=new ObservableCollection<Technicien>();
+                        TechniciansFiltredCollection=new ObservableCollection<Technicien>();
                         await LaodStalls();
                     }));
             }
@@ -352,10 +375,11 @@ namespace AppointementScheduleBoard.ViewModel
             get
             {
                 return _refreshTechniciansListCommand
-                    ?? (_refreshTechniciansListCommand = new RelayCommand(
-                    () =>
+                    ?? (_refreshTechniciansListCommand = new RelayCommand(async () =>
                     {
-
+                        _techniciansList=new ObservableCollection<Technicien>();
+                        TechniciansFiltredCollection=new ObservableCollection<Technicien>();
+                        await LoadTechnicians();
                     }));
             }
         }
@@ -368,13 +392,18 @@ namespace AppointementScheduleBoard.ViewModel
 
         private async Task LoadTechnicians()
         {
+            if (IsLookingForTechnicians)
+                return;
+           
+            IsLookingForTechnicians = true;
             await Task.Run(() =>
             {
                 _techniciansList =
                     new ObservableCollection<Technicien>(
-                        MainDataService.GetNotAssignedTechnicians((int) MainFrameNavigationService.Parameter));
-                TechniciansFiltredCollection=new ObservableCollection<Technicien>(_techniciansList);
+                        MainDataService.GetNotAssignedTechnicians((int)MainFrameNavigationService.Parameter));
+                TechniciansFiltredCollection = new ObservableCollection<Technicien>(_techniciansList);
             });
+            IsLookingForTechnicians = false;
 
         }
         #endregion
