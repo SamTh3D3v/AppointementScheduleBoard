@@ -156,7 +156,7 @@ namespace DataLayer.DataService
                                                                                NVL(SR_STATUS.INCIDENT_STATUS_ID , 145) AS STATUS_ID ,
                                                                                SEVERITY.NAME AS SEVERITY_LEVEL , 
                                                                                T_TYPE.NAME AS JOB_TYPE ,
-                                                                               OPER.HOURS HOURS , 
+                                                                               OPER.HOURS * 60 TASK_DURATION , 
                                                                                SR.OBLIGATION_DATE AS ESTIMATED_START ,
                                                                                SR.EXPECTED_RESOLUTION_DATE AS PDT ,
                                                                                SR.INCIDENT_RESOLVED_DATE  AS REAL_END_DATE ,
@@ -203,11 +203,12 @@ namespace DataLayer.DataService
                             jobTask.StatusId = Int32.Parse(jobTasksReader.GetValue(4).ToString());
                             jobTask.Sevirity = jobTasksReader.GetString(5);
                             jobTask.JobType = jobTasksReader.GetString(6);
-                            jobTask.TaskDuration = (decimal)jobTasksReader.GetValue(7);
+                            jobTask.TaskDuration = (int)jobTasksReader.GetValue(7);
 
-                            jobTask.IncidentId = int.Parse(jobTasksReader.GetValue(1).ToString());
+                            jobTask.IncidentId = jobTasksReader.IsDBNull(1) ? null : (int?)jobTasksReader.GetValue(1);
                             jobTask.ClockIn = jobTasksReader.IsDBNull(13) ? null : (DateTime?)jobTasksReader.GetDateTime(14);
                             jobTask.ClockOut = jobTasksReader.IsDBNull(14) ? null : (DateTime?)jobTasksReader.GetDateTime(15);
+                            jobTask.MechanicsCount = (int)jobTasksReader.GetValue(11);
 
                             jobTask.PDT = jobTasksReader.IsDBNull(9) ? null : (DateTime?)jobTasksReader.GetDateTime(9);
                             jobTask.ResolvedDate = jobTasksReader.IsDBNull(10) ? null : (DateTime?)jobTasksReader.GetDateTime(10);

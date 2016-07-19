@@ -16,12 +16,12 @@ namespace DataLayer.Model
         int StatusId { get; set; }
         string Sevirity { get; set; }
         string JobType { get; set; }
-        Decimal TaskDuration { get; set; }
+        int TaskDuration { get; set; }
 
         int? IncidentId { get; set; }
         DateTime? ClockIn { get; set; }
         DateTime? ClockOut { get; set; }
-
+        int MechanicsCount { get; set; }
         bool IsClientWaiting { get; set; }
         DateTime? PDT { get; set; }
         DateTime? ResolvedDate { get; set; }

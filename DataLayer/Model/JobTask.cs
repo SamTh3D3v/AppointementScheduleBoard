@@ -21,11 +21,12 @@ namespace DataLayer.Model
         private int _statusId;
         string _sevirity;
         private string _jobType;
-        private Decimal _taskDuration;
+        private int _taskDuration;
 
         private int? _incidentId;
         private DateTime? _clockIn;
         private DateTime? _clockOut;
+        private int _mechanicsCount;
 
         private bool _isClientWaiting;
         private DateTime? _pdt;
@@ -116,7 +117,7 @@ namespace DataLayer.Model
                 OnPropertyChanged();
             }
         }
-        public decimal TaskDuration
+        public int TaskDuration
         {
             get
             {
@@ -173,6 +174,20 @@ namespace DataLayer.Model
                 OnPropertyChanged();
             }
         }
+        public int MechanicsCount
+        {
+            get
+            {
+                return _mechanicsCount;
+            }
+
+            set
+            {
+                if (value == _mechanicsCount) return;
+                _mechanicsCount = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool IsClientWaiting
         {
@@ -216,7 +231,10 @@ namespace DataLayer.Model
         {
             get
             {
-                return _startTime;
+                if (_clockIn == null)
+                    return _bookingDate;
+                else
+                    return _clockIn;
             }
 
             set
@@ -230,7 +248,12 @@ namespace DataLayer.Model
         {
             get
             {
-                return _endTime;
+                if (_clockIn == null)
+                    return _bookingDate.AddMinutes((_taskDuration / 1.7) / _mechanicsCount);
+                else if (_resolvedDate == null)
+                    return ((DateTime)_clockIn).AddMinutes((_taskDuration / 1.7) / _mechanicsCount);
+                else
+                    return _resolvedDate;
             }
 
             set
@@ -348,6 +371,8 @@ namespace DataLayer.Model
                 OnPropertyChanged();
             }
         }
+
+
         #endregion
         #region PropertyChanged Implementation
         public event PropertyChangedEventHandler PropertyChanged;
