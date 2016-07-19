@@ -1148,7 +1148,7 @@ namespace TimeLineControl
         {
             Double curX = firstLineDistance;
             DateTime curDate = firstLineDate;
-            int curLine = 0;
+            int curLine = 0;           
             while (curX < Width)
             {
                 Line l = new Line();

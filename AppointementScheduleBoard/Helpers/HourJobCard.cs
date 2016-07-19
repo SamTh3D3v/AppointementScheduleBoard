@@ -11,11 +11,19 @@ namespace AppointementScheduleBoard.Helpers
         public DateTime? ActualStartTime { get; set; }
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
+        public DateTime? ResolvedDate { get; set; }
         public int Id { get; set; }
+        public string Sevirity { get; set; }
         public string JobType { get; set; }
+        public decimal TaskDuration { get; set; }
+        public int? IncidentId { get; set; }
+        public DateTime? ClockIn { get; set; }
+        public DateTime? ClockOut { get; set; }
         public DateTime ReceptionTime { get; set; }
-        public DateTime PDT { get; set; }
-        public bool IsClientWaiting { get; set; }
+        public DateTime? PDT { get; set; }
+        public bool IsClientWaiting { get; set; }     
+        public string BookingNumber { get; set; }
+        public DateTime BookingDate { get; set; }
         public string Status { get; set; }
         public int StatusId { get; set; }
         public DateTime? PlannedStartTime { get; set; }
