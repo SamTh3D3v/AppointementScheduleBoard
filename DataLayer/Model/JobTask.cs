@@ -248,6 +248,9 @@ namespace DataLayer.Model
         {
             get
             {
+                if (_mechanicsCount == 0)
+                    return _bookingDate.AddMinutes(_taskDuration / 1.7);
+
                 if (_clockIn == null)
                     return _bookingDate.AddMinutes((_taskDuration / 1.7) / _mechanicsCount);
                 else if (_resolvedDate == null)
