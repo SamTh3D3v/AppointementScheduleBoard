@@ -56,8 +56,8 @@ namespace DataLayer.DataService
             //This Data needs to be get from the EBS
             return new ServerSettings()
             {
-                StartHour = new TimeSpan(13, 0, 0),
-                EndHour = new TimeSpan(20, 0, 0)
+                StartHour = new TimeSpan(8, 0, 0),
+                EndHour = new TimeSpan(18, 0, 0)
             };
         }
 
@@ -481,7 +481,7 @@ namespace DataLayer.DataService
                                     StatusId = 152                                    
 
                                 }
-                                ,new JobTask() { PlannedStartTime = DateTime.Now.AddSeconds(GetServerSettings().EndHour.TotalSeconds), EndTime = DateTime.Now.AddSeconds(GetServerSettings().EndHour.TotalSeconds + 1) }
+                                //,new JobTask() { PlannedStartTime = DateTime.Now.AddSeconds(GetServerSettings().EndHour.TotalSeconds), EndTime = DateTime.Now.AddSeconds(GetServerSettings().EndHour.TotalSeconds + 1) }
                             },
                             Techniciens = new ObservableCollection<Technicien>()
                             {
