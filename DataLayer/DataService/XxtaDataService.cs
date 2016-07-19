@@ -122,7 +122,6 @@ namespace DataLayer.DataService
                     currentStall.StallDescription = stallReader.GetString(3);
                     currentStall.IsActive = stallReader.GetString(4);
 
-
                     //fill current stall with techniciens
                     currentStall.Techniciens = new System.Collections.ObjectModel.ObservableCollection<Technicien>();
                     OracleCommand techniciensQuery = new OracleCommand(@"SELECT STALL.STALL_ID , TECH.TECHNICIEN_ID , REC.MECHANIC_NAME
@@ -154,13 +153,15 @@ namespace DataLayer.DataService
                                                                                AB.INCIDENT_ID AS INCIDENT_ID ,
                                                                                AB.BOOKING_DATE AS BOOKING_DATE, 
                                                                                NVL(SR_STATUS.NAME , 'Booked') AS STATUS , 
+                                                                               NVL(SR_STATUS.INCIDENT_STATUS_ID , 145) AS STATUS_ID ,
                                                                                SEVERITY.NAME AS SEVERITY_LEVEL , 
                                                                                T_TYPE.NAME AS JOB_TYPE ,
                                                                                OPER.HOURS HOURS , 
-                                                                               SR.OBLIGATION_DATE AS PLANNED_START_TIME , 
-                                                                               SR.INCIDENT_RESOLVED_DATE AS REAL_END ,
+                                                                               SR.OBLIGATION_DATE AS ESTIMATED_START ,
+                                                                               SR.EXPECTED_RESOLUTION_DATE AS PDT ,
+                                                                               SR.INCIDENT_RESOLVED_DATE  AS REAL_END_DATE ,
                                                                                ( SELECT COUNT(ALLOCATION_ID) AS SPLIT_NUMBER
-                                                                                 FROM XXDMS_JOB_ALLCTN_DTLS_ALL ALLOC
+                                                                                 FROM XXTA.XXDMS_JOB_ALLCTN_DTLS_ALL ALLOC
                                                                                  WHERE ALLOC.INCIDENT_ID = AB.INCIDENT_ID ) AS MECHANICS_COUNT , 
                                                                               CLOCK_IO.*
                                                                         FROM XXTA.XXDMS_AB_HEADERS AB
@@ -177,18 +178,18 @@ namespace DataLayer.DataService
                                                                         LEFT OUTER JOIN ( SELECT *
                                                                                           FROM (  SELECT STARTER.INCIDENT_ID , GOOL.ACTION_CD AS ACTION , GOOL.IN_OUT_DT AS DT
                                                                                                   FROM CS.CS_INCIDENTS_ALL_B STARTER
-                                                                                                  LEFT OUTER JOIN XXDMS_JOB_ALLCTN_DTLS_ALL BRIDGE
+                                                                                                  LEFT OUTER JOIN XXTA.XXDMS_JOB_ALLCTN_DTLS_ALL BRIDGE
                                                                                                   ON STARTER.INCIDENT_ID = BRIDGE.INCIDENT_ID
                                                                                                   LEFT OUTER JOIN XXTA.XXDMS_ALLCTN_IN_OUT_DTLS GOOL
                                                                                                   ON BRIDGE.ALLOCATION_ID = GOOL.ALLOCATION_ID
                                                                                                 )
                                                                                           PIVOT (MAX(DT) AS DT FOR ACTION IN('CLOCK_IN' AS CLOCK_IN_DATE , 'CLOCK_OUT' AS CLOCK_OUT_DATE ))) CLOCK_IO
                                                                         ON AB.INCIDENT_ID = CLOCK_IO.INCIDENT_ID
-                                                                        WHERE AB.BOOKING_DATE > TO_DATE( '01-07-2016' , 'DD-MM-YYYY')", _connection);
+                                                                        WHERE AB.CALLER_NAME = :STALL_NAME AND TRUNC(AB.BOOKING_DATE) = TRUNC(SYSDATE) ", _connection);
 
                     jobTasksQuery.BindByName = true;
-                    jobTasksQuery.Parameters.Add("STALL_ID", OracleDbType.Decimal);
-                    jobTasksQuery.Parameters["STALL_ID"].Value = (Decimal)currentStall.Id;
+                    jobTasksQuery.Parameters.Add("STALL_NAME", OracleDbType.Varchar2);
+                    jobTasksQuery.Parameters["STALL_NAME"].Value = currentStall.StallName;
 
                     OracleDataReader jobTasksReader = jobTasksQuery.ExecuteReader();
                     if (jobTasksReader.HasRows)
@@ -196,18 +197,34 @@ namespace DataLayer.DataService
                         while (jobTasksReader.Read())
                         {
                             JobTask jobTask = new JobTask();
-                            jobTask.Id = Int32.Parse(jobTasksReader.GetValue(0).ToString());
-                            jobTask.JobType = jobTasksReader.GetString(4);
-                            jobTask.ReceptionTime = jobTasksReader.GetDateTime(5);
-                            jobTask.Status = jobTasksReader.GetString(6);
-                            jobTask.PDT = jobTasksReader.GetDateTime(9);
-                            jobTask.PlannedStartTime = jobTasksReader.IsDBNull(7) ? null : (DateTime?)jobTasksReader.GetDateTime(7);
-                            jobTask.ActualStartTime = jobTasksReader.IsDBNull(8) ? null : (DateTime?)jobTasksReader.GetDateTime(8);
-                            jobTask.EndTime = jobTasksReader.IsDBNull(10) ? null : (DateTime?)jobTasksReader.GetDateTime(10);
-                            if (currentStall.JobTasksCollection.Count(c => c.Id == jobTask.Id) == 0)
-                            {
+                            jobTask.BookingNumber = jobTasksReader.GetString(0);
+                            jobTask.BookingDate = jobTasksReader.GetDateTime(2);
+                            jobTask.Status = jobTasksReader.GetString(3);
+                            jobTask.StatusId = Int32.Parse(jobTasksReader.GetValue(4).ToString());
+                            jobTask.Sevirity = jobTasksReader.GetString(5);
+                            jobTask.JobType = jobTasksReader.GetString(6);
+                            jobTask.TaskDuration = (decimal)jobTasksReader.GetValue(7);
+
+                            jobTask.IncidentId = int.Parse(jobTasksReader.GetValue(1).ToString());
+                            jobTask.ClockIn = jobTasksReader.IsDBNull(13) ? null : (DateTime?)jobTasksReader.GetDateTime(14);
+                            jobTask.ClockOut = jobTasksReader.IsDBNull(14) ? null : (DateTime?)jobTasksReader.GetDateTime(15);
+
+                            jobTask.PDT = jobTasksReader.IsDBNull(9) ? null : (DateTime?)jobTasksReader.GetDateTime(9);
+                            jobTask.ResolvedDate = jobTasksReader.IsDBNull(10) ? null : (DateTime?)jobTasksReader.GetDateTime(10);
+
+                            if (currentStall.JobTasksCollection.Count(c => c.BookingNumber == jobTask.BookingNumber) == 0)
                                 currentStall.JobTasksCollection.Add(jobTask);
-                            }
+
+
+                            //jobTask.Id = Int32.Parse(jobTasksReader.GetValue(0).ToString());
+                            //jobTask.JobType = jobTasksReader.GetString(4);
+                            //jobTask.ReceptionTime = jobTasksReader.GetDateTime(5);
+                            //jobTask.Status = jobTasksReader.GetString(6);
+                            //jobTask.PDT = jobTasksReader.GetDateTime(9);
+                            //jobTask.PlannedStartTime = jobTasksReader.IsDBNull(7) ? null : (DateTime?)jobTasksReader.GetDateTime(7);
+                            //jobTask.ActualStartTime = jobTasksReader.IsDBNull(8) ? null : (DateTime?)jobTasksReader.GetDateTime(8);
+                            //jobTask.EndTime = jobTasksReader.IsDBNull(10) ? null : (DateTime?)jobTasksReader.GetDateTime(10);
+
                         }
                     }
                     jobTasksReader.Close();

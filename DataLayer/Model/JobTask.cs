@@ -16,29 +16,30 @@ namespace DataLayer.Model
     {
         #region Fields
         string _bookingNumber;
-        DateTime _bookingDate;
+        private DateTime _bookingDate;
         private string _status;
         private int _statusId;
         string _sevirity;
         private string _jobType;
-        Decimal _taskDuration;
+        private Decimal _taskDuration;
 
-        int? _incidentId;
-        DateTime? _clockIn;
-        DateTime? _clockOut;
+        private int? _incidentId;
+        private DateTime? _clockIn;
+        private DateTime? _clockOut;
 
         private bool _isClientWaiting;
-        private DateTime _pdt;
+        private DateTime? _pdt;
+        private DateTime? _resolvedDate;
 
-        DateTime? _startTime;
-        DateTime? _endTime;
+        private DateTime? _startTime;
+        private DateTime? _endTime;
 
         private Int32 _id;
         private DateTime _receptionTime;
         private DateTime? _plannedStartTime;
         private DateTime? _actualStartTime;
 
-        Boolean _timelineViewExpanded;
+        private Boolean _timelineViewExpanded;
         private String _jobTaskBackGround;     
         private bool _isJobTaskBliking ;
         #endregion
@@ -183,13 +184,30 @@ namespace DataLayer.Model
                 OnPropertyChanged();
             }
         }
-        public DateTime PDT
+        public DateTime? PDT
         {
-            get { return _pdt; }
+            get
+            {
+                return _pdt;
+            }
             set
             {
-                if (value.Equals(_pdt)) return;
+                if (value == _pdt) return;
                 _pdt = value;
+                OnPropertyChanged();
+            }
+        }
+        public DateTime? ResolvedDate
+        {
+            get
+            {
+                return _resolvedDate;
+            }
+
+            set
+            {
+                if (value == _resolvedDate) return;
+                _resolvedDate = value;
                 OnPropertyChanged();
             }
         }

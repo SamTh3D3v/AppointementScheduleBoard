@@ -23,7 +23,8 @@ namespace DataLayer.Model
         DateTime? ClockOut { get; set; }
 
         bool IsClientWaiting { get; set; }
-        DateTime PDT { get; set; }
+        DateTime? PDT { get; set; }
+        DateTime? ResolvedDate { get; set; }
 
         //Depricated 
         int Id { get; set; }
