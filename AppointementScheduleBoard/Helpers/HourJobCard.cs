@@ -15,10 +15,12 @@ namespace AppointementScheduleBoard.Helpers
         public int Id { get; set; }
         public string Sevirity { get; set; }
         public string JobType { get; set; }
+        int ITimeLineJobTask.TaskDuration { get; set; }
         public decimal TaskDuration { get; set; }
         public int? IncidentId { get; set; }
         public DateTime? ClockIn { get; set; }
         public DateTime? ClockOut { get; set; }
+        public int MechanicsCount { get; set; }
         public DateTime ReceptionTime { get; set; }
         public DateTime? PDT { get; set; }
         public bool IsClientWaiting { get; set; }     
