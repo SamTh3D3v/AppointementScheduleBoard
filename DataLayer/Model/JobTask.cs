@@ -15,71 +15,59 @@ namespace DataLayer.Model
     public class JobTask:INotifyPropertyChanged, ITimeLineJobTask
     {
         #region Fields
-        private string _jobType;
-        private DateTime _receptionTime;
-        private DateTime _pdt;
-        private bool _isClientWaiting;
+        string _bookingNumber;
+        DateTime _bookingDate;
         private string _status;
-        private Int32 _id;
-        private DateTime? _actualStartTime;
-        private DateTime? _plannedStartTime;
         private int _statusId;
-        private String _jobTaskBackGround;     
-        private bool _isJobTaskBliking ;            
+        string _sevirity;
+        private string _jobType;
+        Decimal _taskDuration;
 
+        int? _incidentId;
+        DateTime? _clockIn;
+        DateTime? _clockOut;
+
+        private bool _isClientWaiting;
+        private DateTime _pdt;
+
+        DateTime? _startTime;
+        DateTime? _endTime;
+
+        private Int32 _id;
+        private DateTime _receptionTime;
+        private DateTime? _plannedStartTime;
+        private DateTime? _actualStartTime;
+
+        Boolean _timelineViewExpanded;
+        private String _jobTaskBackGround;     
+        private bool _isJobTaskBliking ;
         #endregion
         #region Properties
-
-        public Int32 Id
+        public string BookingNumber
         {
-            get { return _id; }
+            get
+            {
+                return _bookingNumber;
+            }
+
             set
             {
-                if (value.Equals(_id)) return;
-                _id = value;
+                if (value.Equals(_bookingNumber)) return;
+                _bookingNumber = value;
                 OnPropertyChanged();
             }
         }
-
-        public string JobType
+        public DateTime BookingDate
         {
-            get { return _jobType; }
-            set
+            get
             {
-                if (value == _jobType) return;
-                _jobType = value;
-                OnPropertyChanged();
+                return _bookingDate;
             }
-        }
 
-        public DateTime ReceptionTime
-        {
-            get { return _receptionTime; }
             set
             {
-                if (value.Equals(_receptionTime)) return;
-                _receptionTime = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public DateTime PDT
-        {
-            get { return _pdt; }
-            set
-            {
-                if (value.Equals(_pdt)) return;
-                _pdt = value;
-                OnPropertyChanged();
-            }
-        }
-        public bool IsClientWaiting
-        {
-            get { return _isClientWaiting; }
-            set
-            {
-                if (value == _isClientWaiting) return;
-                _isClientWaiting = value;
+                if (value.Equals(_bookingDate)) return;
+                _bookingDate = value;
                 OnPropertyChanged();
             }
         }
@@ -93,7 +81,6 @@ namespace DataLayer.Model
                 OnPropertyChanged();
             }
         }
-
         public int StatusId
         {
             get { return _statusId; }
@@ -101,10 +88,161 @@ namespace DataLayer.Model
             {
                 if (value == _statusId) return;
                 _statusId = value;
-                OnPropertyChanged();                 
+                OnPropertyChanged();
+            }
+        }
+        public string Sevirity
+        {
+            get
+            {
+                return _sevirity;
+            }
+
+            set
+            {
+                if (value == _sevirity) return;
+                _sevirity = value;
+                OnPropertyChanged();
+            }
+        }
+        public string JobType
+        {
+            get { return _jobType; }
+            set
+            {
+                if (value == _jobType) return;
+                _jobType = value;
+                OnPropertyChanged();
+            }
+        }
+        public decimal TaskDuration
+        {
+            get
+            {
+                return _taskDuration;
+            }
+
+            set
+            {
+                if (value == _taskDuration) return;
+                _taskDuration = value;
+                OnPropertyChanged();
             }
         }
 
+        public int? IncidentId
+        {
+            get
+            {
+                return _incidentId;
+            }
+
+            set
+            {
+                if (value == _incidentId) return;
+                _incidentId = value;
+                OnPropertyChanged();
+            }
+        }
+        public DateTime? ClockIn
+        {
+            get
+            {
+                return _clockIn;
+            }
+
+            set
+            {
+                if (value == _clockIn) return;
+                _clockIn = value;
+                OnPropertyChanged();
+            }
+        }
+        public DateTime? ClockOut
+        {
+            get
+            {
+                return _clockOut;
+            }
+
+            set
+            {
+                if (value == _clockOut) return;
+                _clockOut = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsClientWaiting
+        {
+            get { return _isClientWaiting; }
+            set
+            {
+                if (value == _isClientWaiting) return;
+                _isClientWaiting = value;
+                OnPropertyChanged();
+            }
+        }
+        public DateTime PDT
+        {
+            get { return _pdt; }
+            set
+            {
+                if (value.Equals(_pdt)) return;
+                _pdt = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public DateTime? StartTime
+        {
+            get
+            {
+                return _startTime;
+            }
+
+            set
+            {
+                if (value == _startTime) return;
+                _startTime = value;
+                OnPropertyChanged();
+            }
+        }
+        public DateTime? EndTime
+        {
+            get
+            {
+                return _endTime;
+            }
+
+            set
+            {
+                if (value == _endTime) return;
+                _endTime = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public Int32 Id
+        {
+            get { return _id; }
+            set
+            {
+                if (value.Equals(_id)) return;
+                _id = value;
+                OnPropertyChanged();
+            }
+        }
+        public DateTime ReceptionTime
+        {
+            get { return _receptionTime; }
+            set
+            {
+                if (value.Equals(_receptionTime)) return;
+                _receptionTime = value;
+                OnPropertyChanged();
+            }
+        }
         public DateTime? PlannedStartTime
         {
             get
@@ -141,22 +279,21 @@ namespace DataLayer.Model
                 OnPropertyChanged();
             }
         }
-        public DateTime? StartTime
+
+        public bool TimelineViewExpanded
         {
-            get { return ActualStartTime ?? PlannedStartTime; }
+            get
+            {
+                return _timelineViewExpanded;
+            }
+
             set
             {
-                if (ActualStartTime==null)
-                {
-                    PlannedStartTime = value;
-                }
-                else
-                {
-                    ActualStartTime = value;
-                }
+                if (value == _timelineViewExpanded) return;
+                _timelineViewExpanded = value;
+                OnPropertyChanged();
             }
-        }                                
-
+        }
         public String JobTaskBackGround
         {
             get
@@ -193,9 +330,7 @@ namespace DataLayer.Model
                 OnPropertyChanged();
             }
         }
-        public DateTime? EndTime { get; set; }
-        public bool TimelineViewExpanded { get; set; }
-        #endregion  
+        #endregion
         #region PropertyChanged Implementation
         public event PropertyChangedEventHandler PropertyChanged;
         [NotifyPropertyChangedInvocator]

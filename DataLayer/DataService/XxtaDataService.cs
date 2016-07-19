@@ -157,7 +157,7 @@ namespace DataLayer.DataService
                                                                                SEVERITY.NAME AS SEVERITY_LEVEL , 
                                                                                T_TYPE.NAME AS JOB_TYPE ,
                                                                                OPER.HOURS HOURS , 
-                                                                               SR.OBLIGATION_DATE AS ESTIMATED_START , 
+                                                                               SR.OBLIGATION_DATE AS PLANNED_START_TIME , 
                                                                                SR.INCIDENT_RESOLVED_DATE AS REAL_END ,
                                                                                ( SELECT COUNT(ALLOCATION_ID) AS SPLIT_NUMBER
                                                                                  FROM XXDMS_JOB_ALLCTN_DTLS_ALL ALLOC
