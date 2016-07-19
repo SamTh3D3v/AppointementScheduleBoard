@@ -230,7 +230,7 @@ namespace DataLayer.Model
         public DateTime? StartTime
         {
             get
-            {
+            {                
                 if (_clockIn == null)
                     return _bookingDate;
                 else

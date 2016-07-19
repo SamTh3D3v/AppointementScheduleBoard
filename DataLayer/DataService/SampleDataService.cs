@@ -343,7 +343,7 @@ namespace DataLayer.DataService
                                 new JobTask()
                                 {
                                     Id = 6,
-                                    StartTime = refDateTime.AddHours(.2),
+                                    ClockIn = refDateTime.AddHours(.2),                                    
                                     EndTime = refDateTime.AddHours(1.3),
                                     IsClientWaiting = true,
                                     JobType = "PMA05",
