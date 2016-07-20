@@ -9,6 +9,7 @@
              xmlns:enums="clr-namespace:DataLayer.Enums;assembly=DataLayer"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:command="http://www.galasoft.ch/mvvmlight"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -64,13 +65,13 @@
                                     <Label Content="clock format " Grid.Column="0" Grid.Row="1"/>
                                     <Label Content="Refresh time " Grid.Column="0" Grid.Row="2"/>
 
-                                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
-                                        <Label  ContentStringFormat="start: "  />
-                                        <xctk:TimePicker Value="{Binding ServerSettings.StartHour}"/>
+                                    <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1"> 
+                                        <Label  Content="start: "  />
+                                        <xctk:TimePicker Value="{Binding ServerSettings.StartHour,Converter={StaticResource TimeSpanToDateTimeConverter},Mode=TwoWay}" Width="75" Foreground="White"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2" >
-                                        <Label  ContentStringFormat="-  end: " />
-                                        <xctk:TimePicker Value="{Binding ServerSettings.EndHour}"/>
+                                        <Label  Content="-  end: " />
+                                        <xctk:TimePicker Value="{Binding ServerSettings.EndHour,Converter={StaticResource TimeSpanToDateTimeConverter},Mode=TwoWay}" Width="75" Foreground="White"/>
                                     </StackPanel>
                                    
                                     <RadioButton Content="24" IsChecked="{Binding LocalSettings.IsClockFormat24}" Grid.Row="1" Grid.Column="1" GroupName="clockFormat">
