@@ -180,6 +180,9 @@ namespace AppointementScheduleBoard.ViewModel
                     case "ClockFormatChanged":
                         //todo change the clock format
                         break;
+                    case "WorkingHoursChanged":
+                        await ReloadBoard();
+                        break;
 
 
                 }
@@ -231,8 +234,8 @@ namespace AppointementScheduleBoard.ViewModel
             IsPrograssRingActive = true;
             //for test purpuses             
             await Task.Run(() => Thread.Sleep(3000));
-            StartDateTime = DateTime.Today.Add(MainDataService.GetServerSettings().StartHour);
-            EndDateTime = DateTime.Today.Add(MainDataService.GetServerSettings().EndHour);
+            StartDateTime = DateTime.Today.Add(MainDataService.GetWorkingHoursSettings().StartHour);
+            EndDateTime = DateTime.Today.Add(MainDataService.GetWorkingHoursSettings().EndHour);
             StallsCollection = new ObservableCollection<Stall>(await Task.Run(() => MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter)));          
             await UpdateHoursCollection();
             IsPrograssRingActive = false;

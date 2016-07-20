@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -85,6 +86,22 @@ namespace DataLayer.DataService
         public virtual void UpdateLocalSettings(LocalSettings settings)
         {
             throw new NotImplementedException();
+        }
+
+        public virtual WorkingHoursSettings GetWorkingHoursSettings()
+        {            
+            return new WorkingHoursSettings()
+            {
+                StartHour = TimeSpan.Parse(ConfigurationManager.AppSettings["StartHour"]),
+                EndHour = TimeSpan.Parse(ConfigurationManager.AppSettings["EndHour"]),                 
+            };
+        }
+     
+
+        public virtual void UpdateWorkingHoursSettings(WorkingHoursSettings settings)
+        {
+            ConfigurationManager.AppSettings["StartHour"] = settings.StartHour.ToString();
+            ConfigurationManager.AppSettings["EndHour"] = settings.EndHour.ToString();
         }
     }
 }

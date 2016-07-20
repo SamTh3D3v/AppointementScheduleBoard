@@ -23,7 +23,8 @@ namespace AppointementScheduleBoard.ViewModel
         private bool _showTitleBarProperty;
         private bool _ignoreTaskbarOnMaximizeProperty;
         private LocalSettings _localSettings;
-        private ServerSettings _serverSettings;      
+        private ServerSettings _serverSettings;       
+        private WorkingHoursSettings _workingHoursSettings ;           
         private ObservableCollection<Stall> _stallsCollection;                
         #endregion
         #region Properties  
@@ -45,7 +46,24 @@ namespace AppointementScheduleBoard.ViewModel
                 RaisePropertyChanged();
             }
         }
-        
+        public WorkingHoursSettings WorkingHoursSettings
+        {
+            get
+            {
+                return _workingHoursSettings;
+            }
+
+            set
+            {
+                if (_workingHoursSettings == value)
+                {
+                    return;
+                }
+
+                _workingHoursSettings = value;
+                RaisePropertyChanged();
+            }
+        }
         public ObservableCollection<Branch> BranchCollection
         {
             get
@@ -185,7 +203,7 @@ namespace AppointementScheduleBoard.ViewModel
                         ShowTitleBarProperty = true;
                         IgnoreTaskbarOnMaximizeProperty=false;
                         await LoadSettings();
-                        MainFrameNavigationService.NavigateTo(App.ScheduleBoardViewKey,SelectedBranch.Id);
+                        MainFrameNavigationService.NavigateTo(App.ScheduleBoardViewKey, SelectedBranch.Id);
                     }));
             }
         }
@@ -299,12 +317,27 @@ namespace AppointementScheduleBoard.ViewModel
                         MainDataService.UpdateLocalSettings(LocalSettings); 
                     }));
             }
-        }     
+        }
+        private RelayCommand _workingHoursSettingsChangedCommand;
+        public RelayCommand WorkingHoursSettingsChangedCommand
+        {
+            get
+            {
+                return _workingHoursSettingsChangedCommand
+                    ?? (_workingHoursSettingsChangedCommand = new RelayCommand(
+                    () =>
+                    {
+                        MainDataService.UpdateWorkingHoursSettings(WorkingHoursSettings);
+                        Messenger.Default.Send<NotificationMessage>(new NotificationMessage("WorkingHoursChanged"));
+                    }));
+            }
+        }
+
 
         #endregion
-        #region Ctors and methods
+        #region Ctors and methods   
         public MainViewModel(IFrameNavigationService mainFrameNavigationService,IDataService mainDataService) : base(mainFrameNavigationService, mainDataService)
-        {
+        {            
         }
 
         private async Task LoadSettings()
@@ -314,10 +347,10 @@ namespace AppointementScheduleBoard.ViewModel
                 BranchCollection = new ObservableCollection<Branch>(MainDataService.GetAllBranchs());
                 LocalSettings = MainDataService.GetLocalSettings();
                 ServerSettings = MainDataService.GetServerSettings();
+                WorkingHoursSettings = MainDataService.GetWorkingHoursSettings();
                 SelectedBranch = BranchCollection?.First();
-                StallsCollection =new ObservableCollection<Stall>(MainDataService.GetBranchStalls(SelectedBranch.Id));
+                StallsCollection = new ObservableCollection<Stall>(MainDataService.GetBranchStalls(SelectedBranch.Id));
             });
-            
 
         }
         #endregion

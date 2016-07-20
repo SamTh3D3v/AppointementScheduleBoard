@@ -49,17 +49,7 @@ namespace DataLayer.DataService
 
                 _sampleTechniciansCollection = value;
             }
-        }
-
-        public override ServerSettings GetServerSettings()
-        {
-            //This Data needs to be get from the EBS
-            return new ServerSettings()
-            {
-                StartHour = new TimeSpan(8, 0, 0),
-                EndHour = new TimeSpan(18, 0, 0)
-            };
-        }
+        }     
 
         public override LocalSettings GetLocalSettings()
         {         
@@ -126,6 +116,29 @@ namespace DataLayer.DataService
             ConfigurationManager.AppSettings["PdtExceededWaittingForInvoiceBlink"] = settings.PdtExceededWaittingForInvoiceBlink.ToString();
 
 
+        }
+        public override WorkingHoursSettings GetWorkingHoursSettings()
+        {
+            return new WorkingHoursSettings()
+            {
+                StartHour = TimeSpan.Parse(ConfigurationManager.AppSettings["StartHour"]),
+                EndHour = TimeSpan.Parse(ConfigurationManager.AppSettings["EndHour"]),
+            };            
+        }
+        public override ServerSettings GetServerSettings()
+        {           
+            return new ServerSettings()
+            {
+                DatabaseCurrentDate = DateTime.Now
+            };
+
+        }
+
+
+        public override void UpdateWorkingHoursSettings(WorkingHoursSettings settings)
+        {
+            ConfigurationManager.AppSettings["StartHour"] = settings.StartHour.ToString();
+            ConfigurationManager.AppSettings["EndHour"] = settings.EndHour.ToString();
         }
 
         public override List<Branch> GetAllBranchs()
@@ -227,7 +240,7 @@ namespace DataLayer.DataService
 
         public SampleDataService()
         {
-            var refDateTime = DateTime.Today.Add(GetServerSettings().StartHour);
+            var refDateTime = DateTime.Today.Add(GetWorkingHoursSettings().StartHour);
             _sampleStallsCollection = new List<Stall>()
                     {
                         new Stall()

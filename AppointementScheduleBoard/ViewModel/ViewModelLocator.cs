@@ -48,7 +48,7 @@ namespace AppointementScheduleBoard.ViewModel
             MainSampleDataService = new SampleDataService();
             //to use the PROD dataservice 
             //MainSampleDataService=new DataService();
-            SimpleIoc.Default.Register<IDataService>(()=> MainSampleDataService);
+            SimpleIoc.Default.Register<IDataService>(() => MainSampleDataService);
         }
 
         public MainViewModel MainWindowViewModel
@@ -69,7 +69,7 @@ namespace AppointementScheduleBoard.ViewModel
                 return ServiceLocator.Current.GetInstance<ScheduleBoardViewModel>();
             }
         }
-      
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
             "CA1822:MarkMembersAsStatic",
             Justification = "This non-static member is needed for data binding purposes.")]

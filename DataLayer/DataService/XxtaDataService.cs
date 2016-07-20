@@ -401,9 +401,7 @@ namespace DataLayer.DataService
             reader.Close();
             //TODO : Mourad Search the params in EBS
             return new ServerSettings()
-            {
-                StartHour = new TimeSpan(1, 0, 0),
-                EndHour = new TimeSpan(18, 0, 0),
+            {      
                 DatabaseCurrentDate = sysDate
             };
 
@@ -473,8 +471,21 @@ namespace DataLayer.DataService
             ConfigurationManager.AppSettings["IrrPlannedTimeExeededBlink"] = settings.IrrPlannedTimeExeededBlink.ToString();
             ConfigurationManager.AppSettings["PdtExceededInProgressBlink"] = settings.PdtExceededInProgressBlink.ToString();
             ConfigurationManager.AppSettings["PdtExceededWaittingForInvoiceBlink"] = settings.PdtExceededWaittingForInvoiceBlink.ToString();
+        }      
 
+        public WorkingHoursSettings GetWorkingHoursSettings()
+        {
+            return new WorkingHoursSettings()
+            {
+                StartHour = TimeSpan.Parse(ConfigurationManager.AppSettings["StartHour"]),
+                EndHour = TimeSpan.Parse(ConfigurationManager.AppSettings["EndHour"]),
+            };
+        }
 
+        public void UpdateWorkingHoursSettings(WorkingHoursSettings settings)
+        {
+            ConfigurationManager.AppSettings["StartHour"] = settings.StartHour.ToString();
+            ConfigurationManager.AppSettings["EndHour"] = settings.EndHour.ToString();
         }
 
         public void Dispose()
