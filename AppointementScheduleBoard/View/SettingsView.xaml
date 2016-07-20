@@ -68,23 +68,23 @@
                                     <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1"> 
                                         <Label  Content="start: "  />
                                         <xctk:TimePicker Value="{Binding WorkingHoursSettings.StartHour,Converter={StaticResource TimeSpanToDateTimeConverter},Mode=TwoWay}" Width="75" Foreground="White">
-                                            <!--<i:Interaction.Triggers>
+                                            <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="ValueChanged">
                                                     <command:EventToCommand Command="{Binding Path=WorkingHoursSettingsChangedCommand}"
                             PassEventArgsToCommand="True"/>
                                                 </i:EventTrigger>
-                                            </i:Interaction.Triggers>-->
+                                            </i:Interaction.Triggers>
                                         </xctk:TimePicker>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2" >
                                         <Label  Content="-  end: " />
                                         <xctk:TimePicker Value="{Binding WorkingHoursSettings.EndHour,Converter={StaticResource TimeSpanToDateTimeConverter},Mode=TwoWay}" Width="75" Foreground="White">
-                                            <!--<i:Interaction.Triggers>
+                                            <i:Interaction.Triggers>
                                                 <i:EventTrigger EventName="ValueChanged">
                                                     <command:EventToCommand Command="{Binding Path=WorkingHoursSettingsChangedCommand}"
                             PassEventArgsToCommand="True"/>
                                                 </i:EventTrigger>
-                                            </i:Interaction.Triggers>-->
+                                            </i:Interaction.Triggers>
                                         </xctk:TimePicker>
                                         
                                     </StackPanel>
