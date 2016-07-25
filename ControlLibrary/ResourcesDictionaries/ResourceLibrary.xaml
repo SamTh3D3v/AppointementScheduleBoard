@@ -54,6 +54,7 @@
             <converters:RgbToBrushConverter x:Key="RgbToBrushConverter"/>
             <converters:StringToBoolConverter x:Key="StringToBoolConverter"/>
             <converters:TimeSpanToDateTimeConverter x:Key="TimeSpanToDateTimeConverter"/>
+            <converters:StallsFilterConverter x:Key="StallsFilterConverter"/>
         </ResourceDictionary>
 
 

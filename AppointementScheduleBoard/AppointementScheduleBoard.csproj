@@ -113,6 +113,7 @@
     </ApplicationDefinition>
     <Compile Include="Helpers\AsyncWindowExtension.cs" />
     <Compile Include="Helpers\DisableNavigation.cs" />
+    <Compile Include="Helpers\FilteredStall.cs" />
     <Compile Include="Helpers\FrameNavigationService.cs" />
     <Compile Include="Helpers\IFrameNavigationService.cs" />
     <Compile Include="Helpers\NavigableViewModelBase.cs" />

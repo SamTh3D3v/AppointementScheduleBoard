@@ -11,8 +11,8 @@
              xmlns:command="http://www.galasoft.ch/mvvmlight"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+             d:DesignHeight="300" d:DesignWidth="300" >
+    <Grid Name="RootGrid">
         <TabControl>
             <TabItem Header="Global Settings">
                 <TabItem.Content>
@@ -214,7 +214,7 @@
 
                             <GroupBox Header="Select Stalls to View" Grid.Row="6">
                                 <Grid>
-                                    <ItemsControl Margin="5" ItemsSource="{Binding StallsCollection}">
+                                    <ItemsControl Margin="5" ItemsSource="{Binding FilteredStallsCollection}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <StackPanel Orientation="Horizontal"></StackPanel>
@@ -222,7 +222,18 @@
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate >
-                                                <ToggleButton Margin="5" Content="{Binding StallName}" Width="50" Height="50"/>
+                                                <ToggleButton Margin="5" Content="{Binding Stall.StallName}"   IsChecked="{Binding IsSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="50" Height="50">
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="Checked">
+                                                            <command:EventToCommand Command="{Binding Path=ScheduleBoardViewModel.StallsFilterUpdatedCommand,Source={StaticResource Locator}}" CommandParameter="{Binding ElementName=RootGrid,Path=DataContext.FilteredStallsCollection}"
+                            PassEventArgsToCommand="False"/>
+                                                        </i:EventTrigger>
+                                                        <i:EventTrigger EventName="Unchecked">
+                                                            <command:EventToCommand Command="{Binding Path=ScheduleBoardViewModel.StallsFilterUpdatedCommand,Source={StaticResource Locator}}" CommandParameter="{Binding ElementName=RootGrid,Path=DataContext.FilteredStallsCollection}"
+                            PassEventArgsToCommand="False"/>
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                </ToggleButton>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>

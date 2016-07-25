@@ -19,6 +19,7 @@ namespace AppointementScheduleBoard.ViewModel
     public class ScheduleBoardViewModel : NavigableViewModelBase
     {
         #region Fields  
+        private ObservableCollection<FilteredStall> _filteredStallsCollection;
         private bool _isPrograssRingActive;
         private ObservableCollection<Stall> _sallsCollection;
         private double _timeLineUnitSize = 1000;
@@ -27,7 +28,25 @@ namespace AppointementScheduleBoard.ViewModel
         private DateTime _endDateTime;
         private DispatcherTimer _dispatcherTimer;
         #endregion
-        #region Properties 
+        #region Properties         
+        public ObservableCollection<FilteredStall> FilteredStallsCollection
+        {
+            get
+            {
+                return _filteredStallsCollection;
+            }
+
+            set
+            {
+                if (_filteredStallsCollection == value)
+                {
+                    return;
+                }
+
+                _filteredStallsCollection = value;
+                RaisePropertyChanged();
+            }
+        }
         public bool IsPrograssRingActive
         {
             get
@@ -162,6 +181,23 @@ namespace AppointementScheduleBoard.ViewModel
                     }));
             }
         }
+        private RelayCommand<object> _stallsFilterUpdatedCommand;   
+        public RelayCommand<object> StallsFilterUpdatedCommand
+        {
+            get
+            {
+                return _stallsFilterUpdatedCommand
+                    ?? (_stallsFilterUpdatedCommand = new RelayCommand<object>(
+                    (obj) =>
+                    {
+                        var collection =(ObservableCollection<FilteredStall>) obj;
+                        FilteredStallsCollection = collection;
+                        //todo
+                    }));
+            }   
+        }
+      
+       
         #endregion
         #region Ctors and methods
         public ScheduleBoardViewModel(IFrameNavigationService mainFrameNavigationService, IDataService mainDataService) : base(mainFrameNavigationService, mainDataService)
@@ -248,8 +284,16 @@ namespace AppointementScheduleBoard.ViewModel
             stallsMutex = true;
             await Task.Run(() =>
              {
-                 var collection = MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter);
+                 var collection = MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter);                 
+                 var resCollection=new List<Stall>();
                  collection.ForEach(s =>
+                 {
+                     if (FilteredStallsCollection.First(st=>st.Stall.Id==s.Id).IsSelected)
+                     {
+                         resCollection.Add(s);
+                     }
+                 });
+                 resCollection.ForEach(s =>
                  {
                      foreach (var jt in s.JobTasksCollection)
                      {
@@ -303,7 +347,7 @@ namespace AppointementScheduleBoard.ViewModel
 
                      }
                  });
-                 StallsCollection = new ObservableCollection<Stall>(collection);
+                 StallsCollection = new ObservableCollection<Stall>(resCollection);
              });
             stallsMutex = false;
 

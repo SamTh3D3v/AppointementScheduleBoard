@@ -24,8 +24,8 @@ namespace AppointementScheduleBoard.ViewModel
         private bool _ignoreTaskbarOnMaximizeProperty;
         private LocalSettings _localSettings;
         private ServerSettings _serverSettings;       
-        private WorkingHoursSettings _workingHoursSettings ;           
-        private ObservableCollection<Stall> _stallsCollection;                
+        private WorkingHoursSettings _workingHoursSettings ;                        
+        private ObservableCollection<FilteredStall> _filteredStallsCollection  ;        
         #endregion
         #region Properties  
         public Branch SelectedBranch
@@ -171,22 +171,22 @@ namespace AppointementScheduleBoard.ViewModel
                 _ignoreTaskbarOnMaximizeProperty = value;
                 RaisePropertyChanged();
             }
-        }
-        public ObservableCollection<Stall> StallsCollection
+        }        
+        public ObservableCollection<FilteredStall> FilteredStallsCollection
         {
             get
             {
-                return _stallsCollection;
+                return _filteredStallsCollection;
             }
 
             set
             {
-                if (_stallsCollection == value)
+                if (_filteredStallsCollection == value)
                 {
                     return;
                 }
 
-                _stallsCollection = value;
+                _filteredStallsCollection = value;
                 RaisePropertyChanged();
             }
         }
@@ -349,7 +349,12 @@ namespace AppointementScheduleBoard.ViewModel
                 ServerSettings = MainDataService.GetServerSettings();
                 WorkingHoursSettings = MainDataService.GetWorkingHoursSettings();
                 SelectedBranch = BranchCollection?.First();
-                StallsCollection = new ObservableCollection<Stall>(MainDataService.GetBranchStalls(SelectedBranch.Id));
+                var collection = MainDataService.GetBranchStalls(SelectedBranch.Id);                
+                FilteredStallsCollection=new ObservableCollection<FilteredStall>(collection.Select(s=>new FilteredStall()
+                {
+                    Stall = s,
+                    IsSelected = true
+                }));
             });
 
         }

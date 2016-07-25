@@ -62,6 +62,7 @@
     <Compile Include="Converters\BoolToVisibilityConvertre.cs" />
     <Compile Include="Converters\FilterShipsConverter.cs" />
     <Compile Include="Converters\RgbToBrushConverter.cs" />
+    <Compile Include="Converters\StallsFilterConverter.cs" />
     <Compile Include="Converters\StringToBoolConverter.cs" />
     <Compile Include="Converters\TimeSpanToDateTimeConverter.cs" />
     <Compile Include="Converters\ValueToEqualsParameterConverter.cs" />
