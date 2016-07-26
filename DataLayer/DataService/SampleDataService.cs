@@ -52,11 +52,11 @@ namespace DataLayer.DataService
         }     
 
         public override LocalSettings GetLocalSettings()
-        {         
+        {            
             return new LocalSettings()
             {
                 IsClockFormat24 = bool.Parse(ConfigurationManager.AppSettings["IsClockFormat24"]),
-                RefreshTimeInMinutes = Double.Parse(ConfigurationManager.AppSettings["RefreshTimeInMinutes"],new CultureInfo("En")),
+                RefreshTimeInSeconds = int.Parse(ConfigurationManager.AppSettings["RefreshTimeInSeconds"]),
                 UnitSize = Double.Parse(ConfigurationManager.AppSettings["UnitSize"]),
                 IsShipClientWaitingVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipClientWaitingVisible"]),
                 IsShipJobtypeVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipJobtypeVisible"]),
@@ -85,9 +85,9 @@ namespace DataLayer.DataService
         }
 
         public override void UpdateLocalSettings(LocalSettings settings)
-        {
+        {            
             ConfigurationManager.AppSettings["IsClockFormat24"] = settings.IsClockFormat24.ToString();
-            ConfigurationManager.AppSettings["RefreshTimeInMinutes"] = settings.RefreshTimeInMinutes.ToString();
+            ConfigurationManager.AppSettings["RefreshTimeInSeconds"] = settings.RefreshTimeInSeconds.ToString();
             ConfigurationManager.AppSettings["UnitSize"] = settings.UnitSize.ToString();
             ConfigurationManager.AppSettings["IsShipClientWaitingVisible"] = settings.IsShipClientWaitingVisible.ToString();
             ConfigurationManager.AppSettings["IsShipJobtypeVisible"] = settings.IsShipJobtypeVisible.ToString();

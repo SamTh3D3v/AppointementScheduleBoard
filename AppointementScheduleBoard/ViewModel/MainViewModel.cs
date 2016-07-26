@@ -356,6 +356,7 @@ namespace AppointementScheduleBoard.ViewModel
                     IsSelected = true
                 }));
             });
+            Messenger.Default.Send<Object>( FilteredStallsCollection, "SetFilteredStallsCollection");
 
         }
         #endregion

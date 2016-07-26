@@ -102,7 +102,7 @@
                                         </i:Interaction.Triggers>
                                     </RadioButton>
                                     <RadioButton Content="12" Grid.Row="1" Grid.Column="2" GroupName="clockFormat"/>
-                                    <controls:NumericUpDown Value="{Binding LocalSettings.RefreshTimeInMinutes,Mode=TwoWay}"  Minimum="0" Maximum="100" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
+                                    <controls:NumericUpDown Value="{Binding LocalSettings.RefreshTimeInSeconds,Mode=TwoWay}"  Minimum="0" Maximum="100" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="ValueChanged">
                                                 <command:EventToCommand Command="{Binding Path=RefreshTimeChangedCommand}"

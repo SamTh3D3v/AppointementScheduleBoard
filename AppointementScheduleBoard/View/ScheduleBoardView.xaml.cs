@@ -26,12 +26,12 @@ namespace AppointementScheduleBoard.View
             var dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += dispatcherTimer_Tick;
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
-           // dispatcherTimer.Start();
+            dispatcherTimer.Start();
         }
         private void dispatcherTimer_Tick(object sender, EventArgs e)
-        {            
-            if(TimeLineHeader.Items==null) return;
-            if(TimeLineHeader.Items.Count==0) return;
+        {
+            if (TimeLineHeader.Items == null) return;
+            if (TimeLineHeader.Items.Count == 0) return;
 
             double secondsPerUnit = 10 * (1000 / TimeLineHeader.UnitSize) * 60;
             var timeItemWidth = TimeLineHeader.ActualWidth / TimeLineHeader.Items.Count;
@@ -41,7 +41,7 @@ namespace AppointementScheduleBoard.View
             margin.Left = currentTimeMarginOffset;
             BorderLine.Margin = margin;
 
-            var halfTheViewPortSize = MainSv.ActualWidth /2;
+            var halfTheViewPortSize = MainSv.ActualWidth / 2;
             MainSv.ScrollToHorizontalOffset(currentTimeMarginOffset - halfTheViewPortSize);
         }
     }

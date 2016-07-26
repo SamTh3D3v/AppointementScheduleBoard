@@ -210,7 +210,7 @@ namespace AppointementScheduleBoard.ViewModel
                         await ReloadBoard();
                         break;
                     case "RefreshTimeUpdated":
-                        var refTimeSec = MainDataService.GetLocalSettings().RefreshTimeInMinutes * 60;
+                        var refTimeSec = MainDataService.GetLocalSettings().RefreshTimeInSeconds;
                         _dispatcherTimer.Interval = new TimeSpan(0, 0, (int)refTimeSec);
                         break;
                     case "ClockFormatChanged":
@@ -220,12 +220,17 @@ namespace AppointementScheduleBoard.ViewModel
                         await ReloadBoard();
                         break;
 
-
                 }
+            });
+            Messenger.Default.Register<Object>(this, "SetFilteredStallsCollection", (obj) =>
+            {
+                var collection = (ObservableCollection<FilteredStall>)obj;
+                FilteredStallsCollection = collection;
             });
             _dispatcherTimer = new DispatcherTimer();
             _dispatcherTimer.Tick += dispatcherTimer_Tick;
-            var refreshTimeInSeconds = MainDataService.GetLocalSettings().RefreshTimeInMinutes * 60;
+            var res = MainDataService.GetLocalSettings();
+            var refreshTimeInSeconds = MainDataService.GetLocalSettings().RefreshTimeInSeconds;
             _dispatcherTimer.Interval = new TimeSpan(0, 0, (int)refreshTimeInSeconds);
             _dispatcherTimer.Start();
         }
