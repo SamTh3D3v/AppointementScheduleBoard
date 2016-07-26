@@ -193,7 +193,7 @@
                                                          Manager="{Binding}"                                                 
                                                         ItemTemplate="{StaticResource HeaderTemplateProperty}"
                                                         HorizontalAlignment="Left"                                                           
-                                                         StartDate="{Binding StartDateTime}"                                                                      
+                                                         StartDate="{Binding StartDateTime}" 
                                                         UnitSize="{Binding TimeLineUnitSize,Mode=TwoWay}"                                                        
                                                         Background="{StaticResource DarkerG}"                                                          
                                                         DrawTimeGrid="True"
