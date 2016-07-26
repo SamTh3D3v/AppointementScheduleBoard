@@ -15,18 +15,30 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using DataLayer.Model;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace AppointementScheduleBoard.View
 {
     public partial class ScheduleBoardView : Page
     {
+        private readonly DispatcherTimer _dispatcherTimer;
         public ScheduleBoardView()
         {
             InitializeComponent();
-            var dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += dispatcherTimer_Tick;
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
-            dispatcherTimer.Start();
+            _dispatcherTimer = new DispatcherTimer();
+            _dispatcherTimer.Tick += dispatcherTimer_Tick;
+            _dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+            _dispatcherTimer.Start();
+            Messenger.Default.Register<bool>(this, "CenterView", o =>
+            {
+                if (o) _dispatcherTimer.Start();
+                else
+                {
+                    _dispatcherTimer.Stop();
+                    MainSv.ScrollToLeftEnd();
+
+                }
+            });
         }
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {

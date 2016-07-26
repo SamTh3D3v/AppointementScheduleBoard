@@ -17,6 +17,7 @@ namespace AppointementScheduleBoard.ViewModel
     public class MainViewModel : NavigableViewModelBase
     {
         #region Fields
+        private bool _isViewCentered=true;
         private Branch _selectedBranch;
         private ObservableCollection<Branch> _branchCollection;
         private bool _isSettingsFlayoutOpen;
@@ -25,9 +26,28 @@ namespace AppointementScheduleBoard.ViewModel
         private LocalSettings _localSettings;
         private ServerSettings _serverSettings;       
         private WorkingHoursSettings _workingHoursSettings ;                        
-        private ObservableCollection<FilteredStall> _filteredStallsCollection  ;        
+        private ObservableCollection<FilteredStall> _filteredStallsCollection  ;
         #endregion
         #region Properties  
+        public bool IsViewCentered
+        {
+            get
+            {
+                return _isViewCentered;
+            }
+
+            set
+            {
+                if (_isViewCentered == value)
+                {
+                    return;
+                }
+
+                _isViewCentered = value;
+                RaisePropertyChanged();
+                Messenger.Default.Send<bool>(_isViewCentered,"CenterView");
+            }
+        }
         public Branch SelectedBranch
         {
             get
@@ -192,6 +212,19 @@ namespace AppointementScheduleBoard.ViewModel
         }
         #endregion
         #region Commands
+        private RelayCommand _startPauseTimeLineCommand;
+        public RelayCommand StartPauseTimeLineCommand
+        {
+            get
+            {
+                return _startPauseTimeLineCommand
+                    ?? (_startPauseTimeLineCommand = new RelayCommand(
+                    () =>
+                    {
+                        IsViewCentered = !IsViewCentered;
+                    }));
+            }
+        }
         private RelayCommand _mainWindowLoadedCommand;
         public RelayCommand MainWindowLoadedCommand
         {

@@ -48,6 +48,23 @@
                     </Rectangle>
                 </StackPanel>
             </Button>
+            <Button Command="{Binding StartPauseTimeLineCommand}"  ToolTip="Center">
+                
+
+                <Path Width="15" Height="15" Stretch="Fill" Fill="White" >
+                    <Path.Style>
+                        <Style TargetType="Path">
+                            <Setter Property="Data" Value="{StaticResource PlayPath}"></Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsViewCentered}" Value="true">
+                                    <Setter Property="Data" Value="{StaticResource PausePath}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Path.Style>
+                </Path>
+
+            </Button>
             <Button Command="{Binding MoveToFullScreenCommand}" >
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Width="15" Height="15"
