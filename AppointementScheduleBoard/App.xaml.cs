@@ -22,6 +22,14 @@ namespace AppointementScheduleBoard
         public static String AffectationViewKey = "AffectationView";
         #endregion
 
+        public ResourceDictionary ThemeDictionary => Resources.MergedDictionaries[0];
+        public void ChangeTheme(Uri uri)
+        {
+            ThemeDictionary.MergedDictionaries.RemoveAt(0);
+            ThemeDictionary.MergedDictionaries.Insert(0,new ResourceDictionary() { Source = uri });
+        }
+
+
         public App():base()
         {
             DispatcherHelper.Initialize();

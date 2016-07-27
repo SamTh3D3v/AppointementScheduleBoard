@@ -10,7 +10,7 @@
         <Style TargetType="TextBlock" x:Key="LabelStyle">
             <Setter Property="FontFamily" Value="segoe ui"></Setter>
             <Setter Property="FontWeight" Value="Bold"></Setter>
-            <Setter Property="Foreground" Value="{StaticResource LightG}"></Setter>
+            <Setter Property="Foreground" Value="{DynamicResource LightG}"></Setter>
             <Setter Property="VerticalAlignment" Value="Center"></Setter>
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="Margin" Value="4"></Setter>
@@ -19,7 +19,7 @@
     <Grid>
         <Border                                         
                     Margin="2"                    
-                    Background="{StaticResource DarkG}" MinHeight="20">
+                    Background="{DynamicResource DarkG}" MinHeight="20">
             <VisualStateManager.VisualStateGroups>
                 <VisualStateGroup x:Name="Clignoter"/>
             </VisualStateManager.VisualStateGroups>
@@ -29,7 +29,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Border Background="{StaticResource DarkerG}" Margin="1" Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsShipJobtypeVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}">
+                <Border Background="{DynamicResource DarkerG}" Margin="1" Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsShipJobtypeVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}">
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="Job type" Style="{StaticResource LabelStyle}" FontSize="14"/>
                         <TextBlock Text="{Binding JobType}" Style="{StaticResource LabelStyle}" Foreground="White" FontSize="14"/>

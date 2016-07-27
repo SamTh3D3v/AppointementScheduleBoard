@@ -262,6 +262,13 @@ namespace AppointementScheduleBoard.ViewModel
                     });
                     startDateTime = startDateTime.AddMinutes(10 * (1000 / TimeLineUnitSize));
                 }
+                list.Add(new HourJobCard()
+                {
+                    StartTime = startDateTime,
+                    EndTime = startDateTime.AddMinutes(10 * (1000 / TimeLineUnitSize)),
+                    HourDesignation = startDateTime.ToString("HH:mm")
+                });
+                startDateTime = startDateTime.AddMinutes(10 * (1000 / TimeLineUnitSize));
             });
             HoursCollection = new ObservableCollection<ITimeLineJobTask>(list);
             hoursMutex = false;

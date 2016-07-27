@@ -2,8 +2,11 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 using AppointementScheduleBoard.Helpers;
+using AppointementScheduleBoard.View;
+using ControlLibrary.Helpers;
 using DataLayer.DataService;
 using DataLayer.Model;
 using GalaSoft.MvvmLight;
@@ -26,9 +29,28 @@ namespace AppointementScheduleBoard.ViewModel
         private LocalSettings _localSettings;
         private ServerSettings _serverSettings;       
         private WorkingHoursSettings _workingHoursSettings ;                        
-        private ObservableCollection<FilteredStall> _filteredStallsCollection  ;
+        private ObservableCollection<FilteredStall> _filteredStallsCollection  ;     
+        private SelectedTheme _selectedTheme = SelectedTheme.DarkTheme;
         #endregion
-        #region Properties  
+        #region Properties 
+        public SelectedTheme SelectedTheme
+        {
+            get
+            {
+                return _selectedTheme;
+            }
+
+            set
+            {
+                if (_selectedTheme == value)
+                {
+                    return;
+                }
+
+                _selectedTheme = value;
+                RaisePropertyChanged();
+            }
+        }
         public bool IsViewCentered
         {
             get
@@ -212,6 +234,36 @@ namespace AppointementScheduleBoard.ViewModel
         }
         #endregion
         #region Commands
+        private RelayCommand _lightThemeSelectedCommand;
+        public RelayCommand LightThemeSelectedCommand
+        {
+            get
+            {
+                return _lightThemeSelectedCommand
+                    ?? (_lightThemeSelectedCommand = new RelayCommand(
+                    () =>
+                    {
+                        _selectedTheme=SelectedTheme.LightTheme;                      
+                        var app = (App)Application.Current;
+                        app.ChangeTheme(new Uri("/ControlLibrary;component/ResourcesDictionaries/Brushes/DefaultColorTheme.xaml", UriKind.Relative)); 
+                    }));
+            }
+        }
+        private RelayCommand _darkThemeSelectedCommand;             
+        public RelayCommand DarkThemeSelectedCommand
+        {
+            get
+            {
+                return _darkThemeSelectedCommand
+                    ?? (_darkThemeSelectedCommand = new RelayCommand(
+                    () =>
+                    {
+                        _selectedTheme = SelectedTheme.DarkTheme;                      
+                        var app = (App)Application.Current;
+                        app.ChangeTheme(new Uri("/ControlLibrary;component/ResourcesDictionaries/Brushes/LightTheme.xaml", UriKind.Relative));
+                    }));
+            }
+        }
         private RelayCommand _startPauseTimeLineCommand;
         public RelayCommand StartPauseTimeLineCommand
         {

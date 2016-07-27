@@ -21,5 +21,7 @@ namespace AppointementScheduleBoard.View
         {
             InitializeComponent();
         }
+
+     
     }
 }

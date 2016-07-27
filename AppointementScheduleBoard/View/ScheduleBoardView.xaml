@@ -213,7 +213,7 @@
 
                                         <Border Grid.Row="0" Grid.RowSpan="2" BorderBrush="Black" BorderThickness="1">
                                             <StackPanel Orientation="Vertical">
-                                                <timeLineControl:TimeLineControl Height="80" 
+                                                <timeLineControl:TimeLineControl Height="80" IsEnabled="False" 
                                                          Manager="{Binding}"
                                                                          DayLineBrush="Black" 
                                                                          HourLineBrush="{StaticResource DarkG}"
@@ -233,7 +233,7 @@
                                                         </MultiBinding>
                                                     </timeLineControl:TimeLineControl.Items>
                                                 </timeLineControl:TimeLineControl>
-                                                <timeLineControl:TimeLineControl Height="80" 
+                                                <timeLineControl:TimeLineControl Height="80" IsEnabled="False"
                                                                           DayLineBrush="Black" 
                                                                          HourLineBrush="{StaticResource DarkG}"
                                                                          MinuteLineBrush="White"
