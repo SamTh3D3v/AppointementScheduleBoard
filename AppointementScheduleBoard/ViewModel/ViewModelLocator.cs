@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using AppointementScheduleBoard.Helpers;
 using DataLayer.DataService;
 using GalaSoft.MvvmLight;
@@ -66,7 +67,9 @@ namespace AppointementScheduleBoard.ViewModel
         {
             get
             {
+
                 return ServiceLocator.Current.GetInstance<ScheduleBoardViewModel>();
+
             }
         }
 

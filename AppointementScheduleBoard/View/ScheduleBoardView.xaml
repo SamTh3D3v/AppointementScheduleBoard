@@ -106,7 +106,17 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <Border Grid.Column="0" Width="100" Height="160" Grid.Row="0" Grid.RowSpan="2" BorderBrush="{StaticResource DarkerG}" BorderThickness="1">
+                                <Border Grid.Column="0" Width="100"  Grid.Row="0" Grid.RowSpan="2" BorderBrush="{StaticResource DarkerG}" BorderThickness="1">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Height" Value="160"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Source={StaticResource Locator},Path=MainWindowViewModel.LocalSettings.IsPlanActualMerged}" Value="True">
+                                                    <Setter Property="Height" Value="80"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
 
                                     <Grid >
                                         <Grid.RowDefinitions>
