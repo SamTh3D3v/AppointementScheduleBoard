@@ -57,7 +57,7 @@ namespace AppointementScheduleBoard
 
         public async void DomainUnhandlerEceptionHandler(object sender, UnhandledExceptionEventArgs args)
         {
-            var errorMessage = String.Format("An exception occurred: {0}", args.ExceptionObject.ToString());
+            var errorMessage = $"An exception occurred: {args.ExceptionObject.ToString()}";
             var controller = await ((Application.Current.MainWindow as MetroWindow).ShowMessageAsync("Something went wrong, Details :", errorMessage));
         }
     }

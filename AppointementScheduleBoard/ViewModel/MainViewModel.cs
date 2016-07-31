@@ -13,23 +13,24 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace AppointementScheduleBoard.ViewModel
 {
-   
+
     public class MainViewModel : NavigableViewModelBase
     {
         #region Fields
-        private bool _isViewCentered=true;
+        private bool _isViewCentered = true;
         private Branch _selectedBranch;
         private ObservableCollection<Branch> _branchCollection;
         private bool _isSettingsFlayoutOpen;
         private bool _showTitleBarProperty;
         private bool _ignoreTaskbarOnMaximizeProperty;
         private LocalSettings _localSettings;
-        private ServerSettings _serverSettings;       
-        private WorkingHoursSettings _workingHoursSettings ;                        
-        private ObservableCollection<FilteredStall> _filteredStallsCollection  ;     
+        private ServerSettings _serverSettings;
+        private WorkingHoursSettings _workingHoursSettings;
+        private ObservableCollection<FilteredStall> _filteredStallsCollection;
         private SelectedTheme _selectedTheme = SelectedTheme.DarkTheme;
         #endregion
         #region Properties 
@@ -67,7 +68,7 @@ namespace AppointementScheduleBoard.ViewModel
 
                 _isViewCentered = value;
                 RaisePropertyChanged();
-                Messenger.Default.Send<bool>(_isViewCentered,"CenterView");
+                Messenger.Default.Send<bool>(_isViewCentered, "CenterView");
             }
         }
         public Branch SelectedBranch
@@ -123,7 +124,7 @@ namespace AppointementScheduleBoard.ViewModel
                 _branchCollection = value;
                 RaisePropertyChanged();
             }
-        }            
+        }
         public LocalSettings LocalSettings
         {
             get
@@ -141,7 +142,7 @@ namespace AppointementScheduleBoard.ViewModel
                 _localSettings = value;
                 RaisePropertyChanged();
             }
-        }     
+        }
         public ServerSettings ServerSettings
         {
             get
@@ -177,22 +178,22 @@ namespace AppointementScheduleBoard.ViewModel
                 _isSettingsFlayoutOpen = value;
                 RaisePropertyChanged();
             }
-        }       
+        }
         public bool ShowTitleBarProperty
         {
             get
             {
-                return  _showTitleBarProperty;
+                return _showTitleBarProperty;
             }
 
             set
             {
-                if ( _showTitleBarProperty == value)
+                if (_showTitleBarProperty == value)
                 {
                     return;
                 }
 
-                 _showTitleBarProperty = value;
+                _showTitleBarProperty = value;
                 RaisePropertyChanged();
             }
         }
@@ -213,7 +214,7 @@ namespace AppointementScheduleBoard.ViewModel
                 _ignoreTaskbarOnMaximizeProperty = value;
                 RaisePropertyChanged();
             }
-        }        
+        }
         public ObservableCollection<FilteredStall> FilteredStallsCollection
         {
             get
@@ -243,13 +244,13 @@ namespace AppointementScheduleBoard.ViewModel
                     ?? (_lightThemeSelectedCommand = new RelayCommand(
                     () =>
                     {
-                        _selectedTheme=SelectedTheme.LightTheme;                      
+                        _selectedTheme = SelectedTheme.LightTheme;
                         var app = (App)Application.Current;
-                        app.ChangeTheme(new Uri("/ControlLibrary;component/ResourcesDictionaries/Brushes/DefaultColorTheme.xaml", UriKind.Relative)); 
+                        app.ChangeTheme(new Uri("/ControlLibrary;component/ResourcesDictionaries/Brushes/DefaultColorTheme.xaml", UriKind.Relative));
                     }));
             }
         }
-        private RelayCommand _darkThemeSelectedCommand;             
+        private RelayCommand _darkThemeSelectedCommand;
         public RelayCommand DarkThemeSelectedCommand
         {
             get
@@ -258,7 +259,7 @@ namespace AppointementScheduleBoard.ViewModel
                     ?? (_darkThemeSelectedCommand = new RelayCommand(
                     () =>
                     {
-                        _selectedTheme = SelectedTheme.DarkTheme;                      
+                        _selectedTheme = SelectedTheme.DarkTheme;
                         var app = (App)Application.Current;
                         app.ChangeTheme(new Uri("/ControlLibrary;component/ResourcesDictionaries/Brushes/LightTheme.xaml", UriKind.Relative));
                     }));
@@ -284,9 +285,9 @@ namespace AppointementScheduleBoard.ViewModel
             {
                 return _mainWindowLoadedCommand
                     ?? (_mainWindowLoadedCommand = new RelayCommand(async () =>
-                    {                                                
+                    {
                         ShowTitleBarProperty = true;
-                        IgnoreTaskbarOnMaximizeProperty=false;
+                        IgnoreTaskbarOnMaximizeProperty = false;
                         await LoadSettings();
                         MainFrameNavigationService.NavigateTo(App.ScheduleBoardViewKey, SelectedBranch.Id);
                     }));
@@ -300,7 +301,7 @@ namespace AppointementScheduleBoard.ViewModel
                 return _selectedBranchChangedCommand
                     ?? (_selectedBranchChangedCommand = new RelayCommand(
                     () =>
-                    {                        
+                    {
                         MainFrameNavigationService.NavigateTo(App.ScheduleBoardViewKey, SelectedBranch.Id);
                         Messenger.Default.Send<NotificationMessage>(new NotificationMessage("ReloadBoard"));
                     }));
@@ -331,7 +332,7 @@ namespace AppointementScheduleBoard.ViewModel
                     {
                         IsSettingsFlayoutOpen = !IsSettingsFlayoutOpen;
                     }));
-            }   
+            }
         }
         private RelayCommand<object> _moveToFullScreenCommand;
         public RelayCommand<object> MoveToFullScreenCommand
@@ -362,7 +363,7 @@ namespace AppointementScheduleBoard.ViewModel
                     }));
             }
         }
-        private RelayCommand _refreshTimeChangedCommand;    
+        private RelayCommand _refreshTimeChangedCommand;
         public RelayCommand RefreshTimeChangedCommand
         {
             get
@@ -399,7 +400,7 @@ namespace AppointementScheduleBoard.ViewModel
                     ?? (_irregSettingsChangedCommand = new RelayCommand(
                     () =>
                     {
-                        MainDataService.UpdateLocalSettings(LocalSettings); 
+                        MainDataService.UpdateLocalSettings(LocalSettings);
                     }));
             }
         }
@@ -421,28 +422,38 @@ namespace AppointementScheduleBoard.ViewModel
 
         #endregion
         #region Ctors and methods   
-        public MainViewModel(IFrameNavigationService mainFrameNavigationService,IDataService mainDataService) : base(mainFrameNavigationService, mainDataService)
-        {            
+        public MainViewModel(IFrameNavigationService mainFrameNavigationService, IDataService mainDataService) : base(mainFrameNavigationService, mainDataService)
+        {
         }
 
         private async Task LoadSettings()
         {
-            await Task.Run(() =>
+            try
             {
-                BranchCollection = new ObservableCollection<Branch>(MainDataService.GetAllBranchs());
-                LocalSettings = MainDataService.GetLocalSettings();
-                ServerSettings = MainDataService.GetServerSettings();
-                WorkingHoursSettings = MainDataService.GetWorkingHoursSettings();
-                SelectedBranch = BranchCollection?.First();
-                var collection = MainDataService.GetBranchStalls(SelectedBranch.Id);                
-                FilteredStallsCollection=new ObservableCollection<FilteredStall>(collection.Select(s=>new FilteredStall()
+                await Task.Run(() =>
                 {
-                    Stall = s,
-                    IsSelected = true
-                }));
-            });
-            Messenger.Default.Send<Object>( FilteredStallsCollection, "SetFilteredStallsCollection");
+                    BranchCollection = new ObservableCollection<Branch>(MainDataService.GetAllBranchs());
+                    LocalSettings = MainDataService.GetLocalSettings();
+                    ServerSettings = MainDataService.GetServerSettings();
+                    WorkingHoursSettings = MainDataService.GetWorkingHoursSettings();
+                    SelectedBranch = BranchCollection?.First();
+                    var collection = MainDataService.GetBranchStalls(SelectedBranch.Id);
+                    FilteredStallsCollection = new ObservableCollection<FilteredStall>(collection.Select(s => new FilteredStall()
+                    {
+                        Stall = s,
+                        IsSelected = true
+                    }));
+                });
+                Messenger.Default.Send<Object>(FilteredStallsCollection, "SetFilteredStallsCollection");
+            }
+            catch (Exception ex)
+            {
 
+                var errorMessage = $"An exception occurred: {ex.Message}";
+                var controller = await ((Application.Current.MainWindow as MetroWindow).ShowMessageAsync("Something went wrong, Details :", errorMessage));
+                (Application.Current.MainWindow as MetroWindow).Close();
+
+            }
         }
         #endregion
     }

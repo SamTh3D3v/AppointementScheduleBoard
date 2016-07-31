@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
 using AppointementScheduleBoard.Helpers;
 using DataLayer;
@@ -13,6 +14,8 @@ using DataLayer.Enums;
 using DataLayer.Model;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace AppointementScheduleBoard.ViewModel
 {
@@ -181,7 +184,7 @@ namespace AppointementScheduleBoard.ViewModel
                     }));
             }
         }
-        private RelayCommand<object> _stallsFilterUpdatedCommand;   
+        private RelayCommand<object> _stallsFilterUpdatedCommand;
         public RelayCommand<object> StallsFilterUpdatedCommand
         {
             get
@@ -190,14 +193,14 @@ namespace AppointementScheduleBoard.ViewModel
                     ?? (_stallsFilterUpdatedCommand = new RelayCommand<object>(
                     (obj) =>
                     {
-                        var collection =(ObservableCollection<FilteredStall>) obj;
+                        var collection = (ObservableCollection<FilteredStall>)obj;
                         FilteredStallsCollection = collection;
                         //todo
                     }));
-            }   
+            }
         }
-      
-       
+
+
         #endregion
         #region Ctors and methods
         public ScheduleBoardViewModel(IFrameNavigationService mainFrameNavigationService, IDataService mainDataService) : base(mainFrameNavigationService, mainDataService)
@@ -247,7 +250,7 @@ namespace AppointementScheduleBoard.ViewModel
         {
             if (hoursMutex) return;
             hoursMutex = true;
-            
+
             var list = new List<ITimeLineJobTask>();
             var startDateTime = StartDateTime;
             await Task.Run(() =>
@@ -277,91 +280,111 @@ namespace AppointementScheduleBoard.ViewModel
 
         private async Task ReloadBoard()
         {
-            if (stallsMutex) return;
-            stallsMutex = true;
-            IsPrograssRingActive = true;
-            //for test purpuses             
-            await Task.Run(() => Thread.Sleep(3000));
-            StartDateTime = DateTime.Today.Add(MainDataService.GetWorkingHoursSettings().StartHour);
-            EndDateTime = DateTime.Today.Add(MainDataService.GetWorkingHoursSettings().EndHour);
-            StallsCollection = new ObservableCollection<Stall>(await Task.Run(() => MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter)));          
-            await UpdateHoursCollection();
-            IsPrograssRingActive = false;
-            stallsMutex = false;
+            try
+            {
+                if (stallsMutex) return;
+                stallsMutex = true;
+                IsPrograssRingActive = true;
+                //for test purpuses             
+                await Task.Run(() => Thread.Sleep(3000));
+                StartDateTime = DateTime.Today.Add(MainDataService.GetWorkingHoursSettings().StartHour);
+                EndDateTime = DateTime.Today.Add(MainDataService.GetWorkingHoursSettings().EndHour);
+                StallsCollection = new ObservableCollection<Stall>(await Task.Run(() => MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter)));
+                await UpdateHoursCollection();
+                IsPrograssRingActive = false;
+                stallsMutex = false;
+            }
+            catch (Exception ex)
+            {
+
+                var errorMessage = $"An exception occurred: {ex.Message}";
+                var controller = await ((Application.Current.MainWindow as MetroWindow).ShowMessageAsync("Something went wrong, Details :", errorMessage));
+                (Application.Current.MainWindow as MetroWindow).Close();
+            }
         }
 
         private async Task RefreshBoardPeriodicly()
         {
-            if (stallsMutex) return;
-            stallsMutex = true;
-            await Task.Run(() =>
-             {
-                 var collection = MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter);                 
-                 var resCollection=new List<Stall>();
-                 collection.ForEach(s =>
+            try
+            {
+                if (stallsMutex) return;
+                stallsMutex = true;
+                await Task.Run(() =>
                  {
-                     if (FilteredStallsCollection.First(st=>st.Stall.Id==s.Id).IsSelected)
+                     var collection = MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter);
+                     var resCollection = new List<Stall>();
+                     collection.ForEach(s =>
                      {
-                         resCollection.Add(s);
-                     }
-                 });
-                 resCollection.ForEach(s =>
-                 {
-                     foreach (var jt in s.JobTasksCollection)
-                     {
-                        //Irregularities
-                        if (jt.PlannedStartTime < DateTime.Now)
+                         if (FilteredStallsCollection.First(st => st.Stall.Id == s.Id).IsSelected)
                          {
+                             resCollection.Add(s);
+                         }
+                     });
+                     resCollection.ForEach(s =>
+                     {
+                         foreach (var jt in s.JobTasksCollection)
+                         {
+                         //Irregularities
+                         if (jt.PlannedStartTime < DateTime.Now)
+                             {
 
-                             if (jt.StatusId == (int)StatusEnum.Received)
-                             {
-                                 jt.JobTaskBackGround = MainDataService.GetLocalSettings().IrrLateJobVr;
-                                 jt.IsJobTaskBliking= MainDataService.GetLocalSettings().IrrLateJobVrBlink;
-                                 continue;
+                                 if (jt.StatusId == (int)StatusEnum.Received)
+                                 {
+                                     jt.JobTaskBackGround = MainDataService.GetLocalSettings().IrrLateJobVr;
+                                     jt.IsJobTaskBliking = MainDataService.GetLocalSettings().IrrLateJobVrBlink;
+                                     continue;
+                                 }
+                                 else if (jt.StatusId == (int)StatusEnum.Booked)
+                                 {
+                                     jt.JobTaskBackGround = MainDataService.GetLocalSettings().IrrLateJobBooked;
+                                     jt.IsJobTaskBliking = MainDataService.GetLocalSettings().IrrLateJobBookedBlink;
+                                     continue;
+                                 }
+                                 else if (jt.StatusId == (int)StatusEnum.Allocated)
+                                 {
+                                     jt.JobTaskBackGround = MainDataService.GetLocalSettings().IrrLateJobBooked;
+                                     jt.IsJobTaskBliking = MainDataService.GetLocalSettings().IrrLateJobBookedBlink;
+                                     continue;
+                                 }
+
                              }
-                             else if (jt.StatusId == (int)StatusEnum.Booked)
+
+                             if (jt.EndTime < DateTime.Now)
                              {
-                                 jt.JobTaskBackGround = MainDataService.GetLocalSettings().IrrLateJobBooked;
-                                 jt.IsJobTaskBliking = MainDataService.GetLocalSettings().IrrLateJobBookedBlink;
-                                 continue;
+
+                                 if (jt.StatusId == (int)StatusEnum.InProgress || jt.StatusId == (int)StatusEnum.WaitingForParts
+                                 || jt.StatusId == (int)StatusEnum.WaitingForQc || jt.StatusId == (int)StatusEnum.WaitingForWashing)
+                                 {
+                                     jt.JobTaskBackGround = MainDataService.GetLocalSettings().PdtExceededInProgress;
+                                     jt.IsJobTaskBliking = MainDataService.GetLocalSettings().PdtExceededInProgressBlink;
+                                     continue;
+                                 }
+                                 else if (jt.StatusId == (int)StatusEnum.WaitingForInvoice)
+                                 {
+                                     jt.JobTaskBackGround = MainDataService.GetLocalSettings().PdtExceededWaittingForInvoice;
+                                     jt.IsJobTaskBliking = MainDataService.GetLocalSettings().PdtExceededWaittingForInvoiceBlink;
+
+
+                                     continue;
+                                 }
+
                              }
-                             else if (jt.StatusId == (int)StatusEnum.Allocated)
-                             {
-                                 jt.JobTaskBackGround = MainDataService.GetLocalSettings().IrrLateJobBooked;
-                                 jt.IsJobTaskBliking = MainDataService.GetLocalSettings().IrrLateJobBookedBlink;
-                                 continue;
-                             }
+                             jt.JobTaskBackGround = "#00000000";
+
 
                          }
-
-                         if (jt.EndTime < DateTime.Now)
-                         {
-
-                             if (jt.StatusId == (int)StatusEnum.InProgress || jt.StatusId == (int)StatusEnum.WaitingForParts
-                             || jt.StatusId == (int)StatusEnum.WaitingForQc || jt.StatusId == (int)StatusEnum.WaitingForWashing)
-                             {
-                                 jt.JobTaskBackGround = MainDataService.GetLocalSettings().PdtExceededInProgress;
-                                 jt.IsJobTaskBliking = MainDataService.GetLocalSettings().PdtExceededInProgressBlink;
-                                 continue;
-                             }
-                             else if (jt.StatusId == (int)StatusEnum.WaitingForInvoice)
-                             {
-                                 jt.JobTaskBackGround = MainDataService.GetLocalSettings().PdtExceededWaittingForInvoice;
-                                 jt.IsJobTaskBliking = MainDataService.GetLocalSettings().PdtExceededWaittingForInvoiceBlink;
-
-
-                                 continue;
-                             }
-
-                         }
-                         jt.JobTaskBackGround = "#00000000";
-
-
-                     }
+                     });
+                     StallsCollection = new ObservableCollection<Stall>(resCollection);
                  });
-                 StallsCollection = new ObservableCollection<Stall>(resCollection);
-             });
-            stallsMutex = false;
+                stallsMutex = false;
+            }
+            catch (Exception ex)
+            {
+
+                var errorMessage = $"An exception occurred: {ex.Message}";
+                var controller = await ((Application.Current.MainWindow as MetroWindow).ShowMessageAsync("Something went wrong, Details :", errorMessage));
+                (Application.Current.MainWindow as MetroWindow).Close();
+            }
 
         }
         #endregion       
