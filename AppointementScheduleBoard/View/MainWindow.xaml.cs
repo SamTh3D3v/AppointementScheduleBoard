@@ -10,6 +10,7 @@ namespace AppointementScheduleBoard.View
         public MainWindow()
         {
             InitializeComponent();                   
-        }        
+        }
+       
     }
 }

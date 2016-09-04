@@ -106,7 +106,17 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <Border Grid.Column="0" Width="100" Height="160" Grid.Row="0" Grid.RowSpan="2" BorderBrush="{StaticResource DarkerG}" BorderThickness="1">
+                                <Border Grid.Column="0" Width="100"  Grid.Row="0" Grid.RowSpan="2" BorderBrush="{StaticResource DarkerG}" BorderThickness="1">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Height" Value="160"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Source={StaticResource Locator},Path=MainWindowViewModel.LocalSettings.IsPlanActualMerged}" Value="True">
+                                                    <Setter Property="Height" Value="80"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
 
                                     <Grid >
                                         <Grid.RowDefinitions>
@@ -193,7 +203,7 @@
                                                          Manager="{Binding}"                                                 
                                                         ItemTemplate="{StaticResource HeaderTemplateProperty}"
                                                         HorizontalAlignment="Left"                                                           
-                                                         StartDate="{Binding StartDateTime}"                                                                      
+                                                         StartDate="{Binding StartDateTime}" 
                                                         UnitSize="{Binding TimeLineUnitSize,Mode=TwoWay}"                                                        
                                                         Background="{StaticResource DarkerG}"                                                          
                                                         DrawTimeGrid="True"
@@ -213,7 +223,7 @@
 
                                         <Border Grid.Row="0" Grid.RowSpan="2" BorderBrush="Black" BorderThickness="1">
                                             <StackPanel Orientation="Vertical">
-                                                <timeLineControl:TimeLineControl Height="80" 
+                                                <timeLineControl:TimeLineControl Height="80" IsEnabled="False" 
                                                          Manager="{Binding}"
                                                                          DayLineBrush="Black" 
                                                                          HourLineBrush="{StaticResource DarkG}"
@@ -233,7 +243,7 @@
                                                         </MultiBinding>
                                                     </timeLineControl:TimeLineControl.Items>
                                                 </timeLineControl:TimeLineControl>
-                                                <timeLineControl:TimeLineControl Height="80" 
+                                                <timeLineControl:TimeLineControl Height="80" IsEnabled="False"
                                                                           DayLineBrush="Black" 
                                                                          HourLineBrush="{StaticResource DarkG}"
                                                                          MinuteLineBrush="White"

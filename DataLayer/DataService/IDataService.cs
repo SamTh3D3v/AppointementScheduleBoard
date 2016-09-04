@@ -51,5 +51,8 @@ namespace DataLayer.DataService
         LocalSettings GetLocalSettings();
 
         void UpdateLocalSettings(LocalSettings settings);
+        WorkingHoursSettings GetWorkingHoursSettings();
+        void UpdateWorkingHoursSettings(WorkingHoursSettings settings);
+
     }
 }

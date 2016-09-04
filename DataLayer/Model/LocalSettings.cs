@@ -15,7 +15,7 @@ namespace DataLayer.Model
     public class LocalSettings : INotifyPropertyChanged
     {
         #region Fields
-        private double _refreshTimeInMinutes;
+        private double _refreshTimeInSeconds;
         private bool _isClockFormat24;
         private double _unitSize;
         private ViewedStallsEnum _viewedStalls;
@@ -45,13 +45,13 @@ namespace DataLayer.Model
 
         #endregion
         #region Properties
-        public Double RefreshTimeInMinutes
+        public Double RefreshTimeInSeconds
         {
-            get { return _refreshTimeInMinutes; }
+            get { return _refreshTimeInSeconds; }
             set
             {
-                if (value.Equals(_refreshTimeInMinutes)) return;
-                _refreshTimeInMinutes = value;
+                if (value.Equals(_refreshTimeInSeconds)) return;
+                _refreshTimeInSeconds = value;
                 OnPropertyChanged();
             }
         }

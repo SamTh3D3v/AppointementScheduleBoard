@@ -9,15 +9,18 @@
              xmlns:enums="clr-namespace:DataLayer.Enums;assembly=DataLayer"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:command="http://www.galasoft.ch/mvvmlight"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"             
+             xmlns:helpers="clr-namespace:ControlLibrary.Helpers;assembly=ControlLibrary"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+             d:DesignHeight="300" d:DesignWidth="300" >
+    <Grid Name="RootGrid">
         <TabControl>
             <TabItem Header="Global Settings">
                 <TabItem.Content>
                     <ScrollViewer>
                         <Grid>
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
@@ -62,17 +65,32 @@
                                     </Grid.ColumnDefinitions>
                                     <Label Content="working hours " Grid.Column="0" Grid.Row="0"/>
                                     <Label Content="clock format " Grid.Column="0" Grid.Row="1"/>
-                                    <Label Content="Refresh time " Grid.Column="0" Grid.Row="2"/>
+                                    <Label Content="Refresh time (sec)" Grid.Column="0" Grid.Row="2"/>
 
                                     <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
-                                        <Label  ContentStringFormat="start: "  />
-                                        <xctk:TimePicker Value="{Binding ServerSettings.StartHour}"/>
+                                        <Label  Content="start: "  />
+                                        <xctk:TimePicker Value="{Binding WorkingHoursSettings.StartHour,Converter={StaticResource TimeSpanToDateTimeConverter},Mode=TwoWay}" Width="75" Foreground="White">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="ValueChanged">
+                                                    <command:EventToCommand Command="{Binding Path=WorkingHoursSettingsChangedCommand}"
+                            PassEventArgsToCommand="True"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </xctk:TimePicker>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2" >
-                                        <Label  ContentStringFormat="-  end: " />
-                                        <xctk:TimePicker Value="{Binding ServerSettings.EndHour}"/>
+                                        <Label  Content="-  end: " />
+                                        <xctk:TimePicker Value="{Binding WorkingHoursSettings.EndHour,Converter={StaticResource TimeSpanToDateTimeConverter},Mode=TwoWay}" Width="75" Foreground="White">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="ValueChanged">
+                                                    <command:EventToCommand Command="{Binding Path=WorkingHoursSettingsChangedCommand}"
+                            PassEventArgsToCommand="True"/>
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </xctk:TimePicker>
+
                                     </StackPanel>
-                                   
+
                                     <RadioButton Content="24" IsChecked="{Binding LocalSettings.IsClockFormat24}" Grid.Row="1" Grid.Column="1" GroupName="clockFormat">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="Checked">
@@ -86,7 +104,7 @@
                                         </i:Interaction.Triggers>
                                     </RadioButton>
                                     <RadioButton Content="12" Grid.Row="1" Grid.Column="2" GroupName="clockFormat"/>
-                                    <controls:NumericUpDown Value="{Binding LocalSettings.RefreshTimeInMinutes,Mode=TwoWay}"  Minimum="0" Maximum="100" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
+                                    <controls:NumericUpDown Value="{Binding LocalSettings.RefreshTimeInSeconds,Mode=TwoWay}"  Minimum="0" Maximum="100" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="ValueChanged">
                                                 <command:EventToCommand Command="{Binding Path=RefreshTimeChangedCommand}"
@@ -198,7 +216,7 @@
 
                             <GroupBox Header="Select Stalls to View" Grid.Row="6">
                                 <Grid>
-                                    <ItemsControl Margin="5" ItemsSource="{Binding StallsCollection}">
+                                    <ItemsControl Margin="5" ItemsSource="{Binding FilteredStallsCollection}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <StackPanel Orientation="Horizontal"></StackPanel>
@@ -206,10 +224,52 @@
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate >
-                                                <ToggleButton Margin="5" Content="{Binding StallName}" Width="50" Height="50"/>
+                                                <ToggleButton Margin="5" Content="{Binding Stall.StallName}"   IsChecked="{Binding IsSelected,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="50" Height="50">
+                                                    <i:Interaction.Triggers>
+                                                        <i:EventTrigger EventName="Checked">
+                                                            <command:EventToCommand Command="{Binding Path=ScheduleBoardViewModel.StallsFilterUpdatedCommand,Source={StaticResource Locator}}" CommandParameter="{Binding ElementName=RootGrid,Path=DataContext.FilteredStallsCollection}"
+                            PassEventArgsToCommand="False"/>
+                                                        </i:EventTrigger>
+                                                        <i:EventTrigger EventName="Unchecked">
+                                                            <command:EventToCommand Command="{Binding Path=ScheduleBoardViewModel.StallsFilterUpdatedCommand,Source={StaticResource Locator}}" CommandParameter="{Binding ElementName=RootGrid,Path=DataContext.FilteredStallsCollection}"
+                            PassEventArgsToCommand="False"/>
+                                                        </i:EventTrigger>
+                                                    </i:Interaction.Triggers>
+                                                </ToggleButton>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
+                                </Grid>
+                            </GroupBox>
+
+                            <GroupBox Header="Theme" Grid.Row="7">
+                                <Grid >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <RadioButton GroupName="ThemeGroupe" Content="Dark" Grid.Column="0" Margin="20 10">
+                                        <RadioButton.Style>
+                                            <Style TargetType="RadioButton" BasedOn="{StaticResource {x:Type RadioButton}}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding SelectedTheme}" Value="{x:Static helpers:SelectedTheme.DarkTheme}">
+                                                        <Setter Property="IsChecked" Value="True"></Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </RadioButton.Style>
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Checked">
+                                                <command:EventToCommand Command="{Binding LightThemeSelectedCommand}" CommandParameter="{Binding ElementName=RootGrid,Path=DataContext.FilteredStallsCollection}"
+                            PassEventArgsToCommand="False"/>
+                                            </i:EventTrigger>
+                                            <i:EventTrigger EventName="Unchecked">
+                                                <command:EventToCommand Command="{Binding DarkThemeSelectedCommand}" CommandParameter="{Binding ElementName=RootGrid,Path=DataContext.FilteredStallsCollection}"
+                            PassEventArgsToCommand="False"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </RadioButton>
+                                    <RadioButton GroupName="ThemeGroupe" Content="Light" Grid.Column="1" Margin="20 10"/>
                                 </Grid>
                             </GroupBox>
 
@@ -256,7 +316,7 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </CheckBox>
-                            
+
                             <Label Content="Late job (booked)" Grid.Row="1" Grid.Column="1"/>
                             <xctk:ColorPicker Grid.Row="1" SelectedColor="{Binding LocalSettings.IrrLateJobBooked,Converter={StaticResource RgbToBrushConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  Grid.Column="2" Margin="5"  
                                             HorizontalAlignment="Stretch" VerticalAlignment="Center">
@@ -279,7 +339,7 @@
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
                             </CheckBox>
-                            
+
                             <Label Content="Planned time exceeded (still in progress)" Grid.Row="2" Grid.Column="1"/>
                             <xctk:ColorPicker Grid.Row="2" SelectedColor="{Binding LocalSettings.IrrPlannedTimeExeeded,Converter={StaticResource RgbToBrushConverter},Mode=TwoWay}"  Grid.Column="2" Margin="5"  
                                             HorizontalAlignment="Stretch" VerticalAlignment="Center">

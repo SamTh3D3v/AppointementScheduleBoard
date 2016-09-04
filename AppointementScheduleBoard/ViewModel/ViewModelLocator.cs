@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using AppointementScheduleBoard.Helpers;
 using DataLayer.DataService;
 using GalaSoft.MvvmLight;
@@ -45,10 +46,10 @@ namespace AppointementScheduleBoard.ViewModel
         private static void SetupDataService()
         {
             //to use the test data service (local data)
-            MainSampleDataService = new SampleDataService();
+            MainSampleDataService = new XxtaDataService();
             //to use the PROD dataservice 
             //MainSampleDataService=new DataService();
-            SimpleIoc.Default.Register<IDataService>(()=> MainSampleDataService);
+            SimpleIoc.Default.Register<IDataService>(() => MainSampleDataService);
         }
 
         public MainViewModel MainWindowViewModel
@@ -66,10 +67,12 @@ namespace AppointementScheduleBoard.ViewModel
         {
             get
             {
+
                 return ServiceLocator.Current.GetInstance<ScheduleBoardViewModel>();
+
             }
         }
-      
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
             "CA1822:MarkMembersAsStatic",
             Justification = "This non-static member is needed for data binding purposes.")]

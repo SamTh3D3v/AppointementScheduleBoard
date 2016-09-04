@@ -22,6 +22,14 @@ namespace AppointementScheduleBoard
         public static String AffectationViewKey = "AffectationView";
         #endregion
 
+        public ResourceDictionary ThemeDictionary => Resources.MergedDictionaries[0];
+        public void ChangeTheme(Uri uri)
+        {
+            ThemeDictionary.MergedDictionaries.RemoveAt(0);
+            ThemeDictionary.MergedDictionaries.Insert(0,new ResourceDictionary() { Source = uri });
+        }
+
+
         public App():base()
         {
             DispatcherHelper.Initialize();
@@ -49,7 +57,7 @@ namespace AppointementScheduleBoard
 
         public async void DomainUnhandlerEceptionHandler(object sender, UnhandledExceptionEventArgs args)
         {
-            var errorMessage = String.Format("An exception occurred: {0}", args.ExceptionObject.ToString());
+            var errorMessage = $"An exception occurred: {args.ExceptionObject.ToString()}";
             var controller = await ((Application.Current.MainWindow as MetroWindow).ShowMessageAsync("Something went wrong, Details :", errorMessage));
         }
     }

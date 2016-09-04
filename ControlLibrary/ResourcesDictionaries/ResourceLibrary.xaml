@@ -33,6 +33,11 @@
 
 
         <!--Other Resource Dictionaries-->
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Lime.xaml" />
+
 
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
@@ -48,6 +53,8 @@
             <converters:ValueToEqualsParameterConverter x:Key="IsValueEqualsParameterConverter"/>
             <converters:RgbToBrushConverter x:Key="RgbToBrushConverter"/>
             <converters:StringToBoolConverter x:Key="StringToBoolConverter"/>
+            <converters:TimeSpanToDateTimeConverter x:Key="TimeSpanToDateTimeConverter"/>
+            <converters:StallsFilterConverter x:Key="StallsFilterConverter"/>
         </ResourceDictionary>
 
 
