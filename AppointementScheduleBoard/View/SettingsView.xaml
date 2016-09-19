@@ -91,7 +91,7 @@
 
                                     </StackPanel>
 
-                                    <RadioButton Content="24" IsChecked="{Binding LocalSettings.IsClockFormat24}" Grid.Row="1" Grid.Column="1" GroupName="clockFormat">
+                                    <RadioButton Content="24" IsEnabled="False" IsChecked="{Binding LocalSettings.IsClockFormat24}" Grid.Row="1" Grid.Column="1" GroupName="clockFormat">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="Checked">
                                                 <command:EventToCommand Command="{Binding Path=ClockFormateChangedChangedCommand}"
@@ -103,7 +103,7 @@
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </RadioButton>
-                                    <RadioButton Content="12" Grid.Row="1" Grid.Column="2" GroupName="clockFormat"/>
+                                    <RadioButton Content="12" IsEnabled="False" Grid.Row="1" Grid.Column="2" GroupName="clockFormat"/>
                                     <controls:NumericUpDown Value="{Binding LocalSettings.RefreshTimeInSeconds,Mode=TwoWay}"  Minimum="0" Maximum="100" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="ValueChanged">
@@ -196,7 +196,7 @@
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Header="Unit size" Grid.Row="5">
+                            <GroupBox Header="Unit size" Grid.Row="5" IsEnabled="False">
                                 <Grid >
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
@@ -214,7 +214,7 @@
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Header="Select Stalls to View" Grid.Row="6">
+                            <GroupBox Header="Select Stalls to View" Grid.Row="6" IsEnabled="False">
                                 <Grid>
                                     <ItemsControl Margin="5" ItemsSource="{Binding FilteredStallsCollection}">
                                         <ItemsControl.ItemsPanel>
@@ -242,7 +242,7 @@
                                 </Grid>
                             </GroupBox>
 
-                            <GroupBox Header="Theme" Grid.Row="7">
+                            <GroupBox Header="Theme" Grid.Row="7" IsEnabled="False">
                                 <Grid >
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>

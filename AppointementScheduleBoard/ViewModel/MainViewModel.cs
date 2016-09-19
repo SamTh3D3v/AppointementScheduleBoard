@@ -299,9 +299,9 @@ namespace AppointementScheduleBoard.ViewModel
             get
             {
                 return _selectedBranchChangedCommand
-                    ?? (_selectedBranchChangedCommand = new RelayCommand(
-                    () =>
+                    ?? (_selectedBranchChangedCommand = new RelayCommand(async () =>
                     {
+                       
                         MainFrameNavigationService.NavigateTo(App.ScheduleBoardViewKey, SelectedBranch.Id);
                         Messenger.Default.Send<NotificationMessage>(new NotificationMessage("ReloadBoard"));
                     }));

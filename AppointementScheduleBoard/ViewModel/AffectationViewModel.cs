@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,10 +26,28 @@ namespace AppointementScheduleBoard.ViewModel
         private JobTask _selectedJobTask;
         private ObservableCollection<Branch> _branchsCollection;
         private ObservableCollection<Technicien> _techniciansFiltredCollection;
-        private string _searchText = "";
-
+        private string _searchText = "";            
+        private bool _isPrograssRingActive = false;
         #endregion
         #region Properties
+        public bool IsPrograssRingActive
+        {
+            get
+            {
+                return _isPrograssRingActive;
+            }
+
+            set
+            {
+                if (_isPrograssRingActive == value)
+                {
+                    return;
+                }
+
+                _isPrograssRingActive = value;
+                RaisePropertyChanged();
+            }
+        }
         public bool IsLookingForTechnicians
         {
             get
@@ -184,8 +203,10 @@ namespace AppointementScheduleBoard.ViewModel
                 return _affectationViewLoadedCommand
                     ?? (_affectationViewLoadedCommand = new RelayCommand(async () =>
                     {
+                        IsPrograssRingActive = true;
                         await LaodStalls();
                         BranchsCollection = new ObservableCollection<Branch>(await Task.Run(() => MainDataService.GetAllBranchs()));
+                        IsPrograssRingActive = false;
                     }));
             }
         }
@@ -222,7 +243,18 @@ namespace AppointementScheduleBoard.ViewModel
         }
         private async Task LaodStalls()
         {
-            StallsList = new ObservableCollection<Stall>(await Task.Run(() => MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter)));
+            try
+            {
+                var res =
+                    await Task.Run(() => MainDataService.GetBranchStalls((int) MainFrameNavigationService.Parameter));
+                StallsList = new ObservableCollection<Stall>(res);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                
+            }
+            
         }
         private RelayCommand _addNewStallCommand;
         public RelayCommand AddNewStallCommand

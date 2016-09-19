@@ -7,6 +7,7 @@ using Oracle.DataAccess;
 using Oracle.DataAccess.Client;
 using DataLayer.Model;
 using System.Configuration;
+using System.Diagnostics;
 using DataLayer.Exceptions;
 using System.Globalization;
 
@@ -34,7 +35,7 @@ namespace DataLayer.DataService
             }
             catch (Exception ex)
             {
-
+                Debug.WriteLine("Something went Wrong");
             }
         }
 
@@ -401,7 +402,7 @@ namespace DataLayer.DataService
             reader.Close();
             //TODO : Mourad Search the params in EBS
             return new ServerSettings()
-            {      
+            {
                 DatabaseCurrentDate = sysDate
             };
 
@@ -412,7 +413,7 @@ namespace DataLayer.DataService
             return new LocalSettings()
             {
                 IsClockFormat24 = bool.Parse(ConfigurationManager.AppSettings["IsClockFormat24"]),
-                RefreshTimeInSeconds = Double.Parse(ConfigurationManager.AppSettings["RefreshTimeInSeconds"] ,new CultureInfo("En-US")),
+                RefreshTimeInSeconds = Double.Parse(ConfigurationManager.AppSettings["RefreshTimeInSeconds"], new CultureInfo("En-US")),
                 UnitSize = Double.Parse(ConfigurationManager.AppSettings["UnitSize"]),
                 IsShipClientWaitingVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipClientWaitingVisible"]),
                 IsShipJobtypeVisible = bool.Parse(ConfigurationManager.AppSettings["IsShipJobtypeVisible"]),
@@ -471,7 +472,7 @@ namespace DataLayer.DataService
             ConfigurationManager.AppSettings["IrrPlannedTimeExeededBlink"] = settings.IrrPlannedTimeExeededBlink.ToString();
             ConfigurationManager.AppSettings["PdtExceededInProgressBlink"] = settings.PdtExceededInProgressBlink.ToString();
             ConfigurationManager.AppSettings["PdtExceededWaittingForInvoiceBlink"] = settings.PdtExceededWaittingForInvoiceBlink.ToString();
-        }      
+        }
 
         public WorkingHoursSettings GetWorkingHoursSettings()
         {
