@@ -220,7 +220,7 @@ namespace AppointementScheduleBoard.ViewModel
                     {
                         MainDataService.ReleaseMechanicFromStall(id);
                         //to avoid refreshing
-                        //SelectedStall.Techniciens.Remove(SelectedStall.Techniciens.First(t => t.Id == id));
+                        SelectedStall.Techniciens.Remove(SelectedStall.Techniciens.First(t => t.Id == id));
                         //Or Whatever 
                         await LaodStalls();
                     }));
@@ -318,8 +318,10 @@ namespace AppointementScheduleBoard.ViewModel
                 return _affectTechnicianToStallCommand
                     ?? (_affectTechnicianToStallCommand = new RelayCommand(async () =>
                     {
+                       
                         _techniciansListView = new TechniciansListView();
-                        await _techniciansListView.ShowDialogAsync();
+                        await _techniciansListView.ShowDialogAsync();                        
+
 
                     }));
             }
@@ -345,7 +347,9 @@ namespace AppointementScheduleBoard.ViewModel
                 return _technicansViewLoadedCommand
                     ?? (_technicansViewLoadedCommand = new RelayCommand(async () =>
                     {
+                        var st = SelectedStall;
                         await LoadTechnicians();
+                        SelectedStall = st;
                     }));
             }
         }
@@ -391,6 +395,7 @@ namespace AppointementScheduleBoard.ViewModel
                             foreach (var tech in selectedTechniciansList)
                             {
                                 MainDataService.AssignMechanicToStall(SelectedStall.Id, (tech as Technicien).Id);
+                                SelectedStall.Techniciens.Add((tech as Technicien)); //to view the changes immediatly
                             }
                         _techniciansListView.Close();
                         SearchText = "";

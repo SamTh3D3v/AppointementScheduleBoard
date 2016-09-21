@@ -213,7 +213,7 @@
             <controls:ProgressRing Grid.Row="2" IsLarge="True" Width="100" Height="100" Foreground="{DynamicResource AccentColorBrush}" VerticalAlignment="Center" HorizontalAlignment="Center" IsActive="{Binding IsPrograssRingActive,Mode=TwoWay}"/>
             
         </Grid>
-        <Border Grid.Column="1" Grid.Row="1" CornerRadius="5" Background="LightGray" Margin="10">
+        <Border Grid.Column="1" Grid.Row="1" CornerRadius="5" Background="LightGray" Margin="10" IsEnabled="{Binding IsPrograssRingActive,Converter={StaticResource InvertBoolConverter}}">
             <Grid >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
