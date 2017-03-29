@@ -196,6 +196,8 @@ namespace AppointementScheduleBoard.ViewModel
                         var collection = (ObservableCollection<FilteredStall>)obj;
                         FilteredStallsCollection = collection;
                         //todo
+
+
                     }));
             }
         }
@@ -285,11 +287,28 @@ namespace AppointementScheduleBoard.ViewModel
                 if (stallsMutex) return;
                 stallsMutex = true;
                 IsPrograssRingActive = true;
-                //for test purpuses             
-                await Task.Run(() => Thread.Sleep(3000));
+
+
+
+                //for a better user exeperiance         
+                await Task.Run(() => Thread.Sleep(1000));
                 StartDateTime = DateTime.Today.Add(MainDataService.GetWorkingHoursSettings().StartHour);
                 EndDateTime = DateTime.Today.Add(MainDataService.GetWorkingHoursSettings().EndHour);
-                StallsCollection = new ObservableCollection<Stall>(await Task.Run(() => MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter)));
+                await Task.Run(() =>
+                {
+                    var collection = MainDataService.GetBranchStalls((int) MainFrameNavigationService.Parameter);
+                    StallsCollection = new ObservableCollection<Stall>(collection);
+                    FilteredStallsCollection =
+                        new ObservableCollection<FilteredStall>(collection.Select(s => new FilteredStall()
+                        {
+                            Stall = s,
+                            IsSelected = true
+                        }));
+                });
+               
+                
+
+
                 await UpdateHoursCollection();
                 IsPrograssRingActive = false;
                 stallsMutex = false;
@@ -324,8 +343,8 @@ namespace AppointementScheduleBoard.ViewModel
                      {
                          foreach (var jt in s.JobTasksCollection)
                          {
-                         //Irregularities
-                         if (jt.PlannedStartTime < DateTime.Now)
+                             //Irregularities
+                             if (jt.PlannedStartTime < DateTime.Now)
                              {
 
                                  if (jt.StatusId == (int)StatusEnum.Received)

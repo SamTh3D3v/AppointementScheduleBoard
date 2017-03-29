@@ -126,7 +126,17 @@
                                         <TextBlock Text="{Binding StallName}" VerticalAlignment="Top"
                                                Visibility="{Binding Path=MainWindowViewModel.LocalSettings.IsStallNamesVisible,Source={StaticResource Locator},Converter={StaticResource BoolToVisibilityConvertre}}"
                                                HorizontalAlignment="Center" FontFamily="segoe ui" FontWeight="Bold" Foreground="White"/>
-                                        <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Grid.Row="1">
+                                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Hidden" Grid.Row="1">
+                                            <ScrollViewer.Style>
+                                                <Style TargetType="ScrollViewer">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Source={StaticResource Locator},Path=MainWindowViewModel.LocalSettings.IsTechnicientsNamesVisible}" Value="false">
+                                                            <Setter Property="Visibility" Value="Hidden"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ScrollViewer.Style>
                                             <ItemsControl ItemsSource="{Binding Techniciens}" Margin="0,3,0,0">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>

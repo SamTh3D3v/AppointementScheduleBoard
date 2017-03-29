@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,10 +26,28 @@ namespace AppointementScheduleBoard.ViewModel
         private JobTask _selectedJobTask;
         private ObservableCollection<Branch> _branchsCollection;
         private ObservableCollection<Technicien> _techniciansFiltredCollection;
-        private string _searchText = "";
-
+        private string _searchText = "";            
+        private bool _isPrograssRingActive = false;
         #endregion
         #region Properties
+        public bool IsPrograssRingActive
+        {
+            get
+            {
+                return _isPrograssRingActive;
+            }
+
+            set
+            {
+                if (_isPrograssRingActive == value)
+                {
+                    return;
+                }
+
+                _isPrograssRingActive = value;
+                RaisePropertyChanged();
+            }
+        }
         public bool IsLookingForTechnicians
         {
             get
@@ -184,8 +203,10 @@ namespace AppointementScheduleBoard.ViewModel
                 return _affectationViewLoadedCommand
                     ?? (_affectationViewLoadedCommand = new RelayCommand(async () =>
                     {
+                        IsPrograssRingActive = true;
                         await LaodStalls();
                         BranchsCollection = new ObservableCollection<Branch>(await Task.Run(() => MainDataService.GetAllBranchs()));
+                        IsPrograssRingActive = false;
                     }));
             }
         }
@@ -199,7 +220,7 @@ namespace AppointementScheduleBoard.ViewModel
                     {
                         MainDataService.ReleaseMechanicFromStall(id);
                         //to avoid refreshing
-                        //SelectedStall.Techniciens.Remove(SelectedStall.Techniciens.First(t => t.Id == id));
+                        SelectedStall.Techniciens.Remove(SelectedStall.Techniciens.First(t => t.Id == id));
                         //Or Whatever 
                         await LaodStalls();
                     }));
@@ -222,7 +243,18 @@ namespace AppointementScheduleBoard.ViewModel
         }
         private async Task LaodStalls()
         {
-            StallsList = new ObservableCollection<Stall>(await Task.Run(() => MainDataService.GetBranchStalls((int)MainFrameNavigationService.Parameter)));
+            try
+            {
+                var res =
+                    await Task.Run(() => MainDataService.GetBranchStalls((int) MainFrameNavigationService.Parameter));
+                StallsList = new ObservableCollection<Stall>(res);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                
+            }
+            
         }
         private RelayCommand _addNewStallCommand;
         public RelayCommand AddNewStallCommand
@@ -286,8 +318,10 @@ namespace AppointementScheduleBoard.ViewModel
                 return _affectTechnicianToStallCommand
                     ?? (_affectTechnicianToStallCommand = new RelayCommand(async () =>
                     {
+                       
                         _techniciansListView = new TechniciansListView();
-                        await _techniciansListView.ShowDialogAsync();
+                        await _techniciansListView.ShowDialogAsync();                        
+
 
                     }));
             }
@@ -313,7 +347,9 @@ namespace AppointementScheduleBoard.ViewModel
                 return _technicansViewLoadedCommand
                     ?? (_technicansViewLoadedCommand = new RelayCommand(async () =>
                     {
+                        var st = SelectedStall;
                         await LoadTechnicians();
+                        SelectedStall = st;
                     }));
             }
         }
@@ -359,6 +395,7 @@ namespace AppointementScheduleBoard.ViewModel
                             foreach (var tech in selectedTechniciansList)
                             {
                                 MainDataService.AssignMechanicToStall(SelectedStall.Id, (tech as Technicien).Id);
+                                SelectedStall.Techniciens.Add((tech as Technicien)); //to view the changes immediatly
                             }
                         _techniciansListView.Close();
                         SearchText = "";

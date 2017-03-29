@@ -55,6 +55,7 @@
             <converters:StringToBoolConverter x:Key="StringToBoolConverter"/>
             <converters:TimeSpanToDateTimeConverter x:Key="TimeSpanToDateTimeConverter"/>
             <converters:StallsFilterConverter x:Key="StallsFilterConverter"/>
+            <converters:InvertBoolConverter x:Key="InvertBoolConverter"/>
         </ResourceDictionary>
 
 
