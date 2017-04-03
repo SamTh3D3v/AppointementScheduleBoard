@@ -19,15 +19,15 @@ namespace DataLayer.DataService
         public XxtaDataService()
         {
             _connection = new OracleConnection();
-            _connection.ConnectionString = "user id=itcomp;password=itcomp;data source=" +
-                                "(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)" +
-                                 "(HOST=10.254.0.170)(PORT=1551))(CONNECT_DATA=" +
-                                  "(SERVICE_NAME=DEV)))";
+            //_connection.ConnectionString = "user id=itcomp;password=itcomp;data source=" +
+            //                    "(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)" +
+            //                     "(HOST=10.254.0.170)(PORT=1551))(CONNECT_DATA=" +
+            //                      "(SERVICE_NAME=DEV)))";
 
-            //_connection.ConnectionString = "user id=itcomp;password=ItcompSer2016$;data source=" +
-            //                  "(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)" +
-            //                   "(HOST=10.254.0.158)(PORT=1641))(CONNECT_DATA=" +
-            //                    "(SERVICE_NAME=PROD)))";
+            _connection.ConnectionString = "user id=itcomp;password=itcomp;data source=" +
+                              "(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)" +
+                               "(HOST=10.254.0.158)(PORT=1641))(CONNECT_DATA=" +
+                                "(SERVICE_NAME=PROD)))";
 
             try
             {
@@ -186,11 +186,11 @@ namespace DataLayer.DataService
                                                                                                 )
                                                                                           PIVOT (MAX(DT) AS DT FOR ACTION IN('CLOCK_IN' AS CLOCK_IN_DATE , 'CLOCK_OUT' AS CLOCK_OUT_DATE ))) CLOCK_IO
                                                                         ON AB.INCIDENT_ID = CLOCK_IO.INCIDENT_ID
-                                                                        WHERE AB.CALLER_NAME = :STALL_NAME AND TRUNC(AB.BOOKING_DATE) = TRUNC(SYSDATE) ", _connection);
+                                                                        WHERE AB.CALLER_NAME = '0' || :STALL_NAME AND TRUNC(AB.BOOKING_DATE) = TRUNC(SYSDATE) ", _connection);
 
                     jobTasksQuery.BindByName = true;
                     jobTasksQuery.Parameters.Add("STALL_NAME", OracleDbType.Varchar2);
-                    jobTasksQuery.Parameters["STALL_NAME"].Value = currentStall.StallName;
+                    jobTasksQuery.Parameters["STALL_NAME"].Value = currentStall.Id;
 
                     OracleDataReader jobTasksReader = jobTasksQuery.ExecuteReader();
                     if (jobTasksReader.HasRows)
@@ -204,12 +204,12 @@ namespace DataLayer.DataService
                             jobTask.StatusId = Int32.Parse(jobTasksReader.GetValue(4).ToString());
                             jobTask.Sevirity = jobTasksReader.GetString(5);
                             jobTask.JobType = jobTasksReader.GetString(6);
-                            jobTask.TaskDuration = (int)jobTasksReader.GetValue(7);
+                            jobTask.TaskDuration = (int)(decimal)jobTasksReader.GetValue(7);
 
-                            jobTask.IncidentId = jobTasksReader.IsDBNull(1) ? null : (int?)jobTasksReader.GetValue(1);
-                            jobTask.ClockIn = jobTasksReader.IsDBNull(13) ? null : (DateTime?)jobTasksReader.GetDateTime(14);
-                            jobTask.ClockOut = jobTasksReader.IsDBNull(14) ? null : (DateTime?)jobTasksReader.GetDateTime(15);
-                            jobTask.MechanicsCount = (int)jobTasksReader.GetValue(11);
+                            jobTask.IncidentId = jobTasksReader.IsDBNull(1) ? null : (int?)(decimal)jobTasksReader.GetValue(1);
+                            jobTask.ClockIn = jobTasksReader.IsDBNull(13) ? null : (DateTime?)jobTasksReader.GetDateTime(13);
+                            jobTask.ClockOut = jobTasksReader.IsDBNull(14) ? null : (DateTime?)jobTasksReader.GetDateTime(14);
+                            jobTask.MechanicsCount = (int)(decimal)jobTasksReader.GetValue(11);
 
                             jobTask.PDT = jobTasksReader.IsDBNull(9) ? null : (DateTime?)jobTasksReader.GetDateTime(9);
                             jobTask.ResolvedDate = jobTasksReader.IsDBNull(10) ? null : (DateTime?)jobTasksReader.GetDateTime(10);
